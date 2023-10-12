@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "singularName": "page",
+    "pluralName": "pages",
+    "displayName": "Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Chunk": {
+      "type": "component",
+      "repeatable": true,
+      "component": "page.chunk"
+    },
+    "Title": {
+      "type": "string"
+    }
+  }
+}
