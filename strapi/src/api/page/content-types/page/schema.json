@@ -12,13 +12,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Chunk": {
-      "type": "component",
-      "repeatable": true,
-      "component": "page.chunk"
-    },
     "Title": {
       "type": "string"
+    },
+    "Slug": {
+      "type": "string"
+    },
+    "chunks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::chunk.chunk"
     }
   }
 }

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_page_glossary_terms",
+  "info": {
+    "displayName": "GlossaryTerm"
+  },
+  "options": {},
+  "attributes": {
+    "Term": {
+      "type": "string"
+    },
+    "Definition": {
+      "type": "text"
+    }
+  }
+}

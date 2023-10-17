@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_page_quotes",
+  "info": {
+    "displayName": "Quote"
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "richtext"
+    }
+  }
+}

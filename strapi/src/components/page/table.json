@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_page_tables",
+  "info": {
+    "displayName": "Table"
+  },
+  "options": {},
+  "attributes": {
+    "TableContent": {
+      "type": "json"
+    },
+    "Caption": {
+      "type": "richtext"
+    }
+  }
+}

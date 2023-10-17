@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_page_learning_objectives",
+  "info": {
+    "displayName": "LearningObjectives"
+  },
+  "options": {},
+  "attributes": {
+    "Objectives": {
+      "type": "richtext"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chunks",
+  "info": {
+    "singularName": "chunk",
+    "pluralName": "chunks",
+    "displayName": "Chunk",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Rank": {
+      "type": "integer"
+    },
+    "Content": {
+      "type": "dynamiczone",
+      "components": [
+        "page.learning-objectives",
+        "page.glossary-term",
+        "page.plain-text",
+        "page.table",
+        "page.video",
+        "page.quote"
+      ]
+    }
+  }
+}
