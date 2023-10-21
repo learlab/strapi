@@ -26,7 +26,8 @@
         "page.plain-text",
         "page.table",
         "page.video",
-        "page.quote"
+        "page.quote",
+        "page.equation"
       ]
     }
   }
