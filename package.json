@@ -1,5 +1,5 @@
 {
-  "name": "strapi",
+  "name": "itell-strapi",
   "private": true,
   "version": "0.1.0",
   "description": "A Strapi application",
@@ -9,18 +9,18 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
+  "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-i18n": "4.14.4",
-    "@strapi/plugin-users-permissions": "4.14.4",
-    "@strapi/strapi": "4.14.4",
-    "pg": "8.8.0",
-    "strapi-plugin-vercel-deploy": "^1.4.0"
+    "@strapi/strapi": "4.14.5",
+    "@strapi/plugin-users-permissions": "4.14.5",
+    "@strapi/plugin-i18n": "4.14.5",
+    "pg": "8.8.0"
   },
   "author": {
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": ""
+    "uuid": "d26982de-bc1c-473f-b6ac-6fe60f48bf8a"
   },
   "engines": {
     "node": ">=16.0.0 <=20.x.x",
