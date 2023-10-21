@@ -1,4 +1,4 @@
-export default ({ env }) => ({
+module.exports = ({ env }) => ({
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
   },
@@ -9,8 +9,5 @@ export default ({ env }) => ({
     token: {
       salt: env('TRANSFER_TOKEN_SALT'),
     },
-  },
-  flags: {
-    nps: env.bool('FLAG_NPS', true),
   },
 });
