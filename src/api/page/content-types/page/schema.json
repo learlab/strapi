@@ -4,18 +4,18 @@
   "info": {
     "singularName": "page",
     "pluralName": "pages",
-    "displayName": "Page",
+    "displayName": "page",
     "description": ""
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
     "Title": {
       "type": "string"
     },
-    "Slug": {
+    "slug": {
       "type": "string"
     },
     "chunks": {

@@ -4,11 +4,10 @@
   "info": {
     "singularName": "chunk",
     "pluralName": "chunks",
-    "displayName": "Chunk",
-    "description": ""
+    "displayName": "Chunk"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
@@ -18,16 +17,23 @@
     "Rank": {
       "type": "integer"
     },
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Normal",
+        "Video"
+      ]
+    },
     "Content": {
       "type": "dynamiczone",
       "components": [
-        "page.learning-objectives",
+        "page.equation",
         "page.glossary-term",
+        "page.learning-objectives",
         "page.plain-text",
-        "page.table",
-        "page.video",
         "page.quote",
-        "page.equation"
+        "page.table",
+        "page.video"
       ]
     }
   }
