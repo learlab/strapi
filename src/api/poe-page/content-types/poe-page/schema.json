@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "chunks",
+  "collectionName": "poe_pages",
   "info": {
-    "singularName": "chunk",
-    "pluralName": "chunks",
-    "displayName": "Chunk"
+    "singularName": "poe-page",
+    "pluralName": "poe-pages",
+    "displayName": "POE-Pages"
   },
   "options": {
     "draftAndPublish": true
@@ -14,22 +14,17 @@
     "Title": {
       "type": "string"
     },
-    "Rank": {
-      "type": "integer"
+    "Slug": {
+      "type": "string"
     },
-    "Type": {
-      "type": "enumeration",
-      "enum": [
-        "Normal",
-        "Video"
-      ]
+    "LearningObjectives": {
+      "type": "richtext"
     },
     "Content": {
       "type": "dynamiczone",
       "components": [
-        "page.equation",
+        "page.chunk-header",
         "page.glossary-term",
-        "page.learning-objectives",
         "page.plain-text",
         "page.quote",
         "page.table",

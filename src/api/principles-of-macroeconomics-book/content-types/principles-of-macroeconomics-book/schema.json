@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "principles_of_macroeconomics_books",
+  "info": {
+    "singularName": "principles-of-macroeconomics-book",
+    "pluralName": "principles-of-macroeconomics-books",
+    "displayName": "principles-of-macroeconomics",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "TextbookInformation": {
+      "type": "text"
+    },
+    "poe_pages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::poe-page.poe-page"
+    }
+  }
+}
