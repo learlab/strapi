@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_page_chunks",
+  "info": {
+    "displayName": "Chunk",
+    "icon": "cube",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Header": {
+      "type": "string"
+    },
+    "Text": {
+      "type": "customField",
+      "options": {
+        "preset": "standard"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
+    }
+  }
+}
