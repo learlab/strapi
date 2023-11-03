@@ -16,6 +16,10 @@
         "preset": "standard"
       },
       "customField": "plugin::ckeditor5.CKEditor"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::auto-content.question"
     }
   }
 }
