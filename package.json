@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@_sh/strapi-plugin-ckeditor": "^2.0.4",
+    "@ckeditor/ckeditor5-html-support": "^40.0.0",
+    "@ckeditor/ckeditor5-markdown-gfm": "^40.0.0",
+    "@ckeditor/ckeditor5-style": "^40.0.0",
     "@strapi/plugin-i18n": "4.13.6",
     "@strapi/plugin-users-permissions": "4.13.6",
     "@strapi/strapi": "4.13.6",
@@ -25,7 +28,7 @@
     "uuid": "bf01d085-d3ed-47bb-a43a-478cc4d8c439"
   },
   "engines": {
-    "node": ">=16.0.0 <=20.x.x",
+    "node": ">=16.0.0 <20.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"
