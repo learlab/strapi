@@ -27,6 +27,18 @@
       "relation": "manyToOne",
       "target": "api::text.text",
       "inversedBy": "pages"
+    },
+    "chapter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::chapter.chapter",
+      "inversedBy": "pages"
+    },
+    "module": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::module.module",
+      "inversedBy": "pages"
     }
   }
 }
