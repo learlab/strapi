@@ -1,33 +1,45 @@
 module.exports = ({ env }) => {
-  const client = env("DATABASE_CLIENT");
-
-  const connections = {
-    postgres: {
+  if (process.env.NODE_ENV == 'development') {
+    const path = require('path');
+    
+    return {
       connection: {
-        connectionString: env("DATABASE_URL"),
-        ssl: env.bool("DATABASE_SSL", false) && {
-          rejectUnauthorized: env.bool(
-            "DATABASE_SSL_REJECT_UNAUTHORIZED",
-            true
-          ),
+        client: 'sqlite',
+        connection: {
+          filename: path.join(__dirname, '..', env('DATABASE_FILENAME', '.tmp/data.db')),
         },
-        schema: env("DATABASE_SCHEMA", "public"),
+        useNullAsDefault: true,
       },
+    }
+  } else {
+    const connections = {
+      postgres: {
+        connection: {
+          connectionString: env("DATABASE_URL"),
+          ssl: env.bool("DATABASE_SSL", false) && {
+            rejectUnauthorized: env.bool(
+              "DATABASE_SSL_REJECT_UNAUTHORIZED",
+              true
+            ),
+          },
+          schema: env("DATABASE_SCHEMA", "public"),
+        },
 
-      pool: {
-        min: env.int("DATABASE_POOL_MIN"),
-        max: env.int("DATABASE_POOL_MAX"),
+        pool: {
+          min: env.int("DATABASE_POOL_MIN"),
+          max: env.int("DATABASE_POOL_MAX"),
+        },
       },
-    },
-  };
+    };
+    const client = env("DATABASE_CLIENT");
+    return {
+      connection: {
+        client,
 
-  return {
-    connection: {
-      client,
+        ...connections[client],
 
-      ...connections[client],
-
-      acquireConnectionTimeout: env.int("DATABASE_CONNECTION_TIMEOUT", 60000),
-    },
+        acquireConnectionTimeout: env.int("DATABASE_CONNECTION_TIMEOUT", 60000),
+      },
+    }
   };
 };

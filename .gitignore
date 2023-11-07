@@ -3,4 +3,5 @@
 /node_modules/
 .env
 /build/
-/src/plugins/github-publish/node_modules/
+/src/plugins/*/node_modules/
+.tmp
