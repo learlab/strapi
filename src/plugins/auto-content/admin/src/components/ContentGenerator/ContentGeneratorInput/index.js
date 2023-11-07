@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Stack } from "@strapi/design-system/Stack";
+import { Flex } from '@strapi/design-system';
 import { Button } from "@strapi/design-system/Button";
 import { Textarea } from "@strapi/design-system";
 import { auth } from "@strapi/helper-plugin";
@@ -31,6 +32,7 @@ export default function Index({
   const generateText = async () => {
     // Get the text from the chunk text field in Strapi
     console.log(JSON.stringify({ name, value }));
+
     try {
       const response = await fetch(`/auto-content/generate-question`, {
         method: "POST",
@@ -66,13 +68,13 @@ export default function Index({
   // for testing. Might be nice to do something like
   // if process.env.NODE_ENV === "development"
   // but I don't really know if that would work.
-  useEffect(() => {
-    console.log(modifiedData);
-  }, [modifiedData]);
+  // useEffect(() => {
+  //   console.log(modifiedData);
+  // }, [modifiedData]);
   // end testing
 
   return (
-    <Stack spacing={2}>
+    <Flex position="relative" alignItems="right" gap={1}>
       <Textarea
         placeholder="You can generate content here, or add it yourself."
         label={fieldName}
@@ -85,12 +87,12 @@ export default function Index({
       >
         {value}
       </Textarea>
-      <Stack horizontal spacing={1}>
+      <Flex spacing={1}>
         <Button onClick={() => generateText()}>Generate</Button>
         <Button variant="secondary" onClick={() => clearGeneratedText()}>
           Clear
         </Button>
-      </Stack>
-    </Stack>
+      </Flex>
+    </Flex>
   );
 }

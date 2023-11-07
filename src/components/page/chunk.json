@@ -20,6 +20,14 @@
     "Question": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
+    },
+    "CleanText": {
+      "type": "text",
+      "default": "not set"
+    },
+    "MDX": {
+      "type": "text",
+      "default": "not set"
     }
   }
 }

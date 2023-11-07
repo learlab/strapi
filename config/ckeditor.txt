@@ -80,8 +80,8 @@ globalThis.CKEditorConfig = {
                         'blockQuote',
                         'horizontalLine',
                         '-',
-                        'sourceEditing',
-                        '|',
+//                        'sourceEditing',
+//                        '|',
                         'undo',
                         'redo',
                         '|',
@@ -102,10 +102,10 @@ globalThis.CKEditorConfig = {
                 },
                 codeBlock: {
                     languages: [
-                        { language: 'python', label: 'Python' },
-                        { language: 'javascript', label: 'JavaScript' },
-                        { language: 'html', label: 'HTML' },
-                        { language: 'css', label: 'CSS' }
+                        { language: 'python', label: 'Python' }
+//                       { language: 'javascript', label: 'JavaScript' },
+//                       { language: 'html', label: 'HTML' },
+//                       { language: 'css', label: 'CSS' }
                     ]
                 },
                 style: {

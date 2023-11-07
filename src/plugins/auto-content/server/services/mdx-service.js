@@ -1,29 +1,28 @@
 "use strict";
-import { unified } from 'unified'
-import rehypeParse from 'rehype-parse'
-import rehypeRewrite from 'rehype-rewrite';
-import rehypeStringify from 'rehype-stringify';
+
+const unified = require("unified");
+const rehypeParse = require("rehype-parse");
+const rehypeRewrite = require("rehype-rewrite");
+const rehypeRemark = require("rehype-remark");
+const remarkStringify = require("remark-stringify");
 
 module.exports = ({ strapi }) => {
-  const cleanText = async (html) => {
-    unified()
-    .use(rehypeParse)
-    .use(removeTables)
-    .use(rehypeRewrite, {
-      rewrite: (node, index, parent) => {
-        if(node.tagName == 'div' && node.properties.className?.includes('coding-time')) {
+  const mdx = async (html) => {
+    return await unified()
+      .use(rehypeParse)
+      .use(rehypeRewrite, (node, index, parent) => {
+        if (node.tagName == 'div' && node.properties.className?.includes('coding-time')) {
           node.tagName = 'codingTime'
           node.properties = null
           node.children = null
         }
-      }
-    })
-    .use(rehypeStringify)
-    .processSync(html)
-    .toString()
+      })
+      .use(rehypeRemark)
+      .use(remarkStringify)
+      .process(html)
   };
-  
+
   return {
-    cleanText,
+    mdx,
   };
 };

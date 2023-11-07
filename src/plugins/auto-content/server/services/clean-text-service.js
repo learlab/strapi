@@ -1,36 +1,36 @@
 "use strict";
-import { unified } from 'unified'
-import rehypeParse from 'rehype-parse'
-import { remove } from "unist-util-remove"
-import { toText } from 'hast-util-to-text'
-import { isElement } from "hast-util-is-element"
+
+const unified = require("unified");
+const remove = require("unist-util-remove");
+const toText = require("hast-util-to-text");
+const isElement = require("hast-util-is-element");
+const rehypeParse = require("rehype-parse");
 
 function removeTables() {
-    return (tree) =>
-        remove(tree, { cascade: true }, (node) => {
-            return isElement(node, "table")
-        }) || undefined
+  return (tree) =>
+      remove(tree, { cascade: true }, (node) => {
+          return isElement(node, "table")
+      }) || undefined
 }
 
 function rehypeText(options) {
-    const self = this
-    const settings = { ...self.data('settings'), ...options }
+  const self = this
+  const settings = { ...self.data('settings'), ...options }
 
-    self.compiler = compiler
+  self.Compiler = Compiler
 
-    function compiler(tree) {
-        return toText(tree, settings)
-    }
+  function Compiler(tree) {
+      return toText(tree, settings)
+  }
 }
 
 module.exports = ({ strapi }) => {
   const cleanText = async (html) => {
-    unified()
+    return await unified()
     .use(rehypeParse)
     .use(removeTables)
     .use(rehypeText)
-    .processSync(html)
-    .toString()
+    .process(html)
   };
   
   return {
