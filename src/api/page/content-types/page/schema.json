@@ -33,12 +33,6 @@
       "relation": "manyToOne",
       "target": "api::chapter.chapter",
       "inversedBy": "pages"
-    },
-    "module": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::module.module",
-      "inversedBy": "pages"
     }
   }
 }

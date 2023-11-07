@@ -26,16 +26,16 @@
       "target": "api::page.page",
       "mappedBy": "text"
     },
-    "modules": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::module.module",
-      "mappedBy": "text"
-    },
     "chapters": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::chapter.chapter",
+      "mappedBy": "text"
+    },
+    "modules": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::module.module",
       "mappedBy": "text"
     }
   }

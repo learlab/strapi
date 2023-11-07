@@ -18,16 +18,19 @@
       "target": "api::page.page",
       "mappedBy": "chapter"
     },
-    "module": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::module.module",
-      "inversedBy": "chapters"
-    },
     "text": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::text.text",
+      "inversedBy": "chapters"
+    },
+    "Title": {
+      "type": "string"
+    },
+    "module": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::module.module",
       "inversedBy": "chapters"
     }
   }

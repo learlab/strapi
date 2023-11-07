@@ -13,18 +13,14 @@
     "@strapi/design-system": "^1.6.3",
     "@strapi/helper-plugin": "^4.6.0",
     "@strapi/icons": "^1.6.3",
-    "prop-types": "^15.7.2",
-    "unified": "9.2.2",
-    "unist-util-remove": "2.1.0",
     "hast-util-is-element": "1.1.0",
     "hast-util-to-text": "2.0.1",
+    "joplin-turndown": "^4.0.30",
+    "joplin-turndown-plugin-gfm": "^1.0.12",
+    "prop-types": "^15.7.2",
     "rehype-parse": "7.0.1",
-    "rehype-rewrite": "1.0.2",
-    "rehype-remark": "8.1.1",
-    "remark-stringify": "9.0.1",
-    "remark-mdx": "1.6.22",
-    "turndown": "^7.1.2",
-    "turndown-plugin-gfm": "^1.0.2"
+    "unified": "9.2.2",
+    "unist-util-remove": "2.1.0"
   },
   "devDependencies": {
     "react": "^18.2.0",

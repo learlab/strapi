@@ -7,17 +7,30 @@
 // const remarkStringify = require("remark-stringify");
 
 var TurndownService = require('turndown')
-var turndownPluginGfm = require('turndown-plugin-gfm')
+var turndownPluginGfm = require('joplin-turndown-plugin-gfm')
 
 var turndownService = new TurndownService()
 
 // Use the GitHub Flavored Markdown plugin
-turndownService.use(turndownPluginGfm.gfm)
+var gfm = turndownPluginGfm.gfm
+turndownService.use(gfm)
 
-// Preserve HTML
+// Preserve MDX Components
 turndownService.keep([
   'keyterm',
-  'coding-time'
+  'exercise',
+  'image',
+  'steps',
+  'youtubevideo',
+  'accordion',
+  'info',
+  'callout',
+  'warning',
+  'columns',
+  'column',
+  'tabs',
+  'caption',
+  'blockquote'
 ])
 
 // Add rewrite rules

@@ -4,19 +4,15 @@
   "info": {
     "singularName": "module",
     "pluralName": "modules",
-    "displayName": "Modules",
-    "description": ""
+    "displayName": "Modules"
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "pages": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::page.page",
-      "mappedBy": "module"
+    "Title": {
+      "type": "string"
     },
     "text": {
       "type": "relation",

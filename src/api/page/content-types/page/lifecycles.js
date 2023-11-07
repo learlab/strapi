@@ -2,11 +2,14 @@ const text = require("../../../text/controllers/text");
 
 module.exports = {
     async beforeUpdate(event) {
-        const { data, where, select, populate } = event.params;
+        const { where } = event.params;
+        // fetch existing data from database
+        // (Strapi does not populate dynamic zone components by default)
         const existingData = await strapi
             .entityService.findOne("api::page.page", where.id, {
                 populate: ["Content"],
             })
+        // loop over components and update MDX and CleanText fields
         for (let component of existingData.Content) {
             console.log(component)
             strapi

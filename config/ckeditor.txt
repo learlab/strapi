@@ -58,7 +58,8 @@ globalThis.CKEditorConfig = {
                     CKEditor5.table.TableToolbar,
                     //CKEditor5.markdownGfm.Markdown,
                     CKEditor5.style.Style,
-                    CKEditor5.htmlSupport.GeneralHtmlSupport
+                    CKEditor5.htmlSupport.GeneralHtmlSupport,
+                    CKEditor5.htmlEmbed.HtmlEmbed
                 ],
                 toolbar: {
                     items: [
@@ -80,8 +81,9 @@ globalThis.CKEditorConfig = {
                         'blockQuote',
                         'horizontalLine',
                         '-',
-//                        'sourceEditing',
-//                        '|',
+                        'sourceEditing',
+                        'htmlEmbed',
+                        '|',
                         'undo',
                         'redo',
                         '|',
