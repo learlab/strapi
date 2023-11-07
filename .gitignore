@@ -2,8 +2,6 @@
 /dist/
 /node_modules/
 .env
-.env
-.env
 /build/
 /src/plugins/*/node_modules/
 .tmp
