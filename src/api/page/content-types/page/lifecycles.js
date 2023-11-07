@@ -7,7 +7,6 @@ module.exports = {
             .entityService.findOne("api::page.page", where.id, {
                 populate: ["Content"],
             })
-        console.log(existingData)
         for (let component of existingData.Content) {
             console.log(component)
             strapi
@@ -28,7 +27,7 @@ module.exports = {
                     strapi.query('page.chunk').update({
                         where: { id: component.id },
                         data: {
-                            MDX: String(mdx)
+                            MDX: mdx
                         }
                     })
                 })
