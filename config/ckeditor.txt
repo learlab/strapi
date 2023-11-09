@@ -12,8 +12,39 @@ globalThis.CKEditorConfig = {
                 },
             },
             styles:`
+                .ck.ck-content p.info {
+                    padding: 1.2em 2em;
+                    border: 1px solid #e91e63;
+                    border-left: 10px solid #e91e63;
+                    border-radius: 5px;
+                    margin: 1.5em;
+                }
 
-                .ck.ck-content p.info-box {
+                .ck.ck-content p.warning {
+                    padding: 1.2em 2em;
+                    border: 1px solid #e91e63;
+                    border-left: 10px solid #e91e63;
+                    border-radius: 5px;
+                    margin: 1.5em;
+                }
+
+                .ck.ck-content p.callout {
+                    padding: 1.2em 2em;
+                    border: 1px solid #e91e63;
+                    border-left: 10px solid #e91e63;
+                    border-radius: 5px;
+                    margin: 1.5em;
+                }
+
+                .ck.ck-content p.keyterm {
+                    padding: 1.2em 2em;
+                    border: 1px solid #e91e63;
+                    border-left: 10px solid #e91e63;
+                    border-radius: 5px;
+                    margin: 1.5em;
+                }
+
+                .ck.ck-content p.blockquote {
                     padding: 1.2em 2em;
                     border: 1px solid #e91e63;
                     border-left: 10px solid #e91e63;
@@ -113,9 +144,29 @@ globalThis.CKEditorConfig = {
                 style: {
                     definitions: [
                         {
-                            name: 'Info box',
+                            name: 'Info Box',
                             element: 'p',
-                            classes: [ 'info-box' ]
+                            classes: [ 'info' ]
+                        },
+                        {
+                            name: 'Warning',
+                            element: 'p',
+                            classes: [ 'warning' ]
+                        },
+                        {
+                            name: 'Callout',
+                            element: 'p',
+                            classes: [ 'callout' ]
+                        },
+                        {
+                            name: 'Keyterm',
+                            element: 'p',
+                            classes: [ 'keyterm' ]
+                        },
+                        {
+                            name: 'Block Quote',
+                            element: 'p',
+                            classes: [ 'blockquote' ]
                         },
                     ]
                 }

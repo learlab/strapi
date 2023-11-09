@@ -11,7 +11,6 @@ module.exports = {
             })
         // loop over components and update MDX and CleanText fields
         for (let component of existingData.Content) {
-            console.log(component)
             strapi
                 .service('plugin::auto-content.cleanTextService')
                 .cleanText(component.Text)
