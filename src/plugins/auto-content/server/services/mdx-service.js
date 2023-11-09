@@ -14,17 +14,21 @@ turndownService.use(gfm)
 // TODO: add support for multimedia (image, video, coding time)
 const componentNames = [
   'Keyterm',
-  // 'Exercise',
-  // 'Image',
-  // 'Steps',
-  // 'YoutubeVideo',
-  // 'Accordion',
+  // 'Exercise', // <div class="exercise">...</div>
+  // 'Image', // <img alt="">...</img>
+  // 'Steps', // <div class="steps">...<ul>...</ul></div>
+  // 'YoutubeVideo', // <figure>...<figcaption>...</figure>
+  // 'Accordion', // <details>...</details> (single element only)
   'Info',
   'Callout',
   'Warning',
-  // 'Columns',
-  // 'Column',
-  // 'Tabs',
+  // 'Columns', // <div class="columns">...</div>
+  // 'Column', // <div class="column">...</div>
+  // 'Tabs', // <div class="tabs">...<div class="tabs-header|body">...</div>
+  // 'TabsHeader', // <div class="tabs-header">...</div>
+  // 'TabsBody', // <div class="tabs-body">...</div>
+  // 'TabPanel', // <div class="tab-panel">...</div>
+  // 'TextOverImage', // <img class="text-over-image">...</img>
   'Caption',
   'Blockquote',
   // 'CodeRepl',
