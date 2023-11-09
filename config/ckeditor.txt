@@ -141,6 +141,16 @@ globalThis.CKEditorConfig = {
 //                       { language: 'css', label: 'CSS' }
                     ]
                 },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells',
+                        'tableProperties',
+                        'tableCellProperties',
+                        'toggleTableCaption',
+                    ],
+                },
                 style: {
                     definitions: [
                         {
