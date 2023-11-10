@@ -41,7 +41,7 @@ export class StrapiMediaLib extends Plugin {
 
   connect( strapiToggle ) {
     if( typeof strapiToggle !== 'function' ) {
-      throw new Error( 'Input parameter for toogle should be a function' );
+      throw new Error( 'Input parameter for toggle should be a function' );
     }
 
     this.strapiToggle = strapiToggle;

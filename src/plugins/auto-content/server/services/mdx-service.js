@@ -17,7 +17,7 @@ const componentNames = [
   // 'Exercise', // <div class="exercise">...</div>
   // 'Image', // <img alt="">...</img>
   // 'Steps', // <div class="steps">...<ul>...</ul></div>
-  // 'YoutubeVideo', // <figure>...<figcaption>...</figure>
+  // 'YoutubeVideo', // VideoChunk only
   // 'Accordion', // <details>...</details> (single element only)
   'Info',
   'Callout',

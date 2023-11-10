@@ -51,6 +51,7 @@
     "@ckeditor/ckeditor5-paste-from-office": "^40.0.0",
     "@ckeditor/ckeditor5-react": "^6.1.0",
     "@ckeditor/ckeditor5-remove-format": "^40.0.0",
+    "@ckeditor/ckeditor5-source-editing": "^40.0.0",
     "@ckeditor/ckeditor5-special-characters": "^40.0.0",
     "@ckeditor/ckeditor5-table": "^40.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^40.0.0",

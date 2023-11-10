@@ -9,9 +9,9 @@ import ckeditor5EssentialsDll from "@ckeditor/ckeditor5-essentials/build/essenti
 import ckeditor5FontDll from "@ckeditor/ckeditor5-font/build/font.js";
 import ckeditor5HeadingDll from "@ckeditor/ckeditor5-heading/build/heading.js";
 import ckeditor5HighlightDll from '@ckeditor/ckeditor5-highlight/build/highlight.js';
+import ckeditor5HtmlSupportDll from "@ckeditor/ckeditor5-html-support/build/html-support.js";
 import ckeditor5HtmlEmbedDll from "@ckeditor/ckeditor5-html-embed/build/html-embed.js";
 import ckeditor5HorizontalLineDll from "@ckeditor/ckeditor5-horizontal-line/build/horizontal-line.js";
-import ckeditor5MarkdownDll from '@ckeditor/ckeditor5-markdown-gfm/build/markdown-gfm';
 import ckeditor5MediaEmbedDll from "@ckeditor/ckeditor5-media-embed/build/media-embed.js";
 import ckeditor5ImageDll from "@ckeditor/ckeditor5-image/build/image.js";
 import ckeditor5IndentDll from "@ckeditor/ckeditor5-indent/build/indent.js";
@@ -20,11 +20,13 @@ import ckeditor5ListDll from "@ckeditor/ckeditor5-list/build/list.js";
 import ckeditor5PasteFromOfficeDll from "@ckeditor/ckeditor5-paste-from-office/build/paste-from-office.js";
 import ckeditor5FindAndReplaceDll from "@ckeditor/ckeditor5-find-and-replace/build/find-and-replace.js";
 import ckeditor5RemoveFormatDll from "@ckeditor/ckeditor5-remove-format/build/remove-format.js";
+import ckeditor5SourceEditingDll from "@ckeditor/ckeditor5-source-editing/build/source-editing.js";
 import ckeditor5SpecialCharactersDll from "@ckeditor/ckeditor5-special-characters/build/special-characters.js";
 import ckeditor5TableDll from "@ckeditor/ckeditor5-table/build/table.js";
 import ckeditor5WordCountDll from "@ckeditor/ckeditor5-word-count/build/word-count.js";
 import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/maximum-length.js";
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
+import { Keyterm } from "./plugins/Keyterm";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   light: {
@@ -67,16 +69,6 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
         { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
         { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-      ]
-    },
-    image: {
-      toolbar: [
-        'imageStyle:inline',
-        'imageStyle:block',
-        'imageStyle:side',
-        '|',
-        'toggleImageCaption',
-        'imageTextAlternative'
       ]
     },
     table: {
@@ -124,6 +116,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.paragraph.Paragraph,
       window.CKEditor5.pasteFromOffice.PasteFromOffice,
       window.CKEditor5.removeFormat.RemoveFormat,
+      window.CKEditor5.sourceEditing.SourceEditing,
       window.CKEditor5.specialCharacters.SpecialCharacters,
       window.CKEditor5.specialCharacters.SpecialCharactersEssentials,
       window.CKEditor5.table.Table,
@@ -134,7 +127,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.table.TableCaption,
       window.CKEditor5.wordCount.WordCount,
       window.CKEditor5.highlight.Highlight,
-      StrapiMediaLib
+      StrapiMediaLib,
+      Keyterm
     ],
     toolbar: {
       items: [
@@ -144,11 +138,15 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'heading',
         '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'code', 'removeFormat',
+        'bold', 'italic', 'underline', 'strikethrough', 'code',
         '-',
         'link', 'strapiMediaLib', 'mediaEmbed', 'insertTable', 'horizontalLine', 'blockQuote', 'codeBlock', 'specialCharacters',
         '|',
         'bulletedList', 'numberedList',
+        '|',
+        'keyterm',
+        '|',
+        'sourceEditing',
       ],
       shouldNotGroupWhenFull: true
     },
@@ -159,16 +157,9 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
       ]
     },
-    list: {
-      properties: {
-        styles: true,
-        startIndex: true,
-        reversed: true
-      }
-    },
     codeBlock: {
       languages: [
-          { language: 'python', label: 'Python' }
+        { language: 'python', label: 'Python' }
       ]
     },
     image: {
@@ -209,16 +200,36 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         'tableRow',
         'mergeTableCells',
         '|',
-        'tableCellProperties',
-        'tableProperties',
-        '|',
         'toggleTableCaption'
       ]
     },
-    wordCount: {
-      onUpdate: function (stats) {
-        console.log(stats);
-      }
+    // wordCount: {
+    //   displayCharacters: false,
+    //   onUpdate: stats => {
+    //     console.log(stats);
+    //   }
+    // },
+    htmlSupport: {
+      allow: [
+        // Enables <div> elements with classes.
+        {
+          name: /^(div)$/,
+          classes: ['column', 'columns']
+        },
+
+        {
+          name: 'p',
+          classes: ['info', 'warning']
+        },
+
+        // Enables <div> with any class attribute (true is a wildcard).
+        {
+          name: 'div',
+          attributes: {
+            class: true
+          }
+        }
+      ]
     }
   }
 };
@@ -233,10 +244,6 @@ export default class Configurator {
 
     const maxLength = this.fieldConfig.maxLength;
     const outputOption = this.fieldConfig.options.output;
-
-    if (outputOption === 'Markdown') {
-      config.plugins.push(window.CKEditor5.markdownGfm.Markdown);
-    }
 
     if (maxLength) {
       config.plugins.push(window.CKEditor5.maximumLength.MaximumLength);

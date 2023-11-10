@@ -136,9 +136,6 @@ globalThis.CKEditorConfig = {
                 codeBlock: {
                     languages: [
                         { language: 'python', label: 'Python' }
-//                       { language: 'javascript', label: 'JavaScript' },
-//                       { language: 'html', label: 'HTML' },
-//                       { language: 'css', label: 'CSS' }
                     ]
                 },
                 table: {
@@ -178,6 +175,39 @@ globalThis.CKEditorConfig = {
                             element: 'p',
                             classes: [ 'blockquote' ]
                         },
+                    ]
+                },
+                htmlSupport: {
+                    allow: [
+                        // Enables plain <div>, <section> and <article> elements.
+                        {
+                            name: /^(div|section|article)$/,
+                            classes: ['foo', 'bar']
+                        },
+
+                        // Adds support for `foo` and `bar` classes to the already supported
+                        // <p> elements (those are enabled by the dedicated paragraph feature).
+                        {
+                            name: 'p',
+                            classes: ['foo', 'bar']
+                        },
+
+                        // Enables <div>s with foo="true" attribute and bar attribute that
+                        // can accept any value (boolean `true` value works as an asterisk).
+                        {
+                            name: 'div',
+                            attributes: {
+                                foo: 'true',
+                                bar: true
+                            }
+                        },
+
+                        // Adds support for style="color: *" to the already supported
+                        // <p> and <h2-h4> elements.
+                        {
+                            name: /^(p|h[2-4])$/,
+                            styles: { 'color': true }
+                        }
                     ]
                 }
             }
