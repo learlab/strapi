@@ -4,8 +4,8 @@ const fetch = require("node-fetch");
 
 module.exports = ({ strapi }) => {
   const generateQuestion = async (text) => {
-    const ctx = strapi.requestContext.get();
-    console.log(ctx);
+    // const ctx = strapi.requestContext.get();
+    // console.log(ctx);
     try {
       const prompt = [
         {

@@ -66,6 +66,7 @@ turndownService.addRule('styles', {
     return `<${tag}${attrStr}>${content}</${tag}>`
   }
 })
+
 module.exports = ({ strapi }) => {
   const mdx = async (html) => {
     return turndownService.turndown(html)
