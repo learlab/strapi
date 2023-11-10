@@ -10,13 +10,6 @@
     "Header": {
       "type": "string"
     },
-    "Text": {
-      "type": "customField",
-      "options": {
-        "preset": "standard"
-      },
-      "customField": "plugin::ckeditor5.CKEditor"
-    },
     "Question": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
@@ -28,6 +21,14 @@
     "MDX": {
       "type": "text",
       "default": "not set"
+    },
+    "Text": {
+      "type": "customField",
+      "options": {
+        "output": "HTML",
+        "preset": "standard"
+      },
+      "customField": "plugin::ckeditor.CKEditor"
     }
   }
 }

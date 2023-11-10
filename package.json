@@ -9,11 +9,13 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
+  "workspaces": [
+    "./src/plugins/strapi-plugin-ckeditor",
+    "./src/plugins/auto-content",
+    "./src/plugins/github-publish",
+    "./src/plugins/slugify-components"
+  ],
   "dependencies": {
-    "@_sh/strapi-plugin-ckeditor": "^2.0.4",
-    "@ckeditor/ckeditor5-html-support": "^40.0.0",
-    "@ckeditor/ckeditor5-markdown-gfm": "^40.0.0",
-    "@ckeditor/ckeditor5-style": "^40.0.0",
     "@strapi/plugin-i18n": "4.13.6",
     "@strapi/plugin-users-permissions": "4.13.6",
     "@strapi/strapi": "4.13.6",

@@ -36,11 +36,15 @@ module.exports = ({ env }) => ({
       },
     },
   },
-  "auto-content": {
+  'auto-content': {
     enabled: true,
     resolve: "./src/plugins/auto-content",
     config: {
       API_TOKEN: env("OPEN_AI_API_TOKEN"),
     }
+  },
+  ckeditor: {
+    enabled: true,
+    resolve: "./src/plugins/strapi-plugin-ckeditor"
   }
 });
