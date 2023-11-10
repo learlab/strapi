@@ -134,16 +134,14 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       items: [
         'undo', 'redo',
         '|',
-        'findAndReplace', 'selectAll',
-        '|',
         'heading',
         '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'code',
-        '-',
-        'link', 'strapiMediaLib', 'mediaEmbed', 'insertTable', 'horizontalLine', 'blockQuote', 'codeBlock', 'specialCharacters',
+        'bold', 'italic', 'underline', 'strikethrough', 'code', 'codeBlock',
+        '|',
+        'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'blockQuote', 'specialCharacters',
         '|',
         'bulletedList', 'numberedList',
-        '|',
+        '-',
         'keyterm',
         '|',
         'sourceEditing',
@@ -211,6 +209,13 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
     // },
     htmlSupport: {
       allow: [
+        // Enables all HTML elements and classes (for testing. not safe.)
+        {
+          name: /.*/,
+          attributes: true,
+          classes: true,
+          styles: true
+        },
         // Enables <div> elements with classes.
         {
           name: /^(div)$/,
@@ -226,7 +231,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         {
           name: 'div',
           attributes: {
-            class: true
+            class: true,
+            style: true
           }
         }
       ]

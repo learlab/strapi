@@ -1,6 +1,8 @@
 const Plugin = window.CKEditor5.core.Plugin;
 const ButtonView = window.CKEditor5.ui.ButtonView;
 
+import './custom.css';
+
 export class Keyterm extends Plugin {
     init() {
         const editor = this.editor;
