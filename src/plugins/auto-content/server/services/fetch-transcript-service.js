@@ -15,12 +15,12 @@ module.exports = ({ strapi }) => {
           body: JSON.stringify({
             url: url,
             start_time: start,
-            end_time: end,
+            end_time: (end ? end : null)
           }),
         }
       );
-      const res = await response.json()['transcript'] ;
-      return res;
+      const result = await response.json();
+      return result.transcript;
     } catch (error) {
       console.log(error);
     }

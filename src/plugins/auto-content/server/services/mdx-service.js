@@ -69,6 +69,7 @@ turndownService.addRule('styles', {
 
 module.exports = ({ strapi }) => {
   const mdx = async (html) => {
+    if (!html) return null;
     return turndownService.turndown(html)
   };
 
