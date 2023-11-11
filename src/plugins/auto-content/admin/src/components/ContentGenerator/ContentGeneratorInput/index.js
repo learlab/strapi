@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Stack } from "@strapi/design-system/Stack";
 import { Flex } from '@strapi/design-system';
 import { Button } from "@strapi/design-system/Button";
-import { Textarea } from "@strapi/design-system";
+import { Textarea, Grid, GridItem } from "@strapi/design-system";
 import { auth } from "@strapi/helper-plugin";
 import { useCMEditViewDataManager } from "@strapi/helper-plugin";
 import useDebounce from "./useDebounce";
@@ -85,8 +85,8 @@ export default function Index({
   // end testing
 
   return (
-    <Stack spacing={4}>
-      <Stack>
+    <Grid gap={2}>
+      <GridItem col={12}>
         <Textarea
           disabled
           fullWidth
@@ -101,10 +101,10 @@ export default function Index({
         >
           {value}
         </Textarea>
-      </Stack>
-      <Stack>
+      </GridItem>
+      <GridItem col={12}>
         <Button fullWidth onClick={() => generateText()}>Generate question and answer pair</Button>
-      </Stack>
-    </Stack>
+      </GridItem>
+    </Grid>
   );
 }
