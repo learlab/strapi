@@ -17,7 +17,7 @@
       },
       "customField": "plugin::ckeditor5.CKEditor"
     },
-    "Question": {
+    "FullQuestionAnswer": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
     },
@@ -28,6 +28,14 @@
     "MDX": {
       "type": "text",
       "default": "not set"
+    },
+    "ConstructedResponse": {
+      "type": "customField",
+      "customField": "plugin::constructed-response.constructed-response"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::question.question"
     }
   }
 }

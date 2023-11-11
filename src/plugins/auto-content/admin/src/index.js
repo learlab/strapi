@@ -42,11 +42,11 @@ export default {
       pluginId: "auto-content",
       type: "text",
       intlLabel: {
-        id: "auto-content.question.label",
+        id: "auto-content.auto-content.label",
         defaultMessage: "Question Content",
       },
       intlDescription: {
-        id: "auto-content.question.description",
+        id: "auto-content.auto-content.description",
         defaultMessage: "Generate Question using AI",
       },
       icon: ContentGeneratorIcon,

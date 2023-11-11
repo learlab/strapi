@@ -7,11 +7,12 @@ module.exports = ({ strapi }) => {
     const ctx = strapi.requestContext.get();
     console.log(ctx);
     try {
+      // prompt is based on formatting from parse-gpt-mc notebook
       const prompt = [
         {
           role: "user",
           content:
-            "Write a question about the following text:\n\n" + text + "\n\nQ:",
+            'Generate a question and a short answer based on the passage below. The answer should be one sentence long. Provide your response as a properly formatted JSON object with the following schema: {"question": `a question based on the passage. The answer should be one sentence long.`, "answer": `a correct short answer to the question. The answer should be one sentence long.`}\n\nPassage: ' + text,
         },
       ];
       const response = await fetch(

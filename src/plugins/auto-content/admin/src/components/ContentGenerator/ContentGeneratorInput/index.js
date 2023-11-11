@@ -7,6 +7,7 @@ import { auth } from "@strapi/helper-plugin";
 import { useCMEditViewDataManager } from "@strapi/helper-plugin";
 import useDebounce from "./useDebounce";
 
+// Component for raw QA field
 export default function Index({
   name,
   error,
@@ -30,9 +31,6 @@ export default function Index({
   // authors would have to unpublish their content to re-generate the content
 
   const generateText = async () => {
-    // Get the text from the chunk text field in Strapi
-    console.log(JSON.stringify({ name, value }));
-
     try {
       const response = await fetch(`/auto-content/generate-question`, {
         method: "POST",
@@ -53,46 +51,60 @@ export default function Index({
         return res.choices[0].message.content.trim();
       });
 
+      let jsonResponse;
+
+      // Check if output can be converted to JSON
+      // Could use a JSON field instead of text field.
+      try {
+        jsonResponse = JSON.parse(parsedResponse);
+      } catch (err) {
+        jsonResponse = {"question": "Automatic question-generation has failed. Please try again.", "answer": "Automatic answer-generation has failed. Please try again."};
+      };
+
       onChange({
         target: { name, value: parsedResponse, type: attribute.type },
       });
+
     } catch (err) {
       console.log(err);
     }
   };
 
-  const clearGeneratedText = async () => {
-    onChange({ target: { name, value: "", type: attribute.type } });
+  const clearGeneratedText = () => {
+    onChange({
+      target: { name, value: "", type: attribute.type }
+    });
   };
 
   // for testing. Might be nice to do something like
   // if process.env.NODE_ENV === "development"
   // but I don't really know if that would work.
   // useEffect(() => {
-  //   console.log(modifiedData);
-  // }, [modifiedData]);
+  //   console.log(modifiedData[dynamicZone][index]["Text"],);
+  // }, [modifiedData[dynamicZone][index]["Text"],]);
   // end testing
 
   return (
-    <Flex position="relative" alignItems="right" gap={1}>
-      <Textarea
-        placeholder="You can generate content here, or add it yourself."
-        label={fieldName}
-        name="content"
-        onChange={(e) =>
-          onChange({
-            target: { name, value: e.target.value, type: attribute.type },
-          })
-        }
-      >
-        {value}
-      </Textarea>
-      <Flex spacing={1}>
-        <Button onClick={() => generateText()}>Generate</Button>
-        <Button variant="secondary" onClick={() => clearGeneratedText()}>
-          Clear
-        </Button>
-      </Flex>
-    </Flex>
+    <Stack spacing={4}>
+      <Stack>
+        <Textarea
+          disabled
+          fullWidth
+          placeholder="This area will show the generated question and answer in JSON format."
+          label={fieldName}
+          name="content"
+          onChange={(e) =>
+            onChange({
+              target: { name, value: e.target.value, type: attribute.type },
+            })
+          }
+        >
+          {value}
+        </Textarea>
+      </Stack>
+      <Stack>
+        <Button fullWidth onClick={() => generateText()}>Generate question and answer pair</Button>
+      </Stack>
+    </Stack>
   );
 }

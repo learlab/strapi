@@ -41,6 +41,14 @@ module.exports = ({ env }) => ({
     resolve: "./src/plugins/auto-content",
     config: {
       API_TOKEN: env("OPEN_AI_API_TOKEN"),
-    }
-  }
+    },
+  },
+  'constructed-response': {
+    enabled: true,
+    resolve: './src/plugins/constructed-response'
+  },
+  'question': {
+    enabled: true,
+    resolve: './src/plugins/question'
+  },
 });
