@@ -6,7 +6,7 @@
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
-    "build": "cd strapi build",
+    "build": "strapi build",
     "strapi": "strapi",
     "postinstall": "(cd src/plugins/auto-content && npm install); (cd src/plugins/github-publish && npm install); (cd src/plugins/slugify-components && npm install)"
   },
