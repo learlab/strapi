@@ -15,9 +15,9 @@
     "@ckeditor/ckeditor5-html-support": "^40.0.0",
     "@ckeditor/ckeditor5-markdown-gfm": "^40.0.0",
     "@ckeditor/ckeditor5-style": "^40.0.0",
-    "@strapi/plugin-i18n": "4.13.6",
-    "@strapi/plugin-users-permissions": "4.13.6",
-    "@strapi/strapi": "4.13.6",
+    "@strapi/plugin-i18n": "4.15.4",
+    "@strapi/plugin-users-permissions": "4.15.4",
+    "@strapi/strapi": "4.15.4",
     "better-sqlite3": "8.6.0",
     "pg": "^8.11.3",
     "strapi-provider-upload-supabase": "^1.0.0"
