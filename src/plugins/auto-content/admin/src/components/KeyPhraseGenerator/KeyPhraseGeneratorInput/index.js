@@ -81,13 +81,13 @@ export default function Index({
   // could use modifiedData.publishedAt === null to only allow content generation for unpublished content
   // authors would have to unpublish their content to re-generate the content
 
-  const generateQA = async () => {
+  const generateKeyPhrase = async () => {
     try {
 
       // create clean text to feed into QA generation
       const cleanTextFeed = await getTargetText();
 
-      const response = await fetch(`/auto-content/generate-question`, {
+      const response = await fetch(`/auto-content/extract-keyphrase`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,16 +104,6 @@ export default function Index({
       const parsedResponse = await response.json().then((res) => {
         return res.choices[0].message.content.trim();
       });
-
-      let jsonResponse;
-
-      // Check if output can be converted to JSON
-      // Could use a JSON field instead of text field.
-      try {
-        jsonResponse = JSON.parse(parsedResponse);
-      } catch (err) {
-        jsonResponse = {"question": "Automatic question-generation has failed. Please try again.", "answer": "Automatic answer-generation has failed. Please try again."};
-      };
 
       onChange({
         target: { name, value: parsedResponse, type: attribute.type },
@@ -209,7 +199,7 @@ export default function Index({
         </Textarea>
       </GridItem>
       <GridItem col={12}>
-        <Button fullWidth onClick={() => generateQA()}>Extract key phrases from text</Button>
+        <Button fullWidth onClick={() => generateKeyPhrase()}>Extract key phrases from text</Button>
       </GridItem>
     </Grid>
   );
