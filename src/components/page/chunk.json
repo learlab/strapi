@@ -36,6 +36,10 @@
     "Question": {
       "type": "customField",
       "customField": "plugin::question.question"
+    },
+    "KeyPhrase": {
+      "type": "customField",
+      "customField": "plugin::auto-content.keyPhrase"
     }
   }
 }

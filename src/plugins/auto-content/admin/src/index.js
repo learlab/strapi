@@ -37,7 +37,7 @@ export default {
       isReady: false,
       name,
     });
-    app.customFields.register({
+    app.customFields.register([{
       name: "question",
       pluginId: "auto-content",
       type: "text",
@@ -58,7 +58,30 @@ export default {
         base: [],
         advanced: [],
       },
-    });
+    },
+    {
+      name: "keyPhrase",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "keyPhrase.keyPhrase.label",
+        defaultMessage: "Key Phrases",
+      },
+      intlDescription: {
+        id: "keyPhrase.keyPhrase.description",
+        defaultMessage: "Generate key phrases using AI",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/KeyPhraseGenerator/KeyPhraseGeneratorInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    }]);
+
   },
 
   bootstrap(app) {},
