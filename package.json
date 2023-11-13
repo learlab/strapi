@@ -6,8 +6,9 @@
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi"
+    "build": "cd strapi build",
+    "strapi": "strapi",
+    "postinstall": "(cd src/plugins/auto-content && npm install); (cd src/plugins/github-publish && npm install); (cd src/plugins/slgify-components && npm install)"
   },
   "dependencies": {
     "@_sh/strapi-plugin-ckeditor": "^2.0.4",
