@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "poe_pages",
+  "info": {
+    "singularName": "poe-page",
+    "pluralName": "poe-pages",
+    "displayName": "POE-Pages"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Slug": {
+      "type": "string"
+    },
+    "LearningObjectives": {
+      "type": "richtext"
+    },
+    "Content": {
+      "type": "dynamiczone",
+      "components": [
+        "page.chunk-header",
+        "page.glossary-term",
+        "page.plain-text",
+        "page.quote",
+        "page.table",
+        "page.video"
+      ]
+    }
+  }
+}

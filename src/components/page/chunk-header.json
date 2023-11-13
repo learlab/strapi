@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_page_chunk_headers",
+  "info": {
+    "displayName": "ChunkHeader"
+  },
+  "options": {},
+  "attributes": {
+    "ChunkID": {
+      "type": "string"
+    },
+    "HeaderRank": {
+      "type": "string"
+    },
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Normal",
+        "Video"
+      ]
+    },
+    "Title": {
+      "type": "string"
+    },
+    "Slug": {
+      "type": "string"
+    }
+  }
+}
