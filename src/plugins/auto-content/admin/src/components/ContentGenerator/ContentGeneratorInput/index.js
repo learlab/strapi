@@ -6,6 +6,7 @@ import { Textarea, Grid, GridItem } from "@strapi/design-system";
 import { auth } from "@strapi/helper-plugin";
 import { useCMEditViewDataManager } from "@strapi/helper-plugin";
 import useDebounce from "./useDebounce";
+import { cleanText } from "../../../../../server/routes";
 
 // Component for raw QA field
 export default function Index({
@@ -20,18 +21,71 @@ export default function Index({
 }) {
   const { modifiedData, initialData } = useCMEditViewDataManager();
   const [dynamicZone, index, fieldName] = name.split(".");
+  const [currentText, setCurrentText] = useState("");
+  const [currentVideo, setCurrentVideo] = useState({ url: "", startTime: 0, endTime: 0 });
+  const [targetText, setTargetText] = useState("");
 
-  // could make the target field configurable. "Text" is hardcoded.
-  const debouncedTargetFieldValue = useDebounce(
+  const debouncedTextFieldValue = useDebounce(
     modifiedData[dynamicZone][index]["Text"],
     300
   );
 
+  const debouncedVideoFieldValue = useDebounce(
+    { url: modifiedData[dynamicZone][index]["URL"], 
+      startTime: modifiedData[dynamicZone][index]["StartTime"], 
+      endTime: modifiedData[dynamicZone][index]["EndTime"]},
+    300
+  );
+
+  // check if content type is text or video
+  function checkContentType () {
+    return ("Text" in modifiedData[dynamicZone][index])
+  };
+
+  async function getTargetText () {
+    let cleanTextFeed;
+    // Check content type
+    const contentIsText = checkContentType();
+    // If content type is text
+    if (contentIsText) {
+      // Check if same text has been used for cleanText generation
+      if (debouncedTextFieldValue == currentText) {
+        return targetText;
+      } else {
+        setCurrentText(debouncedTextFieldValue);
+        cleanTextFeed = await generateCleanText();
+        setTargetText(cleanTextFeed);
+        return cleanTextFeed;
+      };
+    } else {
+    // If content type is video
+      // Check if same transcript has been used for cleanText generation
+      if (debouncedVideoFieldValue["URL"] == currentVideo["URL"] && 
+          debouncedVideoFieldValue["startTime"] == currentVideo["startTime"] &&
+          debouncedVideoFieldValue["endTime"] == currentVideo["endTime"]
+          ) {
+            return targetText;
+          } else {
+            setCurrentVideo({ url: debouncedVideoFieldValue["URL"], 
+                              startTime: debouncedVideoFieldValue["startTime"], 
+                              endTime: debouncedVideoFieldValue["endTime"] },
+                          );
+            cleanTextFeed = "Placeholder for video implementation";
+            setTargetText(cleanTextFeed);
+            return targetText;
+          };
+    }
+  };
+
   // could use modifiedData.publishedAt === null to only allow content generation for unpublished content
   // authors would have to unpublish their content to re-generate the content
 
-  const generateText = async () => {
+  const generateQA = async () => {
     try {
+
+      // create clean text to feed into QA generation
+      const cleanTextFeed = await getTargetText();
+
       const response = await fetch(`/auto-content/generate-question`, {
         method: "POST",
         headers: {
@@ -39,7 +93,7 @@ export default function Index({
           Authorization: `Bearer ${auth.getToken()}`,
         },
         body: JSON.stringify({
-          text: `${debouncedTargetFieldValue}`,
+          text: cleanTextFeed,
         }),
       });
 
@@ -47,7 +101,6 @@ export default function Index({
         throw new Error(`Error! status: ${response.status}`);
       }
       const parsedResponse = await response.json().then((res) => {
-        console.log(res);
         return res.choices[0].message.content.trim();
       });
 
@@ -70,10 +123,32 @@ export default function Index({
     }
   };
 
-  const clearGeneratedText = () => {
-    onChange({
-      target: { name, value: "", type: attribute.type }
-    });
+  const generateCleanText = async () => {
+    try {
+      // call CleanText service
+      const response = await fetch(`/auto-content/clean-text`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.getToken()}`,
+        },
+        body: JSON.stringify({
+          text: `${debouncedTextFieldValue}`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+      const generatedCleanText = await response.json().then((res) => {
+        return res['contents'];
+      });
+
+      return generatedCleanText
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // for testing. Might be nice to do something like
@@ -103,7 +178,7 @@ export default function Index({
         </Textarea>
       </GridItem>
       <GridItem col={12}>
-        <Button fullWidth onClick={() => generateText()}>Generate question and answer pair</Button>
+        <Button fullWidth onClick={() => generateQA()}>Generate question and answer pair</Button>
       </GridItem>
     </Grid>
   );
