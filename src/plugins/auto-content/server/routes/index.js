@@ -1,4 +1,5 @@
 module.exports = {
   question: require("./question"),
-  cleanText: require("./cleanText")
+  cleanText: require("./cleanText"),
+  transcript: require("./transcript"),
 };

@@ -33,7 +33,8 @@ export default function Index({
   const debouncedVideoFieldValue = useDebounce(
     { url: modifiedData[dynamicZone][index]["URL"], 
       startTime: modifiedData[dynamicZone][index]["StartTime"], 
-      endTime: modifiedData[dynamicZone][index]["EndTime"]},
+      endTime: modifiedData[dynamicZone][index]["EndTime"],
+    },
     300
   );
 
@@ -60,19 +61,19 @@ export default function Index({
     } else {
     // If content type is video
       // Check if same transcript has been used for cleanText generation
-      if (debouncedVideoFieldValue["URL"] == currentVideo["URL"] && 
+      if (debouncedVideoFieldValue["url"] == currentVideo["url"] && 
           debouncedVideoFieldValue["startTime"] == currentVideo["startTime"] &&
           debouncedVideoFieldValue["endTime"] == currentVideo["endTime"]
           ) {
             return targetText;
           } else {
-            setCurrentVideo({ url: debouncedVideoFieldValue["URL"], 
+            setCurrentVideo({ url: debouncedVideoFieldValue["url"], 
                               startTime: debouncedVideoFieldValue["startTime"], 
-                              endTime: debouncedVideoFieldValue["endTime"] },
-                          );
-            cleanTextFeed = "Placeholder for video implementation";
+                              endTime: debouncedVideoFieldValue["endTime"],
+                            });
+            cleanTextFeed = await fetchTranscript();
             setTargetText(cleanTextFeed);
-            return targetText;
+            return cleanTextFeed;
           };
     }
   };
@@ -144,7 +145,38 @@ export default function Index({
         return res['contents'];
       });
 
-      return generatedCleanText
+      return generatedCleanText;
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchTranscript = async () => {
+    try {
+      const payload = JSON.stringify({ url: `${debouncedVideoFieldValue["url"]}`, 
+                                       startTime: `${debouncedVideoFieldValue["startTime"]}`, 
+                                       endTime: `${debouncedVideoFieldValue["endTime"]}`, 
+                                     })
+      // fetch transcript service
+      const response = await fetch(`/auto-content/fetch-transcript`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.getToken()}`,
+        },
+        body: payload,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      };
+
+      const fetchedTranscript = await response.json().then((res) => {
+        return res.transcript;
+      });
+
+      return fetchedTranscript;
 
     } catch (err) {
       console.log(err);

@@ -27,6 +27,18 @@
     },
     "MDX": {
       "type": "text"
+    },
+    "ConstructedResponse": {
+      "type": "customField",
+      "customField": "plugin::constructed-response.constructed-response"
+    },
+    "FullQuestionAnswer": {
+      "type": "customField",
+      "customField": "plugin::auto-content.question"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::question.question"
     }
   }
 }
