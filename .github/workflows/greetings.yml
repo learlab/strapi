@@ -1,16 +1,35 @@
-name: Greetings
+name: Deploy New Markdown
 
-on: [pull_request_target, issues]
+on: [issues]
 
 jobs:
-  greeting:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
+    container: pandoc/latex
     steps:
-    - uses: actions/first-interaction@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: "Message that will be displayed on users' first issue"
-        pr-message: "Message that will be displayed on users' first pull request"
+      - name: Make Request
+        id: myRequest
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: "http://yoursite.com/api"
+      - name: Create File
+        uses: finnp/create-file-action@2.0.0
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: output/
+          destination-github-username: 'learlab'
+          destination-repository-name: 'itell-strapi-demo'
+          target-directory: apps/example-poe/content/section
+          user-email: annachen031014@gmail.com
+          commit-message: Added new content
+          target-branch: main
+      - name: Remove File
+        uses: JesseTG/rm@v1.0.0
+        with:
+          path: output
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
