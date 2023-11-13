@@ -52,7 +52,7 @@ function stringifyAttributes(element) {
 turndownService.addRule('styles', {
   filter: function (node, options) {
     return (
-      ['info', 'warning', 'callout', 'keyterm', 'blockquote', 'caption']
+      ['callout']
         .includes(node.getAttribute('class'))
     )
   },
@@ -64,6 +64,24 @@ turndownService.addRule('styles', {
       attrStr = ' ' + attrStr
     }
     return `<${tag}${attrStr}>${content}</${tag}>`
+  }
+})
+
+// images (NOT TESTED)
+turndownService.addRule('image', {
+  filter: function (node, options) {
+    return (
+      node.getAttribute('class') == 'image' &&
+      node.nodeName === 'FIGURE'
+    )
+  },
+
+  replacement: function (content, node, options) {
+    const src = node.firstChild.getAttribute('src')
+    const alt = node.firstChild.getAttribute('alt')
+    const caption = node.lastChild.textContent
+
+    return `<Image src="${src}" alt="${alt}">${caption}</Image>`
   }
 })
 

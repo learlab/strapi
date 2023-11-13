@@ -1,8 +1,6 @@
 const Plugin = window.CKEditor5.core.Plugin;
 const ButtonView = window.CKEditor5.ui.ButtonView;
 
-import './custom.css';
-
 export class Keyterm extends Plugin {
     init() {
         const editor = this.editor;
@@ -19,14 +17,15 @@ export class Keyterm extends Plugin {
             //Execute a callback function when the button is clicked
             button.on('execute', () => {
                 const keytermTemplate = `
-                <div class="columns" style="gap: 10px">
-                    <div class="column" style="border: 1px solid orange">
-                        Keyterm
+                <div class="keyterm" style="gap: 10px">
+                    <div class="term" style="border: 1px solid orange">
+                        <p>Keyterm</p>
                     </div>
-                    <div class="column" style="border: 1px dotted blue">
-                        ...Definition
+                    <div class="definition" style="border: 1px dotted blue">
+                        <p>...Definition</p>
                     </div>
-                </div>`
+                </div>
+                <p></p>`
                 const fragment = editor.data.processor.toView(keytermTemplate)
                 const modelFragment = editor.data.toModel(fragment)
 
