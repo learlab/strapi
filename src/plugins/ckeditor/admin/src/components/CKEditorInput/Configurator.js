@@ -26,65 +26,11 @@ import ckeditor5TableDll from "@ckeditor/ckeditor5-table/build/table.js";
 import ckeditor5WordCountDll from "@ckeditor/ckeditor5-word-count/build/word-count.js";
 import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/maximum-length.js";
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
-import { Keyterm } from "./plugins/Keyterm";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
-  light: {
-    plugins: [
-      window.CKEditor5.autoformat.Autoformat,
-      window.CKEditor5.basicStyles.Bold,
-      window.CKEditor5.basicStyles.Italic,
-      window.CKEditor5.essentials.Essentials,
-      window.CKEditor5.heading.Heading,
-      window.CKEditor5.image.Image,
-      window.CKEditor5.image.ImageCaption,
-      window.CKEditor5.image.ImageStyle,
-      window.CKEditor5.image.ImageToolbar,
-      window.CKEditor5.image.ImageUpload,
-      window.CKEditor5.indent.Indent,
-      window.CKEditor5.link.Link,
-      window.CKEditor5.list.List,
-      window.CKEditor5.paragraph.Paragraph,
-      window.CKEditor5.pasteFromOffice.PasteFromOffice,
-      window.CKEditor5.table.Table,
-      window.CKEditor5.table.TableToolbar,
-      window.CKEditor5.table.TableColumnResize,
-      window.CKEditor5.table.TableCaption,
-      window.CKEditor5.wordCount.WordCount,
-      StrapiMediaLib
-    ],
-    toolbar: [
-      'undo', 'redo',
-      '|',
-      'heading',
-      '|',
-      'bold', 'italic',
-      '|',
-      'link', 'strapiMediaLib', 'insertTable',
-      '|',
-      'bulletedList', 'numberedList'
-    ],
-    heading: {
-      options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-      ]
-    },
-    table: {
-      contentToolbar: [
-        'tableColumn',
-        'tableRow',
-        'mergeTableCells',
-        '|',
-        'toggleTableCaption'
-      ]
-    },
-  },
-
   standard: {
     plugins: [
-      window.CKEditor5.alignment.Alignment,
+      window.CKEditor5.alignment.Alignment, // eslint-disable-line
       window.CKEditor5.autoformat.Autoformat,
       window.CKEditor5.basicStyles.Bold,
       window.CKEditor5.basicStyles.Italic,
@@ -128,7 +74,6 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.wordCount.WordCount,
       window.CKEditor5.highlight.Highlight,
       StrapiMediaLib,
-      Keyterm
     ],
     toolbar: {
       items: [
@@ -138,12 +83,10 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'bold', 'italic', 'underline', 'strikethrough', 'code', 'codeBlock',
         '|',
-        'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'blockQuote', 'specialCharacters',
+        'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'specialCharacters',
         '|',
         'bulletedList', 'numberedList',
         '-',
-        'keyterm',
-        '|',
         'sourceEditing',
       ],
       shouldNotGroupWhenFull: true
@@ -201,42 +144,36 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         'toggleTableCaption'
       ]
     },
-    // wordCount: {
-    //   displayCharacters: false,
-    //   onUpdate: stats => {
-    //     console.log(stats);
-    //   }
-    // },
-    htmlSupport: {
-      allow: [
-        // Enables all HTML elements and classes (for testing. not safe.)
-        {
-          name: /.*/,
-          attributes: true,
-          classes: true,
-          styles: true
-        },
-        // Enables <div> elements with classes.
-        {
-          name: /^(div)$/,
-          classes: ['column', 'columns']
-        },
+    // htmlSupport: {
+    //   allow: [
+    //     // Enables all HTML elements and classes (for testing. not safe.)
+    //     {
+    //       name: /.*/,
+    //       attributes: true,
+    //       classes: true,
+    //       styles: true
+    //     },
+    //     // Enables <div> elements with classes.
+    //     {
+    //       name: /^(div)$/,
+    //       classes: ['column', 'columns']
+    //     },
 
-        {
-          name: 'p',
-          classes: ['info', 'warning']
-        },
+    //     {
+    //       name: 'p',
+    //       classes: ['info', 'warning']
+    //     },
 
-        // Enables <div> with any class attribute (true is a wildcard).
-        {
-          name: 'div',
-          attributes: {
-            class: true,
-            style: true
-          }
-        }
-      ]
-    }
+    //     // Enables <div> with any class attribute (true is a wildcard).
+    //     {
+    //       name: 'div',
+    //       attributes: {
+    //         class: true,
+    //         style: true
+    //       }
+    //     }
+    //   ]
+    // }
   }
 };
 
@@ -266,8 +203,6 @@ export default class Configurator {
     const presetName = this.fieldConfig.options.preset;
 
     switch (presetName) {
-      case 'light':
-        return CKEDITOR_BASE_CONFIG_FOR_PRESETS.light;
       case 'standard':
         return CKEDITOR_BASE_CONFIG_FOR_PRESETS.standard;
       default:

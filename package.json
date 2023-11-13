@@ -10,7 +10,7 @@
     "strapi": "strapi"
   },
   "workspaces": [
-    "./src/plugins/strapi-plugin-ckeditor",
+    "./src/plugins/ckeditor",
     "./src/plugins/auto-content",
     "./src/plugins/github-publish",
     "./src/plugins/slugify-components"

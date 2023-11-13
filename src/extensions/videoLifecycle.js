@@ -11,10 +11,12 @@ module.exports = ({ strapi }) => {
                 // incoming data update
                 const { data } = event.params;
 
+                // fetch transcript
                 const transcript = await strapi
                     .service('plugin::auto-content.fetchTranscriptService')
                     .getTranscript(data.URL, data.StartTime, data.EndTime)
 
+                // construct MDX
                 var mdx = '<YoutubeVideo\n' +
                     `src=${data.URL}\n`
 
@@ -27,40 +29,40 @@ module.exports = ({ strapi }) => {
 
                 event.params.data.CleanText = transcript;
                 event.params.data.MDX = mdx;
-            }
-        },
-        beforeUpdate: async (event) => {
-            // incoming data update
-            const { data, where } = event.params;
+            },
 
-            // omit fields that are not included in oldData
-            var newData = _.omit(data, ["__component", "__temp_key__", "updatedAt"]);
-            // console.log(newData);
+            beforeUpdate: async (event) => {
+                // incoming data update
+                const { data, where } = event.params;
 
-            // get the old data from the database
-            const oldData = await strapi
-                .query("page.video")
-                .findOne({ where: { id: where.id } });
+                // omit fields that are not included in oldData
+                var newData = _.omit(data, ["__component", "__temp_key__", "updatedAt"]);
 
-            // console.log(oldData);
+                // get the old data from the database
+                const oldData = await strapi
+                    .query("page.video")
+                    .findOne({ where: { id: where.id } });
 
-            if (!_.isEqual(newData, oldData)) {
-                const transcript = await strapi
-                    .service('plugin::auto-content.fetchTranscriptService')
-                    .getTranscript(newData.URL, newData.StartTime, newData.EndTime)
+                // check if the dictionary-like JavaScript Objects are equal.
+                if (!_.isEqual(newData, oldData)) {
+                    // duplicate of beforeCreate steps
+                    const transcript = await strapi
+                        .service('plugin::auto-content.fetchTranscriptService')
+                        .getTranscript(newData.URL, newData.StartTime, newData.EndTime)
 
-                var mdx = '<YoutubeVideo\n' +
-                    `src=${newData.URL}\n`
+                    var mdx = '<YoutubeVideo\n' +
+                        `src=${newData.URL}\n`
 
-                if (newData.Title) mdx += `title="${newData.Title}"`
+                    if (newData.Title) mdx += `title="${newData.Title}"`
 
-                if (newData.Description) mdx += `\n>\n${newData.Description}`
-                else mdx += '>'
+                    if (newData.Description) mdx += `\n>\n${newData.Description}`
+                    else mdx += '>'
 
-                mdx += '\n</YoutubeVideo>'
+                    mdx += '\n</YoutubeVideo>'
 
-                event.params.data.CleanText = transcript;
-                event.params.data.MDX = mdx;
+                    event.params.data.CleanText = transcript;
+                    event.params.data.MDX = mdx;
+                }
             }
         },
     });
