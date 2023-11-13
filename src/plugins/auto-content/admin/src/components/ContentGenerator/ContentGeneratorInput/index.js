@@ -43,6 +43,16 @@ export default function Index({
     return ("Text" in modifiedData[dynamicZone][index])
   };
 
+  // change text to show API is being called
+  // needs to be a dict since other custom fields (question and answer) expect it
+  function showLoading() {
+    const loadingJSON = JSON.stringify({"question": "Currently being generated...", 
+                                        "answer": "Currently being generated..."});
+    onChange({
+      target: { name, value: loadingJSON, type: attribute.type },
+    });
+  }
+  
   async function getTargetText () {
     let cleanTextFeed;
     // Check content type
@@ -83,7 +93,7 @@ export default function Index({
 
   const generateQA = async () => {
     try {
-
+      showLoading();
       // create clean text to feed into QA generation
       const cleanTextFeed = await getTargetText();
 
@@ -101,7 +111,7 @@ export default function Index({
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
-      const parsedResponse = await response.json().then((res) => {
+      let parsedResponse = await response.json().then((res) => {
         return res.choices[0].message.content.trim();
       });
 
@@ -112,7 +122,8 @@ export default function Index({
       try {
         jsonResponse = JSON.parse(parsedResponse);
       } catch (err) {
-        jsonResponse = {"question": "Automatic question-generation has failed. Please try again.", "answer": "Automatic answer-generation has failed. Please try again."};
+        parsedResponse = JSON.stringify({"question": "Automatic question-generation has failed. Please try again.", 
+                        "answer": "Automatic answer-generation has failed. Please try again."});
       };
 
       onChange({

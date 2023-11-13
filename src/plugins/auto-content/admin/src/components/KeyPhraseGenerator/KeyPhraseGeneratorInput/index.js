@@ -43,6 +43,15 @@ export default function Index({
     return ("Text" in modifiedData[dynamicZone][index])
   };
 
+  // change text to show API is being called
+  function showLoading() {
+    const loadingString = "Currently being generated...";
+
+    onChange({
+      target: { name, value: loadingString, type: attribute.type },
+    });
+  }
+
   async function getTargetText () {
     let cleanTextFeed;
     // Check content type
@@ -83,7 +92,7 @@ export default function Index({
 
   const generateKeyPhrase = async () => {
     try {
-
+      showLoading();
       // create clean text to feed into QA generation
       const cleanTextFeed = await getTargetText();
 
