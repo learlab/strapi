@@ -26,7 +26,7 @@ for i in $(seq 0 $(echo $data | jq '.data | length')); do
   mkdir -p "$outputPath"
 
   # Create the filename
-  filename="$outputPath/$(echo $curData | jq -r '.Title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-').txt"
+  filename="$outputPath/$(echo $curData | jq -r '.Title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-').mdx"
 
   # Write data to file
   echo "---" > "$filename"
