@@ -26,6 +26,8 @@ function rehypeText(options) {
 
 module.exports = ({ strapi }) => {
   const cleanText = async (html) => {
+    if (!html) return null;
+    
     return await unified()
     .use(rehypeParse)
     .use(removeTables)

@@ -1,12 +1,6 @@
 "use strict";
 
-// const unified = require("unified");
-// const rehypeParse = require("rehype-parse");
-// const rehypeRewrite = require("rehype-rewrite");
-// const rehypeRemark = require("rehype-remark");
-// const remarkStringify = require("remark-stringify");
-
-var TurndownService = require('turndown')
+var TurndownService = require('joplin-turndown')
 var turndownPluginGfm = require('joplin-turndown-plugin-gfm')
 
 var turndownService = new TurndownService()
@@ -15,34 +9,67 @@ var turndownService = new TurndownService()
 var gfm = turndownPluginGfm.gfm
 turndownService.use(gfm)
 
-// Preserve MDX Components
-turndownService.keep([
-  'keyterm',
-  'exercise',
-  'image',
-  'steps',
-  'youtubevideo',
-  'accordion',
-  'info',
-  'callout',
-  'warning',
-  'columns',
-  'column',
-  'tabs',
-  'caption',
-  'blockquote'
-])
+// MDX Components in iTELL
+// TODO: add support for nested components (steps, columns, accordion, tabs)
+// TODO: add support for multimedia (image, video, coding time)
+const componentNames = [
+  'Keyterm',
+  // 'Exercise', // <div class="exercise">...</div>
+  // 'Image', // <img alt="">...</img>
+  // 'Steps', // <div class="steps">...<ul>...</ul></div>
+  // 'YoutubeVideo', // VideoChunk only
+  // 'Accordion', // <details>...</details> (single element only)
+  'Info',
+  'Callout',
+  'Warning',
+  // 'Columns', // <div class="columns">...</div>
+  // 'Column', // <div class="column">...</div>
+  // 'Tabs', // <div class="tabs">...<div class="tabs-header|body">...</div>
+  // 'TabsHeader', // <div class="tabs-header">...</div>
+  // 'TabsBody', // <div class="tabs-body">...</div>
+  // 'TabPanel', // <div class="tab-panel">...</div>
+  // 'TextOverImage', // <img class="text-over-image">...</img>
+  'Caption',
+  'Blockquote',
+  // 'CodeRepl',
+  // 'CodingTime'
+]
 
-// Add rewrite rules
-turndownService.addRule('strikethrough', {
-  filter: ['del', 's', 'strike'],
-  replacement: function (content) {
-    return '~' + content + '~'
+// construct component name map to handle case insensitivity in HTML DOM
+const componentNameMap = Object.fromEntries(
+  componentNames.map(compName => [compName.toLowerCase(), compName])
+);
+
+// utility function to construct JSX attributes from HTML DOM
+function stringifyAttributes(element) {
+  return Array.from(element.attributes)
+    .filter(attr => attr.specified && attr.name !== 'class')
+    .map(attr => `${attr.name}="${attr.value}"`)
+    .join(' ')
+}
+
+// function for elements that consist of attributes and content only
+turndownService.addRule('styles', {
+  filter: function (node, options) {
+    return (
+      ['info', 'warning', 'callout', 'keyterm', 'blockquote', 'caption']
+        .includes(node.getAttribute('class'))
+    )
+  },
+
+  replacement: function (content, node, options) {
+    const tag = componentNameMap[node.getAttribute('class')]
+    var attrStr = stringifyAttributes(node)
+    if (attrStr.length > 0) {
+      attrStr = ' ' + attrStr
+    }
+    return `<${tag}${attrStr}>${content}</${tag}>`
   }
 })
 
 module.exports = ({ strapi }) => {
   const mdx = async (html) => {
+    if (!html) return null;
     return turndownService.turndown(html)
   };
 
@@ -50,24 +77,3 @@ module.exports = ({ strapi }) => {
     mdx,
   };
 };
-
-// module.exports = ({ strapi }) => {
-//   const mdx = async (html) => {
-//     return await unified()
-//       .use(rehypeParse)
-//       .use(rehypeRewrite, (node, index, parent) => {
-//         if (node.tagName == 'div' && node.properties.className?.includes('coding-time')) {
-//           node.tagName = 'codingTime'
-//           node.properties = null
-//           node.children = null
-//         }
-//       })
-//       .use(rehypeRemark)
-//       .use(remarkStringify)
-//       .process(html)
-//   };
-
-//   return {
-//     mdx,
-//   };
-// };
