@@ -44,15 +44,14 @@ export default function Index({
   };
 
   // change text to show API is being called
-  // needs to be a dict since other custom fields (question and answer) expect it
   function showLoading() {
-    const loadingJSON = JSON.stringify({"question": "Currently being generated...", 
-                                        "answer": "Currently being generated..."});
+    const loadingString = "Currently being generated...";
+
     onChange({
-      target: { name, value: loadingJSON, type: attribute.type },
+      target: { name, value: loadingString, type: attribute.type },
     });
   }
-  
+
   async function getTargetText () {
     let cleanTextFeed;
     // Check content type
@@ -91,13 +90,13 @@ export default function Index({
   // could use modifiedData.publishedAt === null to only allow content generation for unpublished content
   // authors would have to unpublish their content to re-generate the content
 
-  const generateQA = async () => {
+  const generateKeyPhrase = async () => {
     try {
       showLoading();
       // create clean text to feed into QA generation
       const cleanTextFeed = await getTargetText();
 
-      const response = await fetch(`/auto-content/generate-question`, {
+      const response = await fetch(`/auto-content/extract-keyphrase`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,20 +110,9 @@ export default function Index({
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
-      let parsedResponse = await response.json().then((res) => {
+      const parsedResponse = await response.json().then((res) => {
         return res.choices[0].message.content.trim();
       });
-
-      let jsonResponse;
-
-      // Check if output can be converted to JSON
-      // Could use a JSON field instead of text field.
-      try {
-        jsonResponse = JSON.parse(parsedResponse);
-      } catch (err) {
-        parsedResponse = JSON.stringify({"question": "Automatic question-generation has failed. Please try again.", 
-                        "answer": "Automatic answer-generation has failed. Please try again."});
-      };
 
       onChange({
         target: { name, value: parsedResponse, type: attribute.type },
@@ -211,9 +199,8 @@ export default function Index({
     <Grid gap={2}>
       <GridItem col={12}>
         <Textarea
-          disabled
           fullWidth
-          placeholder="This area will show the generated question and answer in JSON format."
+          placeholder="This area will show the generated key phrases."
           label={fieldName}
           name="content"
           onChange={(e) =>
@@ -226,7 +213,7 @@ export default function Index({
         </Textarea>
       </GridItem>
       <GridItem col={12}>
-        <Button fullWidth onClick={() => generateQA()}>Generate question and answer pair</Button>
+        <Button fullWidth onClick={() => generateKeyPhrase()}>Extract key phrases from text</Button>
       </GridItem>
     </Grid>
   );

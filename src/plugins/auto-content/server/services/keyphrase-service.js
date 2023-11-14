@@ -3,16 +3,16 @@
 const fetch = require("node-fetch");
 
 module.exports = ({ strapi }) => {
-  const generateQuestion = async (text) => {
-    // const ctx = strapi.requestContext.get();
-    // console.log(ctx);
+  const extractKeyPhrase = async (text) => {
+    const ctx = strapi.requestContext.get();
+    console.log(ctx);
     try {
       // prompt is based on formatting from parse-gpt-mc notebook
       const prompt = [
         {
           role: "user",
           content:
-            'Generate a question and a short answer based on the passage below. The answer should be one sentence long. Provide your response as a properly formatted JSON object with the following schema: {"question": `a question based on the passage. The answer should be one sentence long.`, "answer": `a correct short answer to the question. The answer should be one sentence long.`}\n\nPassage: ' + text,
+            'Extract five keywords from the passage below. A keyword can be more than one word, but is usually less than three words. They should be helpful in understanding students the contents of the passage. Provide your response -with each keyword on a newline without bullet points or hyphens at the beginning. \n\nPassage: ' + text,
         },
       ];
       const response = await fetch(
@@ -41,6 +41,6 @@ module.exports = ({ strapi }) => {
   };
 
   return {
-    generateQuestion,
+    extractKeyPhrase,
   };
 };

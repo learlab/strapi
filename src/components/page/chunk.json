@@ -10,7 +10,7 @@
     "Header": {
       "type": "string"
     },
-    "Question": {
+    "QuestionAnswerResponse": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
     },
@@ -21,6 +21,18 @@
     "MDX": {
       "type": "text",
       "default": "not set"
+    },
+    "KeyPhrase": {
+      "type": "customField",
+      "customField": "plugin::auto-content.keyPhrase"
+    },
+    "ConstructedResponse": {
+      "type": "customField",
+      "customField": "plugin::auto-content.constructedResponse"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::auto-content.generatedQuestion"
     },
     "Text": {
       "type": "customField",

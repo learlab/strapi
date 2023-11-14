@@ -27,6 +27,22 @@
     },
     "MDX": {
       "type": "text"
+    },
+    "QuestionAnswerResponse": {
+      "type": "customField",
+      "customField": "plugin::auto-content.question"
+    },
+    "KeyPhrase": {
+      "type": "customField",
+      "customField": "plugin::auto-content.keyPhrase"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::auto-content.generatedQuestion"
+    },
+    "ConstructedResponse": {
+      "type": "customField",
+      "customField": "plugin::auto-content.constructedResponse"
     }
   }
 }

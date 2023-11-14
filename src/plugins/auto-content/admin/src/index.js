@@ -37,17 +37,17 @@ export default {
       isReady: false,
       name,
     });
-    app.customFields.register({
+    app.customFields.register([{
       name: "question",
       pluginId: "auto-content",
       type: "text",
       intlLabel: {
-        id: "auto-content.question.label",
-        defaultMessage: "Question Content",
+        id: "auto-content.auto-content.label",
+        defaultMessage: "Full answer ",
       },
       intlDescription: {
-        id: "auto-content.question.description",
-        defaultMessage: "Generate Question using AI",
+        id: "auto-content.auto-content.description",
+        defaultMessage: "Disabled field that will show ai-generated QA",
       },
       icon: ContentGeneratorIcon,
       components: {
@@ -58,7 +58,74 @@ export default {
         base: [],
         advanced: [],
       },
-    });
+    },
+    {
+      name: "constructedResponse",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "constructedResponse.constructedResponse.label",
+        defaultMessage: "Constructed Response",
+      },
+      intlDescription: {
+        id: "constructedResponse.constructedResponse.description",
+        defaultMessage: "Field to generate or input answers to comprehension question",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/ConstructedResponseField/ConstructedResponseInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    },
+    {
+      name: "generatedQuestion",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "generatedQuestion.generatedQuestion.label",
+        defaultMessage: "Question Content",
+      },
+      intlDescription: {
+        id: "generatedQuestion.generatedQuestion.description",
+        defaultMessage: "Field to generate or input comprehension question",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/QuestionField/QuestionInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    },
+    {
+      name: "keyPhrase",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "keyPhrase.keyPhrase.label",
+        defaultMessage: "Key Phrases",
+      },
+      intlDescription: {
+        id: "keyPhrase.keyPhrase.description",
+        defaultMessage: "Generate key phrases using AI",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/KeyPhraseGenerator/KeyPhraseGeneratorInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    }]);
+
   },
 
   bootstrap(app) {},
