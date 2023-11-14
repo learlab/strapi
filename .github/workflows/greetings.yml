@@ -5,13 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
-      - name: Make Request
-        id: myRequest
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: "http://yoursite.com/api"
-      - name: Create File
-        uses: finnp/create-file-action@2.0.0
+      - uses: actions/checkout@v2
+      - name: creates output
+        run:  sh ./convert.sh
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
@@ -27,6 +23,10 @@ jobs:
           target-branch: main
       - name: Remove File
         uses: JesseTG/rm@v1.0.0
+        with:
+          path: output
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
         with:
           path: output
       - name: Test get variable exported by push-to-another-repository
