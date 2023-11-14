@@ -6,7 +6,7 @@
 data=$(curl -X GET "https://itell-strapi-um5h.onrender.com/api/pages?populate=*" -H "Cache-Control: no-store")
 
 # Loop through the data
-for ((i=0; i<$(echo $data | jq '.data | length'); i++)); do
+for i in $(seq 0 $(echo $data | jq '.data | length')); do
   curData=$(echo $data | jq ".data[$i].attributes")
   chapterID=$(echo $curData | jq -r '.chapter.data.id')
 
@@ -28,7 +28,7 @@ for ((i=0; i<$(echo $data | jq '.data | length'); i++)); do
   echo "---" >> $filename
 
   # Loop through content
-  for ((j=0; j<$(echo $curData | jq '.Content | length'); j++)); do
+  for j in $(seq 0 $(echo $curData | jq '.Content | length')); do
     content=$(echo $curData | jq ".Content[$j]")
 
     if [[ $(echo $content | jq -r '.__component') == "page.chunk" ]]; then
