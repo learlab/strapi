@@ -1,5 +1,5 @@
 name: Deploy New Markdown
-on: [issues]
+on: [workflow_dispatch,issues]
 jobs:
   build:
     runs-on: ubuntu-latest
