@@ -74,7 +74,7 @@ turndownService.addRule('styles', {
 // Rule for images
 turndownService.addRule('image', {
   filter: function (node, options) {
-    return node.nodeName === 'FIGURE' && node.getAttribute('class') === 'image'
+    return node.nodeName === 'FIGURE' && node.getAttribute('class').startsWith('image')
   },
 
   replacement: function (content, node, options) {
