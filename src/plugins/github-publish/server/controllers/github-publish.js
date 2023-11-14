@@ -45,8 +45,9 @@ module.exports = ({ strapi }) => ({
     };
 
     const data = { ref, inputs };
-
+    console.log("got here");
     const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`;
+    console.log("\n" + url);
     const { status } = await axios.post(url, data, { headers });
     const success = status === 204;
 
