@@ -6,7 +6,7 @@ jobs:
     container: pandoc/latex
     steps:
       - name: Install curl
-        run: apt-get update && apt-get install -y curl
+        run: apk add --no-cache curl
       - uses: actions/checkout@v2
       - name: creates output
         run:  sh ./convert.sh
