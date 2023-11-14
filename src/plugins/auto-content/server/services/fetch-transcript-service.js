@@ -25,7 +25,7 @@ module.exports = ({ strapi }) => {
         }
       );
       const res = await response.json();
-      return res;
+      return res.transcript;
     } catch (error) {
       console.log(error);
     }

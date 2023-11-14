@@ -171,10 +171,15 @@ export default function Index({
         throw new Error(`Error! status: ${response.status}`);
       };
 
-      const fetchedTranscript = await response.json().then((res) => {
-        return res.transcript;
-      });
+      let fetchedTranscript;
 
+      try {
+        fetchedTranscript = await response.text();
+      } catch (error) {
+        console.error('Error fetching transcript:', error);
+        fetchedTranscript = "Error fetching transcript"
+      };
+      
       return fetchedTranscript;
 
     } catch (err) {

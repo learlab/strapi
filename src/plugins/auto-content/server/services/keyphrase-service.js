@@ -12,7 +12,7 @@ module.exports = ({ strapi }) => {
         {
           role: "user",
           content:
-            'Extract five keywords from the passage below. A keyword can be more than one word, but is usually less than three words. They should be helpful in understanding students the contents of the passage. Provide your response as with each keyword on a newline without bullet points. \n\nPassage: ' + text,
+            'Extract five keywords from the passage below. A keyword can be more than one word, but is usually less than three words. They should be helpful in understanding students the contents of the passage. Provide your response -with each keyword on a newline without bullet points or hyphens at the beginning. \n\nPassage: ' + text,
         },
       ];
       const response = await fetch(
