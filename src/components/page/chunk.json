@@ -17,7 +17,7 @@
       },
       "customField": "plugin::ckeditor5.CKEditor"
     },
-    "FullQuestionAnswer": {
+    "QuestionAnswerResponse": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
     },
@@ -29,17 +29,17 @@
       "type": "text",
       "default": "not set"
     },
-    "ConstructedResponse": {
-      "type": "customField",
-      "customField": "plugin::constructed-response.constructed-response"
-    },
-    "Question": {
-      "type": "customField",
-      "customField": "plugin::question.question"
-    },
     "KeyPhrase": {
       "type": "customField",
       "customField": "plugin::auto-content.keyPhrase"
+    },
+    "ConstructedResponse": {
+      "type": "customField",
+      "customField": "plugin::auto-content.constructedResponse"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::auto-content.generatedQuestion"
     }
   }
 }

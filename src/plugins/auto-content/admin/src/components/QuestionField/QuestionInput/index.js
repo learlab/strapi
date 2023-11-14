@@ -6,7 +6,7 @@ import { Textarea } from "@strapi/design-system";
 import { auth } from "@strapi/helper-plugin";
 import { useCMEditViewDataManager } from "@strapi/helper-plugin";
 
-// Component for constructed response field
+// Component for question field
 export default function Index({
   name,
   error,
@@ -20,11 +20,17 @@ export default function Index({
   const { modifiedData, initialData } = useCMEditViewDataManager();
   const [dynamicZone, index, fieldName] = name.split(".");
 
+  const clearGeneratedText = () => {
+    onChange({
+      target: { name, value: "", type: attribute.type }
+    });
+  };
+
   useEffect(() => {
-    if (modifiedData[dynamicZone][index]["FullQuestionAnswer"]) {onChange({
-              target: { name, value: JSON.parse(modifiedData[dynamicZone][index]["FullQuestionAnswer"])["answer"], type: attribute.type },
-            })}
-  }, [modifiedData[dynamicZone][index]["FullQuestionAnswer"],]);
+    if (modifiedData[dynamicZone][index]["QuestionAnswerResponse"]) {onChange({
+                  target: { name, value: JSON.parse(modifiedData[dynamicZone][index]["QuestionAnswerResponse"])["question"], type: attribute.type },
+                })}
+  }, [modifiedData[dynamicZone][index]["QuestionAnswerResponse"],]);
 
   return (
     <Stack spacing={2}>

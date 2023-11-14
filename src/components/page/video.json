@@ -28,21 +28,21 @@
     "MDX": {
       "type": "text"
     },
-    "ConstructedResponse": {
-      "type": "customField",
-      "customField": "plugin::constructed-response.constructed-response"
-    },
-    "FullQuestionAnswer": {
+    "QuestionAnswerResponse": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
-    },
-    "Question": {
-      "type": "customField",
-      "customField": "plugin::question.question"
     },
     "KeyPhrase": {
       "type": "customField",
       "customField": "plugin::auto-content.keyPhrase"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::auto-content.generatedQuestion"
+    },
+    "ConstructedResponse": {
+      "type": "customField",
+      "customField": "plugin::auto-content.constructedResponse"
     }
   }
 }

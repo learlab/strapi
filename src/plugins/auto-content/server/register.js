@@ -11,6 +11,24 @@ module.exports = ({ strapi }) => {
     },
   }, 
   {
+    name: 'constructedResponse',
+    plugin: 'auto-content',
+    type: 'text',
+    inputSize: {
+      default: 12,
+      isResizable: true,
+    },
+  }, 
+  {
+    name: 'generatedQuestion',
+    plugin: 'auto-content',
+    type: 'text',
+    inputSize: {
+      default: 12,
+      isResizable: true,
+    },
+  }, 
+  {
     name: 'keyPhrase',
     plugin: 'auto-content',
     type: 'text',

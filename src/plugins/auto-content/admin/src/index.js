@@ -43,16 +43,60 @@ export default {
       type: "text",
       intlLabel: {
         id: "auto-content.auto-content.label",
-        defaultMessage: "Question Content",
+        defaultMessage: "Full answer ",
       },
       intlDescription: {
         id: "auto-content.auto-content.description",
-        defaultMessage: "Generate Question using AI",
+        defaultMessage: "Disabled field that will show ai-generated QA",
       },
       icon: ContentGeneratorIcon,
       components: {
         Input: async () =>
           import("./components/ContentGenerator/ContentGeneratorInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    },
+    {
+      name: "constructedResponse",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "constructedResponse.constructedResponse.label",
+        defaultMessage: "Constructed Response",
+      },
+      intlDescription: {
+        id: "constructedResponse.constructedResponse.description",
+        defaultMessage: "Field to generate or input answers to comprehension question",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/ConstructedResponseField/ConstructedResponseInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    },
+    {
+      name: "generatedQuestion",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "generatedQuestion.generatedQuestion.label",
+        defaultMessage: "Question Content",
+      },
+      intlDescription: {
+        id: "generatedQuestion.generatedQuestion.description",
+        defaultMessage: "Field to generate or input comprehension question",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/QuestionField/QuestionInput"),
       },
       options: {
         base: [],
