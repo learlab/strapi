@@ -19,7 +19,7 @@ for i in $(seq 0 $(echo $data | jq '.data | length')); do
   chapterTitle=$(echo $chapterDataAttributes | jq -r '.Title')
 
   # Generate file path
-  filePath=$(echo "$moduleTitle $chapterTitle" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+  filePath=$(echo "$moduleTitle/$chapterTitle" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
   filename="output/$filePath/$(echo $curData | jq -r '.Title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-').txt"
 
   # Write data to file
