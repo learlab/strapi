@@ -8,6 +8,8 @@ jobs:
       - name: Install curl
         run: apk add --no-cache curl
       - uses: actions/checkout@v2
+      - name: Create output directory
+        run: mkdir -p output
       - name: creates output
         run: sh ./convert.sh
       - name: checks output
