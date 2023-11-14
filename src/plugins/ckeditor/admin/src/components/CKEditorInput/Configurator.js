@@ -104,35 +104,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       ]
     },
     image: {
-      resizeUnit: "%",
-      resizeOptions: [{
-        name: 'resizeImage:original',
-        value: null,
-        icon: 'original'
-      },
-      {
-        name: 'resizeImage:25',
-        value: '25',
-        icon: 'small'
-      },
-      {
-        name: 'resizeImage:50',
-        value: '50',
-        icon: 'medium'
-      },
-      {
-        name: 'resizeImage:75',
-        value: '75',
-        icon: 'large'
-      }],
       toolbar: [
-        'imageStyle:inline', 'imageStyle:block', 'imageStyle:side',
-        '|',
         'toggleImageCaption', 'imageTextAlternative',
-        '|',
-        'linkImage',
-        '|',
-        'resizeImage:25', 'resizeImage:50', 'resizeImage:75', 'resizeImage:original'
       ]
     },
     table: {
