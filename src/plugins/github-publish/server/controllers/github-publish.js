@@ -35,8 +35,7 @@ module.exports = ({ strapi }) => ({
       repo,
       workflow_id,
       token,
-      branch: ref,
-      inputs = {},
+      branch: ref
     } = strapi.config.get(pluginId);
 
     const headers = {
@@ -44,7 +43,7 @@ module.exports = ({ strapi }) => ({
       Authorization: `token ${token}`,
     };
 
-    const data = { ref, inputs };
+    const data = { ref }; // Removed the inputs object
     const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`;
 
     try {
