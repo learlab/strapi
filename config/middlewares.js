@@ -6,7 +6,7 @@ module.exports = ({ env }) => [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          "connect-src": ["'self'", "https:", 'http:'],
+          "connect-src": ["'self'", "https:", 'http:', "https://itell-strapi-um5h.onrender.com", "*"],
           upgradeInsecureRequests: null,
           "default-src": ["'self'"],
           "img-src": [
