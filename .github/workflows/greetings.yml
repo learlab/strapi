@@ -6,7 +6,7 @@ jobs:
     container: pandoc/latex
     steps:
       - name: Install curl
-        run: apk add --no-cache curl
+        run: apk add --no-cache curl jq
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
