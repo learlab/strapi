@@ -1,18 +1,32 @@
 {
   "collectionName": "components_page_videos",
   "info": {
-    "displayName": "Video"
+    "displayName": "Video",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "Text": {
-      "type": "richtext"
-    },
     "Title": {
       "type": "string"
     },
-    "url": {
-      "type": "string"
+    "URL": {
+      "type": "string",
+      "regex": "(?:https?:\\/\\/)?(?:www\\.)?youtu\\.?be(?:\\.com)?\\/?.*(?:watch|embed)?(?:.*v=|v\\/|\\/)([\\w\\-_]+)\\&?"
+    },
+    "StartTime": {
+      "type": "integer"
+    },
+    "EndTime": {
+      "type": "integer"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "CleanText": {
+      "type": "text"
+    },
+    "MDX": {
+      "type": "text"
     }
   }
 }

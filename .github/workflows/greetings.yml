@@ -1,7 +1,5 @@
 name: Deploy New Markdown
-
 on: [issues]
-
 jobs:
   build:
     runs-on: ubuntu-latest

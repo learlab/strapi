@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_page_chunks",
+  "info": {
+    "displayName": "Chunk",
+    "icon": "cube",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Header": {
+      "type": "string"
+    },
+    "Question": {
+      "type": "customField",
+      "customField": "plugin::auto-content.question"
+    },
+    "CleanText": {
+      "type": "text",
+      "default": "not set"
+    },
+    "MDX": {
+      "type": "text",
+      "default": "not set"
+    },
+    "Text": {
+      "type": "customField",
+      "options": {
+        "output": "HTML",
+        "preset": "standard"
+      },
+      "customField": "plugin::ckeditor.CKEditor"
+    }
+  }
+}

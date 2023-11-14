@@ -1,0 +1,49 @@
+{
+  "name": "auto-content",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A plugin that generates educational content for iTELL web apps using AI.",
+  "strapi": {
+    "name": "Content Generator",
+    "description": "Content Generator will automatically generate questions and keyphrases for your content. This content is used by iTELL to automatically provide learners with activities and feedback opportunities as they work through their learning materials.",
+    "kind": "plugin",
+    "displayName": "Content Generator"
+  },
+  "dependencies": {
+    "@strapi/design-system": "^1.6.3",
+    "@strapi/helper-plugin": "^4.6.0",
+    "@strapi/icons": "^1.6.3",
+    "hast-util-is-element": "1.1.0",
+    "hast-util-to-text": "2.0.1",
+    "joplin-turndown": "^4.0.30",
+    "joplin-turndown-plugin-gfm": "^1.0.12",
+    "prop-types": "^15.7.2",
+    "rehype-parse": "7.0.1",
+    "unified": "9.2.2",
+    "unist-util-remove": "2.1.0"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
+    "styled-components": "^5.3.6"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^5.3.4",
+    "styled-components": "^5.3.6"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "maintainers": [
+    {
+      "name": "A Strapi developer"
+    }
+  ],
+  "engines": {
+    "node": "^18.0.0"
+  },
+  "license": "MIT"
+}
