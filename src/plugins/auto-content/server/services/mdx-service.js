@@ -3,7 +3,9 @@
 var TurndownService = require('joplin-turndown')
 var turndownPluginGfm = require('joplin-turndown-plugin-gfm')
 
-var turndownService = new TurndownService()
+var turndownService = new TurndownService({
+  'codeBlockStyle': 'fenced',
+})
 
 // Use the GitHub Flavored Markdown plugin
 var gfm = turndownPluginGfm.gfm
@@ -41,11 +43,15 @@ const componentNameMap = Object.fromEntries(
 );
 
 // utility function to construct JSX attributes from HTML DOM
-function stringifyAttributes(element) {
-  return Array.from(element.attributes)
-    .filter(attr => attr.specified && attr.name !== 'class')
-    .map(attr => `${attr.name}="${attr.value}"`)
-    .join(' ')
+function stringifyAttributes(element, separator = ' ') {
+  var attrStr = Array.from(element.attributes)
+      .filter(attr => attr.specified && attr.name !== 'class')
+      .map(attr => `${attr.name}="${attr.value}"`)
+      .join(separator)
+  if (attrStr.length > 0) {
+    attrStr = separator + attrStr
+  }
+  return attrStr
 }
 
 // function for elements that consist of attributes and content only
@@ -59,11 +65,33 @@ turndownService.addRule('styles', {
 
   replacement: function (content, node, options) {
     const tag = componentNameMap[node.getAttribute('class')]
-    var attrStr = stringifyAttributes(node)
-    if (attrStr.length > 0) {
-      attrStr = ' ' + attrStr
-    }
+    var attrStr = stringifyAttributes(node, ' ')
+
     return `<${tag}${attrStr}>${content}</${tag}>`
+  }
+})
+
+// Rule for images
+turndownService.addRule('image', {
+  filter: function (node, options) {
+    return node.nodeName === 'FIGURE' && node.getAttribute('class') === 'image'
+  },
+
+  replacement: function (content, node, options) {
+    console.log(content)
+    const tag = 'Image'
+    let firstImg = null;
+    let figcaption = null;
+
+    for (let i = 0; i < node.childNodes.length; i++) {
+      const child = node.childNodes[i];
+      if (child.nodeName === 'IMG') firstImg = child;
+      if (child.nodeName === 'FIGCAPTION') figcaption = child.textContent;
+    }
+
+    var attrStr = stringifyAttributes(firstImg, '\n  ')
+
+    return `<${tag}${attrStr}>\n${figcaption}\n</${tag}>`
   }
 })
 
