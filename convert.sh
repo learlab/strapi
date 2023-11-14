@@ -20,12 +20,18 @@ for i in $(seq 0 $(echo $data | jq '.data | length')); do
 
   # Generate file path
   filePath=$(echo "$moduleTitle/$chapterTitle" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
-  filename="output/$filePath/$(echo $curData | jq -r '.Title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-').txt"
+  outputPath="output/$filePath"
+
+  # Create the output subdirectory
+  mkdir -p "$outputPath"
+
+  # Create the filename
+  filename="$outputPath/$(echo $curData | jq -r '.Title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-').txt"
 
   # Write data to file
-  echo "---" > $filename
-  echo $(echo $curData | jq -r '.Title') >> $filename
-  echo "---" >> $filename
+  echo "---" > "$filename"
+  echo $(echo $curData | jq -r '.Title') >> "$filename"
+  echo "---" >> "$filename"
 
   # Loop through content
   for j in $(seq 0 $(echo $curData | jq '.Content | length')); do
