@@ -30,7 +30,7 @@ for i in $(seq 0 $(echo $data | jq '.data | length')); do
 
   # Write data to file
   echo "---" > "$filename"
-  echo $(echo $curData | jq -r '.Title') >> "$filename"
+  echo "title: $(echo $curData | jq -r '.Title')" >> "$filename"
   echo "---" >> "$filename"
 
   # Loop through content
