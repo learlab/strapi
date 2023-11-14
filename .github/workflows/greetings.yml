@@ -9,7 +9,9 @@ jobs:
         run: apk add --no-cache curl
       - uses: actions/checkout@v2
       - name: creates output
-        run:  sh ./convert.sh
+        run: sh ./convert.sh
+      - name: checks output
+        run: ls output
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
