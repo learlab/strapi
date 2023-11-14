@@ -1,17 +1,15 @@
 name: Deploy New Markdown
-on: [issues]
+on: [workflow_dispatch,issues]
 jobs:
   build:
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
-      - name: Make Request
-        id: myRequest
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: "http://yoursite.com/api"
-      - name: Create File
-        uses: finnp/create-file-action@2.0.0
+      - name: Install curl
+        run: apk add --no-cache curl
+      - uses: actions/checkout@v2
+      - name: creates output
+        run:  sh ./convert.sh
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
