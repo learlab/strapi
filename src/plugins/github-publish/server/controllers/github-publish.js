@@ -45,12 +45,16 @@ module.exports = ({ strapi }) => ({
     };
 
     const data = { ref, inputs };
-    console.log("got here");
     const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`;
-    console.log("\n" + url);
-    const { status } = await axios.post(url, data, { headers });
-    const success = status === 204;
 
-    ctx.send({ success });
+    try {
+      const response = await axios.post(url, data, { headers });
+      const success = response.status === 204;
+      ctx.send({ success });
+    } catch (error) {
+      // Log the full error response for debugging
+      console.error('Error triggering GitHub workflow:', error.response?.data || error.message);
+      ctx.throw(500, 'Failed to trigger GitHub workflow');
+    }
   },
 });
