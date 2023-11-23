@@ -104,6 +104,28 @@ export default {
       },
     },
     {
+      name: "slug",
+      pluginId: "auto-content",
+      type: "text",
+      intlLabel: {
+        id: "slug.slug.label",
+        defaultMessage: "Slug",
+      },
+      intlDescription: {
+        id: "slug.slug.description",
+        defaultMessage: "Field where slug will be generated",
+      },
+      icon: PluginIcon,
+      components: {
+        Input: async () =>
+          import("./components/SlugField/SlugFieldInput"),
+      },
+      options: {
+        base: [],
+        advanced: [],
+      },
+    },
+    {
       name: "keyPhrase",
       pluginId: "auto-content",
       type: "text",

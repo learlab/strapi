@@ -1,5 +1,15 @@
 'use strict';
 var _ = require("lodash");
+var slugify = require('slugify');
+var prefix = "videochunk-";
+
+function slugPipeline(chunkName, targetId) {
+    if (chunkName) {
+        return prefix + slugify(chunkName) + "-" + targetId;
+    } else {
+        return "";
+    }
+};
 
 module.exports = ({ strapi }) => {
     const _strapi = strapi;
@@ -60,10 +70,27 @@ module.exports = ({ strapi }) => {
 
                     mdx += '\n</YoutubeVideo>'
 
+                    const slug = slugPipeline(data.Title, where.id.toString()); 
+
                     event.params.data.CleanText = transcript;
                     event.params.data.MDX = mdx;
+                    event.params.data.Slug = slug;
                 }
-            }
+            },
+
+            // ID info only available after creation
+            afterCreate: async (event) => {
+                const { result  } = event;
+                const targetId = result.id;
+                const slug = slugPipeline(result.Title, targetId.toString());
+
+                result.Slug = slug;
+
+                const update = await strapi
+                    .query("page.video")
+                    .update({ where: { id: targetId } ,
+                              data: result });
+            },
         },
     });
 }
