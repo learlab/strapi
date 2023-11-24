@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Flex, Icon } from '@strapi/design-system';
-import { Paint } from '@strapi/icons';
+import { Question } from '@strapi/icons';
 import styled from 'styled-components';
 
 const IconBox = styled(Flex)`
@@ -15,12 +15,12 @@ const IconBox = styled(Flex)`
   }
 `;
 
-const ConstructedResponseIcon = () => {
+const QuestionIcon = () => {
   return (
     <IconBox justifyContent="center" alignItems="center" width={7} height={6} hasRadius aria-hidden>
-      <Icon as={Paint} />
+      <Icon as={Question} />
     </IconBox>
   );
 };
 
-export default ConstructedResponseIcon;
+export default QuestionIcon;

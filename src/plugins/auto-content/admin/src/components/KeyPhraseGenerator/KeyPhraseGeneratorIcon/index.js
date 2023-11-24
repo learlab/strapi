@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Flex, Icon } from '@strapi/design-system';
-import { Paint } from '@strapi/icons';
+import { Key } from '@strapi/icons';
 import styled from 'styled-components';
 
 const IconBox = styled(Flex)`
@@ -18,7 +18,7 @@ const IconBox = styled(Flex)`
 const KeyPhraseGeneratorIcon = () => {
   return (
     <IconBox justifyContent="center" alignItems="center" width={7} height={6} hasRadius aria-hidden>
-      <Icon as={Paint} />
+      <Icon as={Key} />
     </IconBox>
   );
 };

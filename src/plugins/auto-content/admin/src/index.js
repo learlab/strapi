@@ -4,6 +4,10 @@ import pluginId from "./pluginId";
 import Initializer from "./components/Initializer";
 import PluginIcon from "./components/PluginIcon";
 import ContentGeneratorIcon from "./components/ContentGenerator/ContentGeneratorIcon";
+import QuestionIcon from "./components/QuestionField/QuestionIcon";
+import ConstructedResponseIcon from "./components/ConstructedResponseField/ConstructedResponseIcon";
+import KeyPhraseGeneratorIcon from "./components/KeyPhraseGenerator/KeyPhraseGeneratorIcon";
+import SlugFieldIcon from "./components/SlugField/SlugFieldIcon";
 
 const name = pluginPkg.strapi.name;
 
@@ -71,7 +75,7 @@ export default {
         id: "constructedResponse.constructedResponse.description",
         defaultMessage: "Field to generate or input answers to comprehension question",
       },
-      icon: PluginIcon,
+      icon: ConstructedResponseIcon,
       components: {
         Input: async () =>
           import("./components/ConstructedResponseField/ConstructedResponseInput"),
@@ -93,7 +97,7 @@ export default {
         id: "generatedQuestion.generatedQuestion.description",
         defaultMessage: "Field to generate or input comprehension question",
       },
-      icon: PluginIcon,
+      icon: QuestionIcon,
       components: {
         Input: async () =>
           import("./components/QuestionField/QuestionInput"),
@@ -115,7 +119,7 @@ export default {
         id: "slug.slug.description",
         defaultMessage: "Field where slug will be generated",
       },
-      icon: PluginIcon,
+      icon: SlugFieldIcon,
       components: {
         Input: async () =>
           import("./components/SlugField/SlugFieldInput"),
@@ -137,7 +141,7 @@ export default {
         id: "keyPhrase.keyPhrase.description",
         defaultMessage: "Generate key phrases using AI",
       },
-      icon: PluginIcon,
+      icon: KeyPhraseGeneratorIcon,
       components: {
         Input: async () =>
           import("./components/KeyPhraseGenerator/KeyPhraseGeneratorInput"),
