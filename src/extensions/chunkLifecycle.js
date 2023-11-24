@@ -1,7 +1,7 @@
 'use strict';
 var _ = require("lodash");
 var slugify = require('slugify');
-var prefix = "textchunk-";
+var suffix = "t";
 
 // In case we go back to incremental route
 // function checkDuplicate (allSlugs, targetSlug) {
@@ -21,7 +21,7 @@ var prefix = "textchunk-";
 
 function slugPipeline(chunkName, targetId) {
     if (chunkName) {
-        return prefix + slugify(chunkName) + "-" + targetId;
+        return slugify(chunkName) + "-" + targetId + suffix;
     } else {
         return "";
     }

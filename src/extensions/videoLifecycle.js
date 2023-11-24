@@ -1,11 +1,11 @@
 'use strict';
 var _ = require("lodash");
 var slugify = require('slugify');
-var prefix = "videochunk-";
+var suffix = "v";
 
 function slugPipeline(chunkName, targetId) {
     if (chunkName) {
-        return prefix + slugify(chunkName) + "-" + targetId;
+        return slugify(chunkName) + "-" + targetId + suffix;
     } else {
         return "";
     }
