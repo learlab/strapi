@@ -4,7 +4,8 @@
   "info": {
     "singularName": "text",
     "pluralName": "texts",
-    "displayName": "Texts"
+    "displayName": "Texts",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -37,6 +38,10 @@
       "relation": "oneToMany",
       "target": "api::module.module",
       "mappedBy": "text"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Title"
     }
   }
 }
