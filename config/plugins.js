@@ -15,10 +15,6 @@ module.exports = ({ env }) => ({
     },
     resolve: './src/plugins/github-publish'
   },
-  'slugify-components': {
-    enabled: true,
-    resolve: './src/plugins/slugify-components'
-  },
   upload: {
     config: {
       provider: "strapi-provider-upload-supabase",

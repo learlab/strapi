@@ -12,8 +12,7 @@
   "workspaces": [
     "./src/plugins/ckeditor",
     "./src/plugins/auto-content",
-    "./src/plugins/github-publish",
-    "./src/plugins/slugify-components"
+    "./src/plugins/github-publish"
   ],
   "dependencies": {
     "@strapi/plugin-i18n": "4.13.6",
