@@ -92,7 +92,7 @@ async function run() {
                   for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
                     let curData = curPage["attributes"]["Content"][l];
                     if (curData["__component"] === "page.chunk") {
-                      let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">";
+                      let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">\n";
                       fs.appendFile(filename, inputString, (err) => {
                         if (err)
                           console.log("3" + err);
@@ -101,7 +101,7 @@ async function run() {
                         if (err)
                           console.log("3" + err);
                       });
-                      fs.appendFile(filename, "</div>", (err) => {
+                      fs.appendFile(filename, "\n</div>\n", (err) => {
                         if (err)
                           console.log("3" + err);
                       });
