@@ -9,13 +9,15 @@ async function run() {
 
   let title = process.argv[3];
 
-  fs.mkdir('./output', (err) => {
-    if (err) {
-      reject(err);
-    } else {
-      resolve("done");
-    }
-  });
+  if(!fs.existsSync('./output')){
+    fs.mkdir('./output', (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
+
+
 
   try {
     const resText = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts`, {cache: "no-store"});
