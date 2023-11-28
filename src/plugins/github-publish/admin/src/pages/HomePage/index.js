@@ -145,8 +145,8 @@ const HomePage = () => {
 
   let handleTextChange = (e) => {
     const inputs = JSON.parse(e.target.value);
-    setText(inputs.token);
-    setToken(inputs.text);
+    setText(inputs.text);
+    setToken(inputs.token);
     setOwner(inputs.owner);
     setRepository(inputs.repository);
     setDir(inputs.dir);
