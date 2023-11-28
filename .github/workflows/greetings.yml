@@ -31,7 +31,7 @@ jobs:
       - name: Install curl and jq
         run: apk add --no-cache curl jq
       - name: Install curl and jq
-        run: apk update && apk add nodejs
+        run: apk update && apk add nodejs=20.9.0-r0
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
