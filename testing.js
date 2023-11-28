@@ -1,5 +1,4 @@
 const fs = require('fs')
-import fetch from "node-fetch";
 
 async function run() {
 
