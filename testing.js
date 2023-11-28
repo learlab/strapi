@@ -17,8 +17,6 @@ async function run() {
     });
   }
 
-
-
   try {
     const resText = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts`, {cache: "no-store"});
     let dataText = await resText.json();
@@ -80,7 +78,6 @@ async function run() {
                         console.log(err);
                       }
                     });
-                    console.log("success");
                   }
 
                   filename  += "/" + curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
