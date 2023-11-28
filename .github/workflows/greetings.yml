@@ -29,9 +29,9 @@ jobs:
     container: pandoc/latex
     steps:
       - name: Install curl
-        run: apk add --no-cache curl jq nodejs npm
+        run: apk add --no-cache curl jq nodejs
       - name: Create output directory
-        run: npm install node-fetch
+        run: nodejs --version
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
