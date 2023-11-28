@@ -9,7 +9,12 @@ async function run() {
 
   let title = process.argv[3];
 
-  fs.mkdir('./output');
+  fs.mkdir('./output', (err) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('Directory created successfully!');
+  });
 
   try {
     const resText = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts`, {cache: "no-store"});
