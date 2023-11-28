@@ -1,5 +1,5 @@
 name: Deploy New Markdown
-on: 
+on:
   workflow_dispatch:
     inputs:
       text:
@@ -22,7 +22,7 @@ on:
         description: 'designated repo path'
         required: true
         type: string
-        
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Install curl
         run: apk add --no-cache curl jq nodejs
+      - name: Create output directory
+        run: npm install node-fetch
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
