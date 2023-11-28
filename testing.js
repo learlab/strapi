@@ -11,9 +11,10 @@ async function run() {
 
   fs.mkdir('./output', (err) => {
     if (err) {
-      return console.error(err);
+      reject(err);
+    } else {
+      resolve("done");
     }
-    console.log('Directory created successfully!');
   });
 
   try {
