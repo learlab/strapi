@@ -37,8 +37,6 @@ jobs:
         run: mkdir -p output
       - name: creates output
         run: node ./testing.js ${{ inputs.text }}
-          echo "Contents of output directory after script:"
-          ls -R output
       - name: List contents of the output directory
         run: ls -R output
       - name: Pushes to another repository
