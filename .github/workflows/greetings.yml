@@ -1,5 +1,28 @@
 name: Deploy New Markdown
-on: [workflow_dispatch,issues]
+on: 
+  workflow_dispatch:
+    inputs:
+      text:
+        description: 'text name'
+        required: true
+        type: string
+      token:
+        description: 'github token'
+        required: true
+        type: string
+      owner:
+        description: 'designation repo owner'
+        required: true
+        type: string
+      repository:
+        description: 'designation repo name'
+        required: true
+        type: string
+      dir:
+        description: 'designated repo path'
+        required: true
+        type: string
+        
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,8 +33,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
+      - name: Install node
+        run: yarn install
       - name: creates output
-        run: sh ./convert.sh
+        run: node ./testing.js
           echo "Contents of output directory after script:"
           ls -R output
       - name: List contents of the output directory
@@ -20,12 +45,12 @@ jobs:
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          SSH_DEPLOY_KEY: ${{ inputs.token }}
         with:
           source-directory: output
-          destination-github-username: 'learlab'
-          destination-repository-name: 'itell-strapi-demo'
-          target-directory: apps/example-poe/content/section
+          destination-github-username: ${{ inputs.owner }}
+          destination-repository-name: ${{ inputs.repository }}
+          target-directory: ${{ inputs.dir }}
           user-email: annachen031014@gmail.com
           commit-message: Added new content
           target-branch: main
