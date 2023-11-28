@@ -1,16 +1,13 @@
-import React, { memo, useEffect, useState } from "react";
+import React, {memo, useEffect, useState} from "react";
 
-import {
-  Alert,
-  BaseHeaderLayout,
-  Box,
-  ContentLayout,
-} from "@strapi/design-system";
-import { request } from "@strapi/helper-plugin";
-import { useIntl } from "react-intl";
+import { auth } from "@strapi/helper-plugin";
+
+import {Alert, BaseHeaderLayout, Box, ContentLayout,} from "@strapi/design-system";
+import {request} from "@strapi/helper-plugin";
+import {useIntl} from "react-intl";
 import styled from "styled-components";
 
-import { PublishButton, PublishPrompt } from "../../components/HomePage";
+import {PublishButton, PublishPrompt} from "../../components/HomePage";
 import pluginId from "../../pluginId";
 
 const POLL_INTERVAL = 10000;
@@ -29,6 +26,7 @@ const HomePage = () => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  let [texts, setTexts] = useState("hi");
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -41,7 +39,21 @@ const HomePage = () => {
   const triggerPublish = async () => {
     setBusy(true);
     try {
-      const res = await request(`/${pluginId}/publish`, { method: "GET" });
+      const res = await fetch(`/${pluginId}/publish`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.getToken()}`,
+        },
+        body: JSON.stringify({
+          text: text,
+          token: token,
+          owner: owner,
+          repository: repository,
+          dir: dir,
+        }),
+      });
+
       if (res?.success !== true) {
         handleError();
       }
@@ -52,13 +64,49 @@ const HomePage = () => {
     }
   };
 
+  let tempReady = false;
+
+  useEffect(() => {
+    let timeout;
+    const textJSON = async () => {
+      try {
+        const res = await fetch(`/${pluginId}/getTexts`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.getToken()}`,
+          },
+          body: JSON.stringify({
+            text: text,
+            token: token
+          }),
+        });
+
+        try {
+          setTexts(await res.text());
+
+        } catch (error) {
+          console.error(error);
+        }
+
+        timeout = setTimeout(textJSON, POLL_INTERVAL);
+      } catch (e) {
+        handleError(e);
+      }finally {
+        setReady(tempReady);
+      }
+    };
+
+    textJSON();
+    return () => clearTimeout(timeout);
+  }, []);
+
   useEffect(() => {
     let timeout;
 
     const checkBusy = async () => {
       try {
         const res = await request(`/${pluginId}/check`, { method: "GET" });
-
         if (!!res?.busy === res?.busy) {
           setBusy(res.busy);
         } else {
@@ -69,6 +117,8 @@ const HomePage = () => {
       } catch (e) {
         handleError(e);
       } finally {
+        tempReady = true;
+
         setReady(true);
       }
     };
@@ -77,6 +127,30 @@ const HomePage = () => {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  if(texts != "hi" && texts != undefined){
+    texts = JSON.parse(JSON.parse(texts).text_json.text_json);
+  }
+
+
+  let [token, setToken] = useState("⬇️ Select a text ⬇️")
+
+  let [text, setText] = useState("⬇️ Select a text ⬇️")
+
+  let [owner, setOwner] = useState("⬇️ Select a text ⬇️")
+
+  let [repository, setRepository] = useState("⬇️ Select a text ⬇️")
+
+  let [dir, setDir] = useState("⬇️ Select a text ⬇️")
+
+  let handleTextChange = (e) => {
+    const inputs = JSON.parse(e.target.value);
+    setText(inputs.token);
+    setToken(inputs.text);
+    setOwner(inputs.owner);
+    setRepository(inputs.repository);
+    setDir(inputs.dir);
+  }
 
   return (
     <Box>
@@ -91,12 +165,30 @@ const HomePage = () => {
             {t("error.description")}
           </StyledAlert>
         ) : (
-          <PublishButton
-            loading={!ready || busy}
-            loadingMessage={t(busy ? "busy" : "notready")}
-            buttonLabel={t("buttons.publish")}
-            onClick={handleOpen}
-          />
+          <div>
+            { texts == "hi" ? (
+               <div/>
+              ) : (
+              <div >
+                <br />
+
+                <select onChange={handleTextChange}>
+                  <option value="⬇️ Select a text ⬇️"> -- Select a text -- </option>
+                  {texts.map((text) => <option value={JSON.stringify(text)}>{text.text}</option>)}
+                </select>
+              </div>
+              )
+            }
+            <br />
+            <PublishButton
+              loading={!ready || busy}
+              loadingMessage={t(busy ? "busy" : "notready")}
+              buttonLabel={t("buttons.publish")}
+              onClick={handleOpen}
+              texts={texts}
+            />
+          </div>
+
         )}
       </ContentLayout>
       <PublishPrompt

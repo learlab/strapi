@@ -1,7 +1,7 @@
 module.exports = ({ env }) => {
   if (process.env.NODE_ENV == 'development') {
     const path = require('path');
-    
+
     return {
       connection: {
         client: 'sqlite',
@@ -28,6 +28,7 @@ module.exports = ({ env }) => {
         pool: {
           min: env.int("DATABASE_POOL_MIN"),
           max: env.int("DATABASE_POOL_MAX"),
+          idleTimeoutMillis: 3000,
         },
       },
     };
