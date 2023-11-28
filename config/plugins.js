@@ -7,11 +7,7 @@ module.exports = ({ env }) => ({
       workflow_id: "74831135", // The workflow_id or filename
       token: env("GITHUB_TOKEN"), // The GitHub personal access token with access to trigger workflows and view build status
       branch: "main", // The branch the workflow should be triggered on
-      inputs: {
-        // Optional inputs to pass through to the GitHub workflow
-        some_input: "Some value",
-        some_other_input: "Some other value",
-      },
+      text_json: env("TEXT_JSON"),
     },
     resolve: './src/plugins/github-publish'
   },
