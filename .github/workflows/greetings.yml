@@ -29,12 +29,10 @@ jobs:
     container: pandoc/latex
     steps:
       - name: Install curl
-        run: apk add --no-cache curl jq
+        run: apk add --no-cache curl jq nodejs
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
-      - name: Install node
-        run: yarn install
       - name: creates output
         run: node ./testing.js
           echo "Contents of output directory after script:"
