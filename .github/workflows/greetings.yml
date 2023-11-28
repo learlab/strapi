@@ -28,9 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
-      - name: Install curl
+      - name: Install curl and jq
         run: apk add --no-cache curl jq
-          apk update && apk add nodejs
+      - name: Install curl and jq
+        run: apk update && apk add nodejs
       - uses: actions/checkout@v2
       - name: Create output directory
         run: mkdir -p output
