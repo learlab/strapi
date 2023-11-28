@@ -287,15 +287,15 @@ async function run() {
                     curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
 
                   fs.writeFile(filename, "---", (err));
-                  fs.writeFile(filename, curData["Title"], (err));
-                  fs.writeFile(filename, "---", (err));
+                  fs.appendFile(filename, curData["Title"], (err));
+                  fs.appendFile(filename, "---", (err));
                   for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
                     let curData = curPage["attributes"]["Content"][l];
                     if (curData["__component"] === "page.chunk") {
                       let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">";
-                      fs.writeFile(filename, inputString, (err));
-                      fs.writeFile(filename, curData["MDX"], (err));
-                      fs.writeFile(filename, "</div>", (err));
+                      fs.appendFile(filename, inputString, (err));
+                      fs.appendFile(filename, curData["MDX"], (err));
+                      fs.appendFile(filename, "</div>", (err));
                     } else if (curData["__component"] === "page.video") {
                     }
                   }
@@ -340,15 +340,15 @@ async function run() {
                       curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
 
                     fs.writeFile(filename, "---", (err));
-                    fs.writeFile(filename, curData["Title"], (err));
-                    fs.writeFile(filename, "---", (err));
+                    fs.appendFile(filename, curData["Title"], (err));
+                    fs.appendFile(filename, "---", (err));
                     for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
                       let curData = curPage["attributes"]["Content"][l];
                       if (curData["__component"] === "page.chunk") {
                         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">";
-                        fs.writeFile(filename, inputString, (err));
-                        fs.writeFile(filename, curData["MDX"], (err));
-                        fs.writeFile(filename, "</div>", (err));
+                        fs.appendFile(filename, inputString, (err));
+                        fs.appendFile(filename, curData["MDX"], (err));
+                        fs.appendFile(filename, "</div>", (err));
                       } else if (curData["__component"] === "page.video") {
                       }
                     }
@@ -377,15 +377,15 @@ async function run() {
                 curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
 
               fs.writeFile(filename, "---", (err));
-              fs.writeFile(filename, curData["Title"], (err));
-              fs.writeFile(filename, "---", (err));
+              fs.appendFile(filename, curData["Title"], (err));
+              fs.appendFile(filename, "---", (err));
               for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
                 let curData = curPage["attributes"]["Content"][l];
                 if (curData["__component"] === "page.chunk") {
                   let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">";
-                  fs.writeFile(filename, inputString, (err));
-                  fs.writeFile(filename, curData["MDX"], (err));
-                  fs.writeFile(filename, "</div>", (err));
+                  fs.appendFile(filename, inputString, (err));
+                  fs.appendFile(filename, curData["MDX"], (err));
+                  fs.appendFile(filename, "</div>", (err));
                 } else if (curData["__component"] === "page.video") {
                 }
               }
@@ -395,7 +395,6 @@ async function run() {
         }
       }
     }
-
 
   } catch (err) {
     console.log(err);
