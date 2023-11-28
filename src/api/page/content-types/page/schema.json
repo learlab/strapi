@@ -33,6 +33,10 @@
       "relation": "manyToOne",
       "target": "api::chapter.chapter",
       "inversedBy": "pages"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Title"
     }
   }
 }

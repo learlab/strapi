@@ -25,6 +25,10 @@
       "relation": "oneToMany",
       "target": "api::chapter.chapter",
       "mappedBy": "module"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "Title"
     }
   }
 }

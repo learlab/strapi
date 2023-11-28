@@ -12,8 +12,7 @@
   "workspaces": [
     "./src/plugins/ckeditor",
     "./src/plugins/auto-content",
-    "./src/plugins/github-publish",
-    "./src/plugins/slugify-components"
+    "./src/plugins/github-publish"
   ],
   "dependencies": {
     "@strapi/plugin-i18n": "4.13.6",
@@ -33,5 +32,8 @@
     "node": ">=16.0.0 <=20.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "slugify": "^1.6.6"
+  }
 }

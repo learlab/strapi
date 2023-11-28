@@ -5,14 +5,13 @@ const fetch = require("node-fetch");
 module.exports = ({ strapi }) => {
   const extractKeyPhrase = async (text) => {
     const ctx = strapi.requestContext.get();
-    console.log(ctx);
     try {
       // prompt is based on formatting from parse-gpt-mc notebook
       const prompt = [
         {
           role: "user",
           content:
-            'Extract five keywords from the passage below. A keyword can be more than one word, but is usually less than three words. They should be helpful in understanding students the contents of the passage. Provide your response -with each keyword on a newline without bullet points or hyphens at the beginning. \n\nPassage: ' + text,
+            'Extract up to 5 important keyphrases from the following passage. A keyphrase can be several words or just one word. The passage comes from an instructional text, so it is important that keyphrases help students understand the passage within the context of the text. The list of keyphrases should be formatted as a valid JSON array, with each keyphrase separated by a comma. \n\nPassage: ' + text + '\n\nKeyphrases: ',
         },
       ];
       const response = await fetch(
@@ -29,7 +28,7 @@ module.exports = ({ strapi }) => {
             model: "gpt-3.5-turbo",
             messages: prompt,
             temperature: 0.7,
-            max_tokens: 100,
+            max_tokens: 120,
           }),
         }
       );

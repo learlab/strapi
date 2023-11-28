@@ -221,6 +221,7 @@ export default function Index({
               target: { name, value: e.target.value, type: attribute.type },
             })
           }
+          style={{ display: 'none' }}
         >
           {value}
         </Textarea>

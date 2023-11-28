@@ -187,14 +187,6 @@ export default function Index({
     }
   };
 
-  // for testing. Might be nice to do something like
-  // if process.env.NODE_ENV === "development"
-  // but I don't really know if that would work.
-  // useEffect(() => {
-  //   console.log(modifiedData[dynamicZone][index]["Text"],);
-  // }, [modifiedData[dynamicZone][index]["Text"],]);
-  // end testing
-
   return (
     <Grid gap={2}>
       <GridItem col={12}>

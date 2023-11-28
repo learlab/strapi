@@ -41,6 +41,10 @@
         "preset": "standard"
       },
       "customField": "plugin::ckeditor.CKEditor"
+    },
+    "Slug": {
+      "type": "customField",
+      "customField": "plugin::auto-content.slug"
     }
   }
 }

@@ -43,6 +43,10 @@
     "ConstructedResponse": {
       "type": "customField",
       "customField": "plugin::auto-content.constructedResponse"
+    },
+    "Slug": {
+      "type": "customField",
+      "customField": "plugin::auto-content.slug"
     }
   }
 }
