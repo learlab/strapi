@@ -395,6 +395,7 @@ async function run() {
         }
       }
     }
+    console.log("done");
 
   } catch (err) {
     console.log(err);
