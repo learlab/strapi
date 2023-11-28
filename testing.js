@@ -299,6 +299,7 @@ async function run() {
                     } else if (curData["__component"] === "page.video") {
                     }
                   }
+                  console.log(filename);
                 }
               }
 
@@ -352,6 +353,7 @@ async function run() {
                       } else if (curData["__component"] === "page.video") {
                       }
                     }
+                    console.log(filename);
                   }
                 }
 
@@ -389,13 +391,14 @@ async function run() {
                 } else if (curData["__component"] === "page.video") {
                 }
               }
+              console.log(filename);
             }
           }
 
         }
       }
     }
-    console.log("done");
+
 
   } catch (err) {
     console.log(err);
