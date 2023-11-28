@@ -85,18 +85,9 @@ async function run() {
 
                   filename  += "/" + curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
 
-                  fs.appendFile(filename, "---", (err) => {
+                  fs.appendFile(filename, "---\ncurPage[\"attributes\"][\"Title\"]\n---\n", (err) => {
                     if (err)
                       console.log("1" + err);
-                  });
-                  fs.appendFile(filename, curPage["attributes"]["Title"], (err) => {
-                    if (err)
-                      console.log("2" + err);
-                  });
-
-                  fs.appendFile(filename, "---", (err) => {
-                    if (err)
-                      console.log("3" + err);
                   });
                   for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
                     let curData = curPage["attributes"]["Content"][l];
