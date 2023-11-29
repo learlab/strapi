@@ -1,216 +1,152 @@
 const fs = require('fs')
 
-async function run() {
-
+function getTitle() {
   if (process.argv.length === 2) {
     console.error('Expected at least one argument!');
     process.exit(1);
   }
 
-  let title = process.argv[2];
+  return process.argv[2];
+}
 
-  if(!fs.existsSync('./output')){
-    fs.mkdir('./output', (err) => {
+async function getTextID(title) {
+  let textID = 0;
+  try {
+    const res = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts`, {cache: "no-store"});
+    let data = await res.json();
+
+
+    for (let i = 0; i < data["data"].length; ++i) {
+      let curData = data["data"][i]["attributes"];
+      if (curData["Title"] === title) {
+        textID = data["data"][i]["id"];
+      }
+    }
+
+
+  }
+  catch (err){
+    console.log(err);
+  }
+  return textID;
+}
+
+async function getTextData(textID) {
+      const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*', {cache: "no-store"});
+      let data = await res.json();
+
+      return data["data"]["attributes"];
+}
+
+function makeDir(path) {
+  if(!fs.existsSync(path)){
+    fs.mkdir(path, (err) => {
       if (err) {
         console.log(err);
       }
     });
   }
+}
 
+async function entryModules(textData) {
+  let newTextData = textData["modules"]["data"];
+  for (let i = 0; i < newTextData.length; ++i) {
+    let moduleSlug = newTextData[i]["attributes"]["slug"];
+    makeDir("./output/" + moduleSlug);
+  }
 
+  await entryChapters(textData, true);
+}
 
-  try {
-    const resText = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts`, {cache: "no-store"});
-    let dataText = await resText.json();
+async function entryChapters(textData, hasModules) {
+  textData = textData["chapters"]["data"]
+  for (let i = 0; i < textData.length; ++i) {
+    let path = "./output/";
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/' + textData[i]["id"] + '?populate=*', {cache: "no-store"});
+    let data = await res.json();
 
-    let textID = 0;
+    let chapterData = data["data"]["attributes"];
 
-    for (let i = 0; i < dataText["data"].length; ++i) {
-      let curData = dataText["data"][i]["attributes"];
-      if (curData["Title"] === title) {
-        textID = dataText["data"][i]["id"];
-      }
+    if(hasModules){
+      path += data["data"]["attributes"]["module"]["data"]["attributes"]["slug"] + "/"
     }
 
-    console.log("textID: " + textID);
+    path += chapterData["slug"] + "/";
 
-    if (textID !== 0) {
-      const resModules = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=modules', {cache: "no-store"});
-      let dataModules = await resModules.json();
+    makeDir(path);
+    await entryPages(data["data"]["attributes"]["pages"]["data"], path);
+  }
+}
 
-      let curDataModules = dataModules["data"]["attributes"]["modules"]["data"];
-      if (curDataModules.length > 0) {
-        for (let i = 0; i < curDataModules.length; ++i) {
-          let moduleID = curDataModules[i]["id"];
+async function entryPages(textData, startingPath) {
 
-          const resChapters = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/' + moduleID + '?populate=chapters', {cache: "no-store"});
-          let dataChapters = await resChapters.json();
+  for (let i = 0; i < textData.length; ++i) {
+    let page = textData[i];
 
-          let curDataChapters = dataChapters["data"]["attributes"]["chapters"]["data"];
-          if (curDataChapters.length > 0) {
-            for (let j = 0; j < curDataChapters.length; ++j) {
-              let chapterID = curDataChapters[j]["id"];
+    let path = startingPath;
 
-              const resPages = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/' + chapterID + '?populate=pages', {cache: "no-store"});
-              let dataPages = await resPages.json();
-
-              let curDataPages = dataPages["data"]["attributes"]["pages"]["data"];
-              if (curDataPages.length > 0) {
-                for (let k = 0; k < curDataPages.length; ++k) {
-                  let pageID = curDataPages[k]["id"];
-
-                  const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + pageID + '?populate=Content', {cache: "no-store"});
-                  let data = await res.json();
-
-                  let curPage = data["data"];
-
-                  let filename = "./output/" + dataChapters["data"]["attributes"]["Title"].toLowerCase().replace(/\s/g, '-');
-                  if(!fs.existsSync(filename)){
-                    fs.mkdir(filename, (err) => {
-                      if (err) {
-                        console.log(err);
-                      }
-                    });
-                  }
-
-                  filename += "/" + dataPages["data"]["attributes"]["Title"].toLowerCase().replace(/\s/g, '-');
-                  if(!fs.existsSync(filename)){
-                    fs.mkdir(filename, (err) => {
-                      if (err) {
-                        console.log(err);
-                      }
-                    });
-                    console.log("success");
-                  }
-
-                  filename  += "/" + curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
-
-                  fs.appendFile(filename, "---\ntitle: "+curPage["attributes"]["Title"]+"\n---\n", (err) => {
-                    if (err)
-                      console.log("1" + err);
-                  });
-                  for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
-                    let curData = curPage["attributes"]["Content"][l];
-                    if (curData["__component"] === "page.chunk") {
-                      let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">\n";
-                      fs.appendFile(filename, inputString, (err) => {
-                        if (err)
-                          console.log("3" + err);
-                      });
-                      fs.appendFile(filename, curData["MDX"], (err) => {
-                        if (err)
-                          console.log("3" + err);
-                      });
-                      fs.appendFile(filename, "\n</div>\n", (err) => {
-                        if (err)
-                          console.log("3" + err);
-                      });
-                    } else if (curData["__component"] === "page.video") {
-                    }
-                  }
-                  console.log(filename);
-                }
-              }
-
-            }
-          }
-        }
-
-      } else {
-        const resChapters = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=chapters', {cache: "no-store"});
-        let dataChapters = await resChapters.json();
-
-        let curDataChapters = dataChapters["data"]["attributes"]["chapters"]["data"];
-        if (curDataChapters.length > 0) {
-          for (let i = 0; i < curDataModules.length; ++i) {
-            let moduleID = curDataModules[i]["id"];
-
-            const resChapters = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/' + moduleID + '?populate=chapters', {cache: "no-store"});
-            let dataChapters = await resChapters.json();
-
-            let curDataChapters = dataChapters["data"]["attributes"]["chapters"]["data"];
-            if (curDataChapters.length > 0) {
-              for (let j = 0; j < curDataChapters.length; ++j) {
-                let chapterID = curDataChapters[j]["id"];
-
-                const resPages = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/' + chapterID + '?populate=pages', {cache: "no-store"});
-                let dataPages = await resPages.json();
-
-                let curDataPages = dataPages["data"]["attributes"]["pages"]["data"];
-                if (curDataPages.length > 0) {
-                  for (let k = 0; k < curDataPages.length; ++k) {
-                    let pageID = curDataPages[k]["id"];
-
-                    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + pageID + '?populate=Content', {cache: "no-store"});
-                    let data = await res.json();
-
-                    let curPage = data["data"];
-
-                    let filename = dataPages["data"]["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + "/" +
-                      curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
-
-                    fs.writeFile(filename, "---", (err));
-                    fs.appendFile(filename, curData["Title"], (err));
-                    fs.appendFile(filename, "---", (err));
-                    for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
-                      let curData = curPage["attributes"]["Content"][l];
-                      if (curData["__component"] === "page.chunk") {
-                        let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">";
-                        fs.appendFile(filename, inputString, (err));
-                        fs.appendFile(filename, curData["MDX"], (err));
-                        fs.appendFile(filename, "</div>", (err));
-                      } else if (curData["__component"] === "page.video") {
-                      }
-                    }
-                    console.log(filename);
-                  }
-                }
-
-              }
-            }
-          }
-
-        } else {
-          const resPages = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=pages', {cache: "no-store"});
-          let dataPages = await resPages.json();
-
-          let curDataPages = dataPages["data"]["attributes"]["pages"]["data"];
-          if (curDataPages.length > 0) {
-            for (let k = 0; k < curDataPages.length; ++k) {
-              let pageID = curDataPages[k]["id"];
-
-              const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + pageID + '?populate=Content', {cache: "no-store"});
-              let data = await res.json();
-
-              let curPage = data["data"];
-
-              let filename = dataPages["data"]["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + "/" +
-                curPage["attributes"]["Title"].toLowerCase().replace(/\s/g, '-') + ".mdx";
-
-              fs.writeFile(filename, "---", (err));
-              fs.appendFile(filename, curData["Title"], (err));
-              fs.appendFile(filename, "---", (err));
-              for (let l = 0; l < curPage["attributes"]["Content"].length; ++l) {
-                let curData = curPage["attributes"]["Content"][l];
-                if (curData["__component"] === "page.chunk") {
-                  let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curData["Header"] + "\">";
-                  fs.appendFile(filename, inputString, (err));
-                  fs.appendFile(filename, curData["MDX"], (err));
-                  fs.appendFile(filename, "</div>", (err));
-                } else if (curData["__component"] === "page.video") {
-                }
-              }
-              console.log(filename);
-            }
-          }
-
-        }
-      }
+    if (i !== 0) {
+      path = startingPath + "section-" + i + ".mdx";
+      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"] + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"] + "\n---\n", (err) => {
+        if (err)
+          console.log(err);
+      });
+    } else {
+      path = startingPath + "index.mdx";
+      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"] + "\nsummary: false\nqa: true\npage_slug: " + page["attributes"]["slug"] + "\n---\n", (err) => {
+        if (err)
+          console.log(err);
+      });
     }
 
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=Content', {cache: "no-store"});
+    let data = await res.json();
 
-  } catch (err) {
-    console.log(err);
+    let pageData = data["data"]["attributes"];
+
+    for (let l = 0; l < pageData["Content"].length; ++l) {
+
+      let curChunk = pageData["Content"][l];
+      if (curChunk["__component"] === "page.chunk") {
+        let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curChunk["Slug"] + "\">\n";
+        fs.appendFile(path, inputString, (err) => {
+          if (err)
+            console.log(err);
+        });
+        fs.appendFile(path, curChunk["MDX"], (err) => {
+          if (err)
+            console.log("3" + err);
+        });
+        fs.appendFile(path, "\n</div>\n", (err) => {
+          if (err)
+            console.log("3" + err);
+        });
+      } else if (curChunk["__component"] === "page.video") {
+      }
+    }
+  }
+}
+
+async function run() {
+  let title = getTitle();
+  let textID = await getTextID(title);
+  if(textID === 0){
+    return;
+  }
+
+  let textData = await getTextData(textID);
+
+  let hasModules = textData["modules"]["data"].length > 0;
+  let hasChapters = textData["chapters"]["data"].length > 0;
+
+  if(hasModules){
+    await entryModules(textData);
+  }
+  else if(hasChapters){
+    await entryChapters(textData, false);
+  }
+  else{
+    await entryPages(textData["pages"]["data"], "./output/");
   }
 }
 

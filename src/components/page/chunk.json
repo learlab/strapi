@@ -2,14 +2,10 @@
   "collectionName": "components_page_chunks",
   "info": {
     "displayName": "Chunk",
-    "icon": "cube",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "Header": {
-      "type": "string"
-    },
     "QuestionAnswerResponse": {
       "type": "customField",
       "customField": "plugin::auto-content.question"
