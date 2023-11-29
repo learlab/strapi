@@ -87,7 +87,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'bulletedList', 'numberedList',
         '-',
-        'sourceEditing',
+        'sourceEditing', 'htmlEmbed'
       ],
       shouldNotGroupWhenFull: true
     },
@@ -117,15 +117,15 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         'toggleTableCaption'
       ]
     },
-    // htmlSupport: {
-    //   allow: [
-    //     // Enables all HTML elements and classes (for testing. not safe.)
-    //     {
-    //       name: /.*/,
-    //       attributes: true,
-    //       classes: true,
-    //       styles: true
-    //     },
+    htmlSupport: {
+      allow: [
+        // Enables all HTML elements and classes (for testing. not safe.)
+        {
+          name: /.*/,
+          attributes: true,
+          classes: true,
+          styles: true
+        },
     //     // Enables <div> elements with classes.
     //     {
     //       name: /^(div)$/,
@@ -145,8 +145,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
     //         style: true
     //       }
     //     }
-    //   ]
-    // }
+      ]
+    }
   }
 };
 
