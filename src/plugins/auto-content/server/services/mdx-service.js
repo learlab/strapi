@@ -45,16 +45,16 @@ const componentNameMap = Object.fromEntries(
 // utility function to construct JSX attributes from HTML DOM
 function stringifyAttributes(element, separator = ' ') {
   var attrStr = Array.from(element.attributes)
-      .filter(attr => attr.specified && attr.name !== 'class')
-      .map(attr => `${attr.name}="${attr.value}"`)
-      .join(separator)
+    .filter(attr => attr.specified && attr.name !== 'class')
+    .map(attr => `${attr.name}="${attr.value}"`)
+    .join(separator)
   if (attrStr.length > 0) {
     attrStr = separator + attrStr
   }
   return attrStr
 }
 
-// function for elements that consist of attributes and content only
+// Rule for elements that consist of attributes and content only
 turndownService.addRule('styles', {
   filter: function (node, options) {
     return (
@@ -68,6 +68,16 @@ turndownService.addRule('styles', {
     var attrStr = stringifyAttributes(node, ' ')
 
     return `<${tag}${attrStr}>${content}</${tag}>`
+  }
+})
+
+// Rule for allowing any HTML/JSX embed (possibly temporary)
+turndownService.addRule('htmlEmbed', {
+  filter: function (node, options) {
+    return node.nodeName === 'DIV' && node.getAttribute('class') === 'raw-html-embed'
+  },
+  replacement: function (content, node, options) {
+    return node.innerHTML
   }
 })
 
