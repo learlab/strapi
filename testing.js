@@ -1,5 +1,4 @@
 const fs = require('fs')
-const {text} = require("pg/lib/native/query");
 
 function getTitle() {
   if (process.argv.length === 2) {
