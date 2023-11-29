@@ -39,7 +39,8 @@
       "targetField": "Title"
     },
     "index": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     }
   }
 }
