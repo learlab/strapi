@@ -37,10 +37,6 @@
     "slug": {
       "type": "uid",
       "targetField": "Title"
-    },
-    "index": {
-      "type": "boolean",
-      "default": false
     }
   }
 }
