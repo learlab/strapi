@@ -9,7 +9,7 @@ async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
     } else {
         return "";
     }
-};
+}
 
 async function generateSlugAfterCreate(event) {
     const { result, model } = event;
@@ -34,7 +34,7 @@ async function generateSlugAfterCreate(event) {
             where: { id: databaseID },
             data: result
         });
-    }
+}
 
 async function generateSlugBeforeUpdate(event) {
     const { model } = event;
