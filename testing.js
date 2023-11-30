@@ -5,8 +5,14 @@ function getTitle() {
     console.error('Expected at least one argument!');
     process.exit(1);
   }
-
-  return process.argv[2];
+  let result = "";
+  for(let i = 2; i < process.argv.length; ++i){
+    result += process.argv[i];
+    if(process.argv.length - 1 !== i){
+      result += " ";
+    }
+  }
+  return result;
 }
 
 async function getTextID(title) {
@@ -18,7 +24,9 @@ async function getTextID(title) {
 
     for (let i = 0; i < data["data"].length; ++i) {
       let curData = data["data"][i]["attributes"];
-      if (curData["Title"] === title) {
+      console.log(title);
+      console.log(curData["Title"] == title)
+      if (curData["Title"] == title) {
         textID = data["data"][i]["id"];
       }
     }
@@ -87,13 +95,17 @@ async function entryPages(textData, startingPath) {
 
     if (i !== 0) {
       path = startingPath + "section-" + i + ".mdx";
-      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"] + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"] + "\n---\n", (err) => {
+      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"]
+        // + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"]
+        + "\n---\n", (err) => {
         if (err)
           console.log(err);
       });
     } else {
       path = startingPath + "index.mdx";
-      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"] + "\nsummary: false\nqa: true\npage_slug: " + page["attributes"]["slug"] + "\n---\n", (err) => {
+      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"]
+        // + "\nsummary: false\nqa: true\npage_slug: " + page["attributes"]["slug"]
+        + "\n---\n", (err) => {
         if (err)
           console.log(err);
       });
