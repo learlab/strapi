@@ -1,9 +1,3 @@
-async function requestEmbedding(data) {
-    const requestEmbedding = await strapi
-        .service('plugin::auto-content.generateEmbeddingService')
-        .generateEmbedding(data.Text)
-}
-
 module.exports = { 
     afterCreate: async (event) => {
         const { result, params } = event;
