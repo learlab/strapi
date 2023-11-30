@@ -24,9 +24,7 @@ async function getTextID(title) {
 
     for (let i = 0; i < data["data"].length; ++i) {
       let curData = data["data"][i]["attributes"];
-      console.log(title);
-      console.log(curData["Title"] == title)
-      if (curData["Title"] == title) {
+      if (curData["Title"] === title) {
         textID = data["data"][i]["id"];
       }
     }
@@ -59,8 +57,8 @@ function makeDir(path) {
 async function entryModules(textData) {
   let newTextData = textData["modules"]["data"];
   for (let i = 0; i < newTextData.length; ++i) {
-    let moduleSlug = newTextData[i]["attributes"]["slug"];
-    makeDir("./output/" + moduleSlug);
+    // let moduleSlug = newTextData[i]["attributes"]["slug"];
+    makeDir("./output/module-" + (i + 1));
   }
 
   await entryChapters(textData, true);
@@ -78,9 +76,12 @@ async function entryChapters(textData, hasModules) {
     if(hasModules){
       path += data["data"]["attributes"]["module"]["data"]["attributes"]["slug"] + "/"
     }
+    else{
+      path += "module-1/"
+    }
 
-    path += chapterData["slug"] + "/";
-
+    // path += chapterData["slug"] + "/";
+    path += "chapter-" + (i + 1) + "/";
     makeDir(path);
     await entryPages(data["data"]["attributes"]["pages"]["data"], path);
   }
@@ -92,24 +93,35 @@ async function entryPages(textData, startingPath) {
     let page = textData[i];
 
     let path = startingPath;
+    let stream;
 
     if (i !== 0) {
       path = startingPath + "section-" + i + ".mdx";
-      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"]
+      stream = fs.createWriteStream(path);
+      stream.write("---\ntitle: " + page["attributes"]["Title"]
         // + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"]
-        + "\n---\n", (err) => {
-        if (err)
-          console.log(err);
-      });
+        + "\n---\n");
+      // await fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"]
+      //   // + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"]
+      //   + "\n---\n", (err) => {
+      //   if (err)
+      //     console.log(err);
+      // });
     } else {
       path = startingPath + "index.mdx";
-      fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"]
+      stream = fs.createWriteStream(path);
+      stream.write("---\ntitle: " + page["attributes"]["Title"]
         // + "\nsummary: false\nqa: true\npage_slug: " + page["attributes"]["slug"]
-        + "\n---\n", (err) => {
-        if (err)
-          console.log(err);
-      });
+        + "\n---\n");
+      // await fs.appendFile(path, "---\ntitle: " + page["attributes"]["Title"]
+      //   // + "\nsummary: false\nqa: true\npage_slug: " + page["attributes"]["slug"]
+      //   + "\n---\n", (err) => {
+      //   if (err)
+      //     console.log(err);
+      // });
     }
+
+
 
     const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=Content', {cache: "no-store"});
     let data = await res.json();
@@ -121,21 +133,23 @@ async function entryPages(textData, startingPath) {
       let curChunk = pageData["Content"][l];
       if (curChunk["__component"] === "page.chunk") {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curChunk["Slug"] + "\">\n";
-        fs.appendFile(path, inputString, (err) => {
-          if (err)
-            console.log(err);
-        });
-        fs.appendFile(path, curChunk["MDX"], (err) => {
-          if (err)
-            console.log("3" + err);
-        });
-        fs.appendFile(path, "\n</div>\n", (err) => {
-          if (err)
-            console.log("3" + err);
-        });
+        stream.write(inputString);
+        stream.write(curChunk["MDX"]);
+        stream.write("\n</div>\n");
+        // await fs.appendFile(path, curChunk["MDX"], (err) => {
+        //   if (err)
+        //     console.log("3" + err);
+        // });
+        // await fs.appendFile(path, "\n</div>\n", (err) => {
+        //   if (err)
+
+        //     console.log("3" + err);
+        // });
       } else if (curChunk["__component"] === "page.video") {
       }
     }
+
+    stream.end();
   }
 }
 
