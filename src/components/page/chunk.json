@@ -41,6 +41,9 @@
     "Slug": {
       "type": "customField",
       "customField": "plugin::auto-content.slug"
+    },
+    "Header": {
+      "type": "string"
     }
   }
 }
