@@ -1,6 +1,6 @@
-
 'use strict';
 var slugify = require('slugify');
+const { validateKeyPhraseField } = require('./validations');
 
 async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
     if (chunkName) {
@@ -61,6 +61,9 @@ async function generateSlugBeforeUpdate(event) {
 
 async function generateChunkFields(event) {
     const { data } = event.params;
+
+    validateKeyPhraseField(data.KeyPhrase);
+    
     const cleanText = await strapi
         .service('plugin::auto-content.cleanTextService')
         .cleanText(data.Text)
@@ -77,6 +80,8 @@ async function generateChunkFields(event) {
 
 async function generateVideoFields(event) {
     const { data } = event.params;
+
+    validateKeyPhraseField(data.KeyPhrase);
 
     const transcript = await strapi
         .service('plugin::auto-content.fetchTranscriptService')
@@ -102,5 +107,5 @@ module.exports = {
     generateSlugAfterCreate,
     generateSlugBeforeUpdate,
     generateChunkFields,
-    generateVideoFields
+    generateVideoFields,
 };
