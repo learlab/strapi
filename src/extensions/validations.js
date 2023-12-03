@@ -3,6 +3,11 @@ const { ApplicationError } = require('@strapi/utils/dist/errors');
 
 function validateKeyPhraseField(keyPhrases) {
     let failed;
+    // Deal with empty fields
+    if (!keyPhrases) {
+        keyPhrases = "[]"
+    }
+    // Flag bad syntax
     try {
         const attemptedJSON = JSON.parse(keyPhrases);
         failed = false;
