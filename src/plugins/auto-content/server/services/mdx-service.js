@@ -39,7 +39,7 @@ const componentNames = [
 
 // construct component name map to handle case insensitivity in HTML DOM
 const componentNameMap = Object.fromEntries(
-  componentNames.map(compName => [compName.toLowerCase(), compName])
+  componentNames.map(compName => [compName.toUpperCase(), compName])
 );
 
 // utility function to construct JSX attributes from HTML DOM
@@ -58,26 +58,16 @@ function stringifyAttributes(element, separator = ' ') {
 turndownService.addRule('styles', {
   filter: function (node, options) {
     return (
-      ['info', 'warning', 'callout', 'keyterm', 'blockquote', 'caption']
-        .includes(node.getAttribute('class'))
+      ['INFO', 'WARNING', 'CALLOUT', 'BLOCKQUOTE']
+        .includes(node.nodeName)
     )
   },
 
   replacement: function (content, node, options) {
-    const tag = componentNameMap[node.getAttribute('class')]
+    const tag = componentNameMap[node.nodeName]
     var attrStr = stringifyAttributes(node, ' ')
-
+    console.log(`<${tag}${attrStr}>${content}</${tag}>`)
     return `<${tag}${attrStr}>${content}</${tag}>`
-  }
-})
-
-// Rule for allowing any HTML/JSX embed (possibly temporary)
-turndownService.addRule('htmlEmbed', {
-  filter: function (node, options) {
-    return node.nodeName === 'DIV' && node.getAttribute('class') === 'raw-html-embed'
-  },
-  replacement: function (content, node, options) {
-    return node.innerHTML
   }
 })
 
