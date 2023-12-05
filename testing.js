@@ -73,12 +73,12 @@ async function entryChapters(textData, hasModules) {
 
     let chapterData = data["data"]["attributes"];
 
-    if(hasModules){
-      path += data["data"]["attributes"]["module"]["data"]["attributes"]["slug"] + "/"
-    }
-    else{
+    // if(hasModules){
+    //   path += data["data"]["attributes"]["module"]["data"]["attributes"]["slug"] + "/"
+    // }
+    // else{
       path += "module-1/"
-    }
+    // }
 
     // path += chapterData["slug"] + "/";
     path += "chapter-" + (i + 1) + "/";
