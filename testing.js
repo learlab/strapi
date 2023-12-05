@@ -134,7 +134,9 @@ async function entryPages(textData, startingPath) {
       if (curChunk["__component"] === "page.chunk") {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curChunk["Slug"] + "\">\n";
         stream.write(inputString);
-        stream.write(curChunk["MDX"]);
+        if(curChunk["MDX"] != null){
+          stream.write(curChunk["MDX"]);
+        }
         stream.write("\n</div>\n");
         // await fs.appendFile(path, curChunk["MDX"], (err) => {
         //   if (err)
