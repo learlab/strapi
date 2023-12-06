@@ -36,6 +36,9 @@
     "slug": {
       "type": "uid",
       "targetField": "Title"
+    },
+    "ChapterNumber": {
+      "type": "integer"
     }
   }
 }

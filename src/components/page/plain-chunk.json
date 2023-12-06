@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_page_plain_chunks",
+  "info": {
+    "displayName": "Plain-Chunk",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "CleanText": {
+      "type": "text",
+      "default": "not set"
+    },
+    "MDX": {
+      "type": "text",
+      "default": "not set"
+    },
+    "Text": {
+      "type": "customField",
+      "options": {
+        "output": "HTML",
+        "preset": "standard"
+      },
+      "customField": "plugin::ckeditor.CKEditor"
+    },
+    "Slug": {
+      "type": "customField",
+      "customField": "plugin::auto-content.slug"
+    },
+    "Header": {
+      "type": "string"
+    }
+  }
+}

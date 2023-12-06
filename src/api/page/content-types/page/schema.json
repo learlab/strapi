@@ -37,6 +37,9 @@
     "slug": {
       "type": "uid",
       "targetField": "Title"
+    },
+    "HasSummary": {
+      "type": "boolean"
     }
   }
 }
