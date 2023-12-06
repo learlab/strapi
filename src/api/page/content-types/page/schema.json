@@ -19,7 +19,8 @@
       "type": "dynamiczone",
       "components": [
         "page.video",
-        "page.chunk"
+        "page.chunk",
+        "page.plain-chunk"
       ]
     },
     "text": {
@@ -39,7 +40,8 @@
       "targetField": "Title"
     },
     "HasSummary": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     }
   }
 }
