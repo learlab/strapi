@@ -94,7 +94,8 @@ async function entryPages(textData, startingPath) {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\">\n";
         stream.write(inputString);
         if(curChunk["MDX"] != null){
-          stream.write(curChunk["MDX"]);
+          const newText = curChunk["MDX"].replaceAll("$", "\\$");
+          stream.write(newText);
         }
         stream.write("\n</div>\n");
       } else if (curChunk["__component"] === "page.video") {
