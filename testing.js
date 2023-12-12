@@ -92,12 +92,9 @@ async function entryPages(textData, startingPath) {
       } else if (curChunk["__component"] === "page.video") {
       }
     }
-
     stream.end();
   }
 }
-
-
 
 async function makeModules(textData) {
   let newTextData = textData["modules"]["data"];
