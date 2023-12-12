@@ -82,7 +82,7 @@ async function entryPages(textData, startingPath) {
     for (let l = 0; l < pageData["Content"].length; ++l) {
 
       let curChunk = pageData["Content"][l];
-      if (curChunk["__component"] === "page.chunk") {
+      if (curChunk["__component"] === "page.chunk" || curChunk["__component"] === "page.plain-chunk") {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curChunk["Slug"] + "\">\n";
         stream.write(inputString);
         if(curChunk["MDX"] != null){
