@@ -83,7 +83,15 @@ async function entryPages(textData, startingPath) {
 
       let curChunk = pageData["Content"][l];
       if (curChunk["__component"] === "page.chunk" || curChunk["__component"] === "page.plain-chunk") {
-        let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + curChunk["Slug"] + "\">\n";
+        let chunkSlug=curChunk["Slug"];
+        if(curChunk["Slug"]!=null){
+          chunkSlug=chunkSlug.replaceAll("\"", '');
+        }
+        else{
+          chunkSlug = ""
+        }
+
+        let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\">\n";
         stream.write(inputString);
         if(curChunk["MDX"] != null){
           stream.write(curChunk["MDX"]);
