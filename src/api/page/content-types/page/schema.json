@@ -19,7 +19,8 @@
       "type": "dynamiczone",
       "components": [
         "page.video",
-        "page.chunk"
+        "page.chunk",
+        "page.plain-chunk"
       ]
     },
     "text": {
@@ -37,6 +38,10 @@
     "slug": {
       "type": "uid",
       "targetField": "Title"
+    },
+    "HasSummary": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
