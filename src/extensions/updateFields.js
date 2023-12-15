@@ -1,6 +1,7 @@
-
 'use strict';
 var slugify = require('slugify');
+const { validateKeyPhraseField } = require('./validations');
+const fieldSuffixes = require('./fieldSuffixes')
 
 async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
     if (chunkName) {
@@ -9,22 +10,16 @@ async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
     } else {
         return "";
     }
-};
+}
 
 async function generateSlugAfterCreate(event) {
     const { result, model } = event;
 
     const databaseID = result.id;
-    var chunkName = null;
-    var chunkTypeSuffix = null;
+    const fieldSuffixVars = fieldSuffixes[model.singularName]
 
-    if (model.singularName === 'chunk') {
-        chunkName = result.Header
-        chunkTypeSuffix = 't'
-    } else if (model.singularName === 'video') {
-        chunkName = result.Title
-        chunkTypeSuffix = 'v'
-    }
+    const chunkName = result[fieldSuffixVars['fieldName']]
+    const chunkTypeSuffix = fieldSuffixVars['suffix']
 
     result.Slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
 
@@ -34,23 +29,17 @@ async function generateSlugAfterCreate(event) {
             where: { id: databaseID },
             data: result
         });
-    }
+}
 
 async function generateSlugBeforeUpdate(event) {
     const { model } = event;
     const { data } = event.params;
 
     const databaseID = data.id;
-    var chunkName = null;
-    var chunkTypeSuffix = null;
+    const fieldSuffixVars = fieldSuffixes[model.singularName]
 
-    if (model.singularName === 'chunk') {
-        chunkName = data.Header
-        chunkTypeSuffix = 't'
-    } else if (model.singularName === 'video') {
-        chunkName = data.Title
-        chunkTypeSuffix = 'v'
-    }
+    const chunkName = data[fieldSuffixVars['fieldName']]
+    const chunkTypeSuffix = fieldSuffixVars['suffix']
 
     const slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
     event.params.data.Slug = slug;
@@ -61,6 +50,9 @@ async function generateSlugBeforeUpdate(event) {
 
 async function generateChunkFields(event) {
     const { data } = event.params;
+
+    validateKeyPhraseField(data.KeyPhrase);
+    
     const cleanText = await strapi
         .service('plugin::auto-content.cleanTextService')
         .cleanText(data.Text)
@@ -77,6 +69,8 @@ async function generateChunkFields(event) {
 
 async function generateVideoFields(event) {
     const { data } = event.params;
+
+    validateKeyPhraseField(data.KeyPhrase);
 
     const transcript = await strapi
         .service('plugin::auto-content.fetchTranscriptService')
@@ -102,5 +96,5 @@ module.exports = {
     generateSlugAfterCreate,
     generateSlugBeforeUpdate,
     generateChunkFields,
-    generateVideoFields
+    generateVideoFields,
 };
