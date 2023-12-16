@@ -25,7 +25,13 @@ module.exports = ({ strapi }) => {
                     event = await generateSlugBeforeUpdate(event);
                 }
             },
-        },
+            afterUpdate: async (event)=>{
+              if (shouldUpdate(event)) {
+                event = await generateChunkFields(event);
+                event = await generateSlugBeforeUpdate(event);
+              }
+            },
+          },
     });
 
   _metadata.set("page.plain-chunk", {
@@ -38,6 +44,12 @@ module.exports = ({ strapi }) => {
         await generateSlugAfterCreate(event);
       },
       beforeUpdate: async (event) => {
+        if (shouldUpdate(event)) {
+          event = await generateChunkFields(event);
+          event = await generateSlugBeforeUpdate(event);
+        }
+      },
+      afterUpdate: async (event)=>{
         if (shouldUpdate(event)) {
           event = await generateChunkFields(event);
           event = await generateSlugBeforeUpdate(event);
