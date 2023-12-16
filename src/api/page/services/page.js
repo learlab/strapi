@@ -10,8 +10,8 @@ const fetch = require("node-fetch");
 module.exports = createCoreService('api::page.page', ({ strapi }) =>  ({
     async generateEmbedding(ctx) {
         // for testing 
-        const targetURL = `https://httpbin.org/post `
-        // const targetURL = `https://itell-api.learlab.vanderbilt.edu/generate/embedding`
+        // const targetURL = `https://httpbin.org/post `
+        const targetURL = `https://itell-api.learlab.vanderbilt.edu/generate/embedding`
 
         try {
           const response = await fetch(
@@ -21,9 +21,7 @@ module.exports = createCoreService('api::page.page', ({ strapi }) =>  ({
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({
-                chunk: 'thing'
-              }),
+              body: JSON.stringify(ctx),
             }
           );
           const result = await response;
