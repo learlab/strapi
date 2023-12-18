@@ -43,7 +43,8 @@
       "customField": "plugin::auto-content.slug"
     },
     "Header": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   }
 }

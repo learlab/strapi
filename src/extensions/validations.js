@@ -16,7 +16,7 @@ function validateKeyPhraseField(keyPhrases) {
     }
     // This needs to be outside of a try/catch block
     if (failed) {
-        throw new ApplicationError("Please check your JSON array's syntax", { policy: 'JSON-validate' });
+        throw new ApplicationError("Please check your JSON array's syntax: " + keyPhrases, { policy: 'JSON-validate' });
     }
 }
 
