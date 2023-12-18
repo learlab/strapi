@@ -1,100 +1,96 @@
-'use strict';
-var slugify = require('slugify');
-const { validateKeyPhraseField } = require('./validations');
-const fieldSuffixes = require('./fieldSuffixes')
+"use strict";
+var slugify = require("slugify");
+// const { validateKeyPhraseField } = require('./validations');
+const fieldSuffixes = require("./fieldSuffixes");
 
 async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
-    if (chunkName) {
-        const slug = slugify(chunkName);
-        return `${slug}-${databaseID.toString()}${chunkTypeSuffix}`;
-    } else {
-        return "";
-    }
+  if (chunkName) {
+    const slug = slugify(chunkName);
+    return `${slug}-${databaseID.toString()}${chunkTypeSuffix}`;
+  } else {
+    return "";
+  }
 }
 
 async function generateSlugAfterCreate(event) {
-    const { result, model } = event;
+  const { result, model } = event;
 
-    const databaseID = result.id;
-    const fieldSuffixVars = fieldSuffixes[model.singularName]
+  const databaseID = result.id;
+  const fieldSuffixVars = fieldSuffixes[model.singularName];
 
-    const chunkName = result[fieldSuffixVars['fieldName']]
-    const chunkTypeSuffix = fieldSuffixVars['suffix']
+  const chunkName = result[fieldSuffixVars["fieldName"]];
+  const chunkTypeSuffix = fieldSuffixVars["suffix"];
 
-    result.Slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
+  result.Slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
 
-    const update = await strapi
-        .query(String(model.uid))
-        .update({
-            where: { id: databaseID },
-            data: result
-        });
+  const update = await strapi.query(String(model.uid)).update({
+    where: { id: databaseID },
+    data: result,
+  });
 }
 
 async function generateSlugBeforeUpdate(event) {
-    const { model } = event;
-    const { data } = event.params;
+  const { model } = event;
+  const { data } = event.params;
 
-    const databaseID = data.id;
-    const fieldSuffixVars = fieldSuffixes[model.singularName]
+  const databaseID = data.id;
+  const fieldSuffixVars = fieldSuffixes[model.singularName];
 
-    const chunkName = data[fieldSuffixVars['fieldName']]
-    const chunkTypeSuffix = fieldSuffixVars['suffix']
+  const chunkName = data[fieldSuffixVars["fieldName"]];
+  const chunkTypeSuffix = fieldSuffixVars["suffix"];
 
-    const slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
-    event.params.data.Slug = slug;
+  const slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
+  event.params.data.Slug = slug;
 
-    return event;
+  return event;
 }
 
-
 async function generateChunkFields(event) {
-    const { data } = event.params;
+  const { data } = event.params;
 
-    validateKeyPhraseField(data.KeyPhrase);
-    
-    const cleanText = await strapi
-        .service('plugin::auto-content.cleanTextService')
-        .cleanText(data.Text)
+  // validateKeyPhraseField(data.KeyPhrase);
 
-    const mdx = await strapi
-        .service('plugin::auto-content.mdxService')
-        .mdx(data.Text)
+  const cleanText = await strapi
+    .service("plugin::auto-content.cleanTextService")
+    .cleanText(data.Text);
 
-        event.params.data.CleanText = cleanText;
-        event.params.data.MDX = mdx;
-    
-    return event;
+  const mdx = await strapi
+    .service("plugin::auto-content.mdxService")
+    .mdx(data.Text);
+
+  event.params.data.CleanText = cleanText;
+  event.params.data.MDX = mdx;
+
+  return event;
 }
 
 async function generateVideoFields(event) {
-    const { data } = event.params;
+  const { data } = event.params;
 
-    validateKeyPhraseField(data.KeyPhrase);
+  // validateKeyPhraseField(data.KeyPhrase);
 
-    const transcript = await strapi
-        .service('plugin::auto-content.fetchTranscriptService')
-        .getTranscript(data.URL, data.StartTime, data.EndTime)
-    
-    var mdx = '<YoutubeVideo\n' +
-        `src=${data.URL}\n`
+  const transcript = await strapi
+    .service("plugin::auto-content.fetchTranscriptService")
+    .getTranscript(data.URL, data.StartTime, data.EndTime);
 
-    if (data.Title) mdx += `title="${data.Title}"`
+  var mdx = "<YoutubeVideo\n" + `src=${data.URL}\n`;
 
-    if (data.Description) mdx += `\n>\n${data.Description}`
-    else mdx += '>'
+  if (data.Title) mdx += `title="${data.Title}"`;
 
-    mdx += '\n</YoutubeVideo>'
+  if (data.Description) mdx += `\n>\n${data.Description}`;
+  else mdx += ">";
 
-    event.params.data.CleanText = transcript;
-    event.params.data.MDX = mdx;
+  mdx += "\n</YoutubeVideo>";
 
-    return event;
+  event.params.data.CleanText = transcript;
+  event.params.data.MDX = mdx;
+
+  return event;
 }
 
 module.exports = {
-    generateSlugAfterCreate,
-    generateSlugBeforeUpdate,
-    generateChunkFields,
-    generateVideoFields,
+  generateSlugAfterCreate,
+  generateSlugBeforeUpdate,
+  generateChunkFields,
+  generateVideoFields,
 };
