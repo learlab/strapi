@@ -11,7 +11,7 @@ module.exports = ({ strapi }) => {
         {
           role: "user",
           content:
-            'Extract up to 5 important keyphrases from the following passage. A keyphrase can be several words or just one word. The passage comes from an instructional text, so it is important that keyphrases help students understand the passage within the context of the text. The list of keyphrases should be formatted as a valid JSON array, with each keyphrase separated by a comma. \n\nPassage: ' + text + '\n\nKeyphrases: ',
+            'Please generate a few important keyphrases from the following passage. The passage comes from an educational text, so it is important that the keyphrases are helpful for students. Provide a list of keyphrases in valid JSON format, like this: ["Keyphrase 1", "Keyphrase 2"] \n\n' + text + '\n\nKeyphrases: ',
         },
       ];
       const response = await fetch(

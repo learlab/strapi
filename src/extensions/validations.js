@@ -1,25 +1,18 @@
-'use strict';
-const { ApplicationError } = require('@strapi/utils/dist/errors');
+"use strict";
+const { ApplicationError } = require("@strapi/utils/dist/errors");
+const yup = require("yup");
 
-function validateKeyPhraseField(keyPhrases) {
-    let failed;
-    // Deal with empty fields
-    if (!keyPhrases) {
-        keyPhrases = "[]"
-    }
-    // Flag bad syntax
-    try {
-        const attemptedJSON = JSON.parse(keyPhrases);
-        failed = false;
-    } catch {
-        failed = true;
-    }
-    // This needs to be outside of a try/catch block
-    if (failed) {
-        throw new ApplicationError("Please check your JSON array's syntax: " + keyPhrases, { policy: 'JSON-validate' });
-    }
+function validateKeyPhraseField(event) {
+  const { data } = event.params;
+  const schema = yup.array().of(yup.string());
+  const keyphrase_string = data.KeyPhrase ? data.KeyPhrase : "[]";
+  try {
+    schema.validateSync(keyphrase_string);
+  } catch (ValidationError) {
+    throw new ApplicationError(`Header: ${data.Header}\nKeyphrase Parsing Error: ${keyphrase_string}`);
+  }
 }
 
 module.exports = {
-    validateKeyPhraseField,
+  validateKeyPhraseField,
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Stack } from "@strapi/design-system/Stack";
-import { Flex } from '@strapi/design-system';
+import { Flex } from "@strapi/design-system";
 import { Button } from "@strapi/design-system/Button";
 import { Textarea, Grid, GridItem } from "@strapi/design-system";
 import { auth } from "@strapi/helper-plugin";
@@ -22,7 +22,11 @@ export default function Index({
   const { modifiedData, initialData } = useCMEditViewDataManager();
   const [dynamicZone, index, fieldName] = name.split(".");
   const [currentText, setCurrentText] = useState("");
-  const [currentVideo, setCurrentVideo] = useState({ url: "", startTime: 0, endTime: 0 });
+  const [currentVideo, setCurrentVideo] = useState({
+    url: "",
+    startTime: 0,
+    endTime: 0,
+  });
   const [targetText, setTargetText] = useState("");
 
   const debouncedTextFieldValue = useDebounce(
@@ -31,17 +35,18 @@ export default function Index({
   );
 
   const debouncedVideoFieldValue = useDebounce(
-    { url: modifiedData[dynamicZone][index]["URL"], 
-      startTime: modifiedData[dynamicZone][index]["StartTime"], 
+    {
+      url: modifiedData[dynamicZone][index]["URL"],
+      startTime: modifiedData[dynamicZone][index]["StartTime"],
       endTime: modifiedData[dynamicZone][index]["EndTime"],
     },
     300
   );
 
   // check if content type is text or video
-  function checkContentType () {
-    return ("Text" in modifiedData[dynamicZone][index])
-  };
+  function checkContentType() {
+    return "Text" in modifiedData[dynamicZone][index];
+  }
 
   // change text to show API is being called
   function showLoading() {
@@ -52,7 +57,7 @@ export default function Index({
     });
   }
 
-  async function getTargetText () {
+  async function getTargetText() {
     let cleanTextFeed;
     // Check content type
     const contentIsText = checkContentType();
@@ -66,26 +71,28 @@ export default function Index({
         cleanTextFeed = await generateCleanText();
         setTargetText(cleanTextFeed);
         return cleanTextFeed;
-      };
+      }
     } else {
-    // If content type is video
+      // If content type is video
       // Check if same transcript has been used for cleanText generation
-      if (debouncedVideoFieldValue["url"] == currentVideo["url"] && 
-          debouncedVideoFieldValue["startTime"] == currentVideo["startTime"] &&
-          debouncedVideoFieldValue["endTime"] == currentVideo["endTime"]
-          ) {
-            return targetText;
-          } else {
-            setCurrentVideo({ url: debouncedVideoFieldValue["url"], 
-                              startTime: debouncedVideoFieldValue["startTime"], 
-                              endTime: debouncedVideoFieldValue["endTime"],
-                            });
-            cleanTextFeed = await fetchTranscript();
-            setTargetText(cleanTextFeed);
-            return cleanTextFeed;
-          };
+      if (
+        debouncedVideoFieldValue["url"] == currentVideo["url"] &&
+        debouncedVideoFieldValue["startTime"] == currentVideo["startTime"] &&
+        debouncedVideoFieldValue["endTime"] == currentVideo["endTime"]
+      ) {
+        return targetText;
+      } else {
+        setCurrentVideo({
+          url: debouncedVideoFieldValue["url"],
+          startTime: debouncedVideoFieldValue["startTime"],
+          endTime: debouncedVideoFieldValue["endTime"],
+        });
+        cleanTextFeed = await fetchTranscript();
+        setTargetText(cleanTextFeed);
+        return cleanTextFeed;
+      }
     }
-  };
+  }
 
   // could use modifiedData.publishedAt === null to only allow content generation for unpublished content
   // authors would have to unpublish their content to re-generate the content
@@ -117,7 +124,6 @@ export default function Index({
       onChange({
         target: { name, value: parsedResponse, type: attribute.type },
       });
-
     } catch (err) {
       console.log(err);
     }
@@ -141,11 +147,10 @@ export default function Index({
         throw new Error(`Error! status: ${response.status}`);
       }
       const generatedCleanText = await response.json().then((res) => {
-        return res['contents'];
+        return res["contents"];
       });
 
       return generatedCleanText;
-
     } catch (err) {
       console.log(err);
     }
@@ -153,10 +158,11 @@ export default function Index({
 
   const fetchTranscript = async () => {
     try {
-      const payload = JSON.stringify({ url: `${debouncedVideoFieldValue["url"]}`, 
-                                       startTime: `${debouncedVideoFieldValue["startTime"]}`, 
-                                       endTime: `${debouncedVideoFieldValue["endTime"]}`, 
-                                     })
+      const payload = JSON.stringify({
+        url: `${debouncedVideoFieldValue["url"]}`,
+        startTime: `${debouncedVideoFieldValue["startTime"]}`,
+        endTime: `${debouncedVideoFieldValue["endTime"]}`,
+      });
       // fetch transcript service
       const response = await fetch(`/auto-content/fetch-transcript`, {
         method: "POST",
@@ -169,19 +175,18 @@ export default function Index({
 
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
-      };
+      }
 
       let fetchedTranscript;
 
       try {
         fetchedTranscript = await response.text();
       } catch (error) {
-        console.error('Error fetching transcript:', error);
-        fetchedTranscript = "Error fetching transcript"
-      };
-      
-      return fetchedTranscript;
+        console.error("Error fetching transcript:", error);
+        fetchedTranscript = "Error fetching transcript";
+      }
 
+      return fetchedTranscript;
     } catch (err) {
       console.log(err);
     }
@@ -205,7 +210,9 @@ export default function Index({
         </Textarea>
       </GridItem>
       <GridItem col={12}>
-        <Button fullWidth onClick={() => generateKeyPhrase()}>Extract key phrases from text</Button>
+        <Button fullWidth onClick={() => generateKeyPhrase()}>
+          Extract key phrases from text
+        </Button>
       </GridItem>
     </Grid>
   );

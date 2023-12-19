@@ -1,6 +1,5 @@
-'use strict';
-const chunkLifecycle = require("./extensions/chunkLifecycle");
-const videoLifecycle = require("./extensions/videoLifecycle");
+"use strict";
+const setLifeCycles = require("./extensions/setLifeCycles");
 
 module.exports = {
   /**
@@ -9,7 +8,7 @@ module.exports = {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/*{ strapi }*/) { },
+  register(/*{ strapi }*/) {},
 
   /**
    * An asynchronous bootstrap function that runs before
@@ -19,7 +18,6 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   bootstrap(/*{ strapi }*/) {
-    chunkLifecycle({ strapi })
-    videoLifecycle({ strapi })
-  }
+    setLifeCycles({ strapi });
+  },
 };
