@@ -71,6 +71,7 @@ async function entryPages(textData, startingPath) {
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: " + page["attributes"]["Title"]
       + "\npage_slug: " + page["attributes"]["slug"]
+      + "\nsummary: " + page["attributes"]["HasSummary"]
       + "\n---\n");
     }
 
