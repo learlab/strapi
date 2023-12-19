@@ -64,13 +64,13 @@ async function entryPages(textData, startingPath) {
       path = startingPath + "section-" + i + ".mdx";
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: \"" + page["attributes"]["Title"] +"\""
-        // + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"]
+        + "\npage_slug: " + page["attributes"]["slug"]
         + "\n---\n");
     } else {
       path = startingPath + "index.mdx";
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: " + page["attributes"]["Title"]
-      // + "\nsummary: true\nqa: false\npage_slug: " + page["attributes"]["slug"]
+      + "\npage_slug: " + page["attributes"]["slug"]
       + "\n---\n");
     }
 
