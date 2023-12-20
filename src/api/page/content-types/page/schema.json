@@ -42,6 +42,12 @@
     "HasSummary": {
       "type": "boolean",
       "default": true
+    },
+    "quiz": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::quiz.quiz",
+      "mappedBy": "prev_page"
     }
   }
 }
