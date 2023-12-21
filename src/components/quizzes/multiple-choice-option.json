@@ -1,17 +1,16 @@
 {
-  "collectionName": "components_quizzes_mcq_choices",
+  "collectionName": "components_quizzes_multiple_choice_options",
   "info": {
-    "displayName": "MCQ-choice",
-    "icon": "cursor",
-    "description": ""
+    "displayName": "MultipleChoiceOption",
+    "icon": "bulletList"
   },
   "options": {},
   "attributes": {
-    "text": {
+    "Text": {
       "type": "string",
       "required": true
     },
-    "correct": {
+    "IsCorrect": {
       "type": "boolean",
       "default": false,
       "required": true

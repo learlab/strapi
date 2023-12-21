@@ -43,11 +43,11 @@
       "type": "boolean",
       "default": true
     },
-    "quiz": {
+    "Quiz": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::quiz.quiz",
-      "mappedBy": "prev_page"
+      "mappedBy": "PreviousPage"
     }
   }
 }

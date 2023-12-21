@@ -4,7 +4,7 @@
   "info": {
     "singularName": "quiz",
     "pluralName": "quizzes",
-    "displayName": "Quiz",
+    "displayName": "Quizzes",
     "description": ""
   },
   "options": {
@@ -12,16 +12,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "prev_page": {
+    "PreviousPage": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::page.page",
-      "inversedBy": "quiz"
+      "inversedBy": "Quiz"
     },
-    "questions": {
+    "Questions": {
       "type": "dynamiczone",
       "components": [
-        "quizzes.mcq"
+        "quizzes.multiple-choice-question"
       ]
     }
   }

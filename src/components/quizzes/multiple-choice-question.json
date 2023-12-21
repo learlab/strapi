@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_quizzes_multiple_choice_questions",
+  "info": {
+    "displayName": "MultipleChoiceQuestion",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "Question": {
+      "type": "string",
+      "required": true
+    },
+    "Answers": {
+      "displayName": "MultipleChoiceOption",
+      "type": "component",
+      "repeatable": true,
+      "component": "quizzes.multiple-choice-option"
+    }
+  }
+}
