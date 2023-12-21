@@ -2,12 +2,13 @@
   "collectionName": "components_quizzes_multiple_choice_questions",
   "info": {
     "displayName": "MultipleChoiceQuestion",
-    "icon": "bulletList"
+    "icon": "bulletList",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "Question": {
-      "type": "string",
+      "type": "text",
       "required": true
     },
     "Answers": {
