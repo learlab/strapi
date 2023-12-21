@@ -60,25 +60,26 @@ async function entryPages(textData, startingPath) {
     let path = startingPath;
     let stream;
 
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=*', {cache: "no-store"});
+    let data = await res.json();
+
+    let pageData = data["data"]["attributes"];
+
     if (i !== 0) {
       path = startingPath + "section-" + i + ".mdx";
       stream = fs.createWriteStream(path);
-      stream.write("---\ntitle: \"" + page["attributes"]["Title"] +"\""
-        + "\npage_slug: " + page["attributes"]["slug"]
+      stream.write("---\ntitle: \"" + pageData["Title"] +"\""
+        + "\npage_slug: " + pageData["slug"]
+        +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
         + "\n---\n");
     } else {
       path = startingPath + "index.mdx";
       stream = fs.createWriteStream(path);
-      stream.write("---\ntitle: " + page["attributes"]["Title"]
-      + "\npage_slug: " + page["attributes"]["slug"]
-      + "\nsummary: " + page["attributes"]["HasSummary"]
+      stream.write("---\ntitle: " + pageData["Title"]
+      + "\npage_slug: " + pageData["slug"]
+      +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
       + "\n---\n");
     }
-
-    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=Content', {cache: "no-store"});
-    let data = await res.json();
-
-    let pageData = data["data"]["attributes"];
 
     for (let l = 0; l < pageData["Content"].length; ++l) {
 
