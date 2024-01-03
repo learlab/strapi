@@ -11,7 +11,7 @@ TurndownService.prototype.escape = function escape(string) {
   // Escape "$" so they are not interpreted by NextJS as inline math
   // Uses a negative lookahead and negative look behind
   // This leaves "$$" unescaped, to allow for MathJax inline math ("$$...$$")
-  string = string.replace(/\$(?!\$)(?<!\$\$)(?<!\\\$)/g, "\$");
+  //string = string.replace(/\$(?!\$)(?<!\$\$)(?<!\\\$)/g, "$");
 
   return string;
 };
