@@ -108,6 +108,21 @@ turndownService.addRule("image", {
   },
 });
 
+//rule for python notebook chunks
+turndownService.addRule("image", {
+  filter: function (node, options) {
+    return ['code class="language-python"'].includes(node.nodeName);
+  },
+
+  replacement: function (content, node, options) {
+    const tag = componentNameMap[node.nodeName];
+    var attrStr = stringifyAttributes(node, " ");
+    //console.log(`<${tag}${attrStr}>${content}</${tag}>`);
+
+    return `<Notebook code = ['${content}']/>`;
+  },
+});
+
 // turndownService.addRule("dollar", {
 //   filter: function (content, node, options) {
 //     return node.nodeType === 3;
