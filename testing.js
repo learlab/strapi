@@ -70,6 +70,7 @@ async function entryPages(textData, startingPath) {
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: \"" + pageData["Title"] +"\""
         + "\npage_slug: " + pageData["slug"]
+        +"\nsummary: " + pageData["HasSummary"]
         +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
         + "\n---\n");
     } else {
@@ -77,6 +78,7 @@ async function entryPages(textData, startingPath) {
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: " + pageData["Title"]
       + "\npage_slug: " + pageData["slug"]
+      +"\nsummary: " + pageData["HasSummary"]
       +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
       + "\n---\n");
     }
