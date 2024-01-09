@@ -45,6 +45,11 @@
     "Header": {
       "type": "string",
       "required": true
+    },
+    "ShowHeader": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }
