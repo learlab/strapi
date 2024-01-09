@@ -109,16 +109,23 @@ turndownService.addRule("image", {
 });
 
 //rule for python notebook chunks
-turndownService.addRule("image", {
-  filter: function (node, options) {
-    return ['code class="language-python"'].includes(node.nodeName);
-  },
-
+turndownService.addRule("code", {
+  filter: 'pre',
   replacement: function (content, node, options) {
     const tag = componentNameMap[node.nodeName];
     var attrStr = stringifyAttributes(node, " ");
     //console.log(`<${tag}${attrStr}>${content}</${tag}>`);
 
+    return content;
+  },
+});
+
+//rule for python notebook chunks
+turndownService.addRule("python", {
+  filter: 'code',
+  replacement: function (content, node, options) {
+    content = content.replace("\t", "\\t");
+    content = content.replace("\n", "\\n");
     return `<Notebook code = ['${content}']/>`;
   },
 });
