@@ -28,6 +28,7 @@ turndownService.use(gfm);
 // TODO: add support for nested components (steps, columns, accordion, tabs)
 // TODO: add support for multimedia (image, video, coding time)
 const componentNames = [
+  "Definition",
   "Keyterm",
   // 'Exercise', // <div class="exercise">...</div>
   // 'Image', // <img alt="">...</img>
@@ -70,7 +71,7 @@ function stringifyAttributes(element, separator = " ") {
 // Rule for elements that consist of attributes and content only
 turndownService.addRule("styles", {
   filter: function (node, options) {
-    return ["INFO", "WARNING", "CALLOUT", "BLOCKQUOTE"].includes(node.nodeName);
+    return ["INFO", "WARNING", "CALLOUT", "BLOCKQUOTE", "DEFINITION"].includes(node.nodeName);
   },
 
   replacement: function (content, node, options) {
