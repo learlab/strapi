@@ -127,7 +127,7 @@ turndownService.addRule("python", {
   replacement: function (content, node, options) {
     content = content.replace("\t", "\\t");
     content = content.replace("\n", "\\n");
-    return `<Notebook code = ['${content}']/>`;
+    return `<Notebook code = {'${content}'}/>`;
   },
 });
 
