@@ -1,5 +1,8 @@
 const fs = require('fs')
 
+let hasModules = true;
+let hasChapters = true;
+
 function getTitle() {
   if (process.argv.length === 2) {
     console.error('Expected at least one argument!');
@@ -65,23 +68,36 @@ async function entryPages(textData, startingPath) {
 
     let pageData = data["data"]["attributes"];
 
-    if (i !== 0) {
-      path = startingPath + "section-" + i + ".mdx";
+    if(hasModules){
+      if (i !== 0) {
+        path = startingPath + "section-" + i + ".mdx";
+        stream = fs.createWriteStream(path);
+        stream.write("---\ntitle: \"" + pageData["Title"] +"\""
+          + "\npage_slug: " + pageData["slug"]
+          +"\nsummary: " + pageData["HasSummary"]
+          +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
+          + "\n---\n");
+      } else {
+        path = startingPath + "index.mdx";
+        stream = fs.createWriteStream(path);
+        stream.write("---\ntitle:\" " + pageData["Title"]+"\""
+          + "\npage_slug: " + pageData["slug"]
+          +"\nsummary: " + pageData["HasSummary"]
+          +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
+          + "\n---\n");
+      }
+    }
+    else{
+      path = startingPath + "chapter-" + i + ".mdx";
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: \"" + pageData["Title"] +"\""
         + "\npage_slug: " + pageData["slug"]
         +"\nsummary: " + pageData["HasSummary"]
         +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
         + "\n---\n");
-    } else {
-      path = startingPath + "index.mdx";
-      stream = fs.createWriteStream(path);
-      stream.write("---\ntitle: " + pageData["Title"]
-      + "\npage_slug: " + pageData["slug"]
-      +"\nsummary: " + pageData["HasSummary"]
-      +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
-      + "\n---\n");
     }
+
+
 
     for (let l = 0; l < pageData["Content"].length; ++l) {
 
@@ -169,8 +185,8 @@ async function run() {
 
   let textData = await getTextData(textID);
 
-  let hasModules = textData["modules"]["data"].length > 0;
-  let hasChapters = textData["chapters"]["data"].length > 0;
+  hasModules = textData["modules"]["data"].length > 0;
+  hasChapters = textData["chapters"]["data"].length > 0;
 
   if(hasModules){
     await makeModules(textData);
