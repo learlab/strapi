@@ -5,3 +5,4 @@
 /build/
 /src/plugins/*/node_modules/
 .tmp
+.DS_Store

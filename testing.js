@@ -68,7 +68,7 @@ async function entryPages(textData, startingPath) {
 
     let pageData = data["data"]["attributes"];
 
-    if(hasModules){
+    if(hasChapters){
       if (i !== 0) {
         path = startingPath + "section-" + i + ".mdx";
         stream = fs.createWriteStream(path);
