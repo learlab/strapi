@@ -195,7 +195,7 @@ async function run() {
     await makeChapters(textData);
   }
   else{
-    await entryPages(textData["chapters"]["data"],"output/");
+    await entryPages(textData["pages"]["data"],"output/");
   }
 }
 
