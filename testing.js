@@ -72,7 +72,7 @@ async function entryPages(textData, startingPath) {
       if (i !== 0) {
         path = startingPath + "section-" + i + ".mdx";
         stream = fs.createWriteStream(path);
-        stream.write("---\ntitle:  \"" + pageData["Title"] +"\""
+        stream.write("---\ntitle: \"" + pageData["Title"] +"\""
           + "\npage_slug: " + pageData["slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
@@ -80,7 +80,7 @@ async function entryPages(textData, startingPath) {
       } else {
         path = startingPath + "index.mdx";
         stream = fs.createWriteStream(path);
-        stream.write("---\ntitle:\" " + pageData["Title"]+"\""
+        stream.write("---\ntitle: \" " + pageData["Title"]+"\""
           + "\npage_slug: " + pageData["slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
