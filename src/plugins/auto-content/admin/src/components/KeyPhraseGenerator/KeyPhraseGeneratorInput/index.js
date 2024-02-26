@@ -117,15 +117,24 @@ export default function Index({
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
+
       const parsedResponse = await response.json().then((res) => {
-        return res.choices[0].message.content.trim();
+        // Probably will need to add a new column in Strapi db if we want to use the JSON feature
+        // const resArr = Object.values(JSON.parse(res.choices[0].message.content))[0];
+        // console.log(resArr);
+        // return resArr.join("\n");
+        if ("error" in res) {
+          return `Error generating kephrases!: ${res.error.message}`
+        } else {
+          return res.choices[0].message.content.trim();
+        }
       });
 
       onChange({
         target: { name, value: parsedResponse, type: attribute.type },
       });
     } catch (err) {
-      console.log(err);
+      throw new Error(`Error generating kephrases! status: ${err}`);
     }
   };
 
@@ -152,7 +161,7 @@ export default function Index({
 
       return generatedCleanText;
     } catch (err) {
-      console.log(err);
+      throw new Error(`Error generating clean text! status: ${err}`);
     }
   };
 
@@ -184,6 +193,7 @@ export default function Index({
       } catch (error) {
         console.error("Error fetching transcript:", error);
         fetchedTranscript = "Error fetching transcript";
+        throw new Error(`Error fetching transcript! status: ${error}`);
       }
 
       return fetchedTranscript;
