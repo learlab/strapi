@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-01-18T04:25:40.570Z"
+    "x-generation-date": "2024-03-03T00:43:38.279Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -299,6 +299,14 @@
                                   },
                                   "ShowHeader": {
                                     "type": "boolean"
+                                  },
+                                  "HeaderLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                      "H2",
+                                      "H3",
+                                      "H4"
+                                    ]
                                   }
                                 }
                               },
@@ -328,6 +336,14 @@
                                   },
                                   "ShowHeader": {
                                     "type": "boolean"
+                                  },
+                                  "HeaderLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                      "H2",
+                                      "H3",
+                                      "H4"
+                                    ]
                                   }
                                 }
                               }
@@ -1440,6 +1456,14 @@
                                               },
                                               "ShowHeader": {
                                                 "type": "boolean"
+                                              },
+                                              "HeaderLevel": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "H2",
+                                                  "H3",
+                                                  "H4"
+                                                ]
                                               }
                                             }
                                           },
@@ -1469,6 +1493,14 @@
                                               },
                                               "ShowHeader": {
                                                 "type": "boolean"
+                                              },
+                                              "HeaderLevel": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "H2",
+                                                  "H3",
+                                                  "H4"
+                                                ]
                                               }
                                             }
                                           }
@@ -2580,6 +2612,14 @@
                                               },
                                               "ShowHeader": {
                                                 "type": "boolean"
+                                              },
+                                              "HeaderLevel": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "H2",
+                                                  "H3",
+                                                  "H4"
+                                                ]
                                               }
                                             }
                                           },
@@ -2609,6 +2649,14 @@
                                               },
                                               "ShowHeader": {
                                                 "type": "boolean"
+                                              },
+                                              "HeaderLevel": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "H2",
+                                                  "H3",
+                                                  "H4"
+                                                ]
                                               }
                                             }
                                           }
@@ -3560,6 +3608,14 @@
           },
           "ShowHeader": {
             "type": "boolean"
+          },
+          "HeaderLevel": {
+            "type": "string",
+            "enum": [
+              "H2",
+              "H3",
+              "H4"
+            ]
           }
         }
       },
@@ -3589,6 +3645,14 @@
           },
           "ShowHeader": {
             "type": "boolean"
+          },
+          "HeaderLevel": {
+            "type": "string",
+            "enum": [
+              "H2",
+              "H3",
+              "H4"
+            ]
           }
         }
       },
@@ -3779,6 +3843,14 @@
                                 },
                                 "ShowHeader": {
                                   "type": "boolean"
+                                },
+                                "HeaderLevel": {
+                                  "type": "string",
+                                  "enum": [
+                                    "H2",
+                                    "H3",
+                                    "H4"
+                                  ]
                                 }
                               }
                             },
@@ -3808,6 +3880,14 @@
                                 },
                                 "ShowHeader": {
                                   "type": "boolean"
+                                },
+                                "HeaderLevel": {
+                                  "type": "string",
+                                  "enum": [
+                                    "H2",
+                                    "H3",
+                                    "H4"
+                                  ]
                                 }
                               }
                             }
@@ -4932,6 +5012,14 @@
                                   },
                                   "ShowHeader": {
                                     "type": "boolean"
+                                  },
+                                  "HeaderLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                      "H2",
+                                      "H3",
+                                      "H4"
+                                    ]
                                   }
                                 }
                               },
@@ -4961,6 +5049,14 @@
                                   },
                                   "ShowHeader": {
                                     "type": "boolean"
+                                  },
+                                  "HeaderLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                      "H2",
+                                      "H3",
+                                      "H4"
+                                    ]
                                   }
                                 }
                               }
