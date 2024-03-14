@@ -5,7 +5,7 @@ const fieldSuffixes = require("./fieldSuffixes");
 
 async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
   if (chunkName) {
-    const slug = slugify(chunkName);
+    const slug = slugify(chunkName, {remove: /[*+~.()'"!:@]/g});
     return `${slug}-${databaseID.toString()}${chunkTypeSuffix}`;
   } else {
     return "";
