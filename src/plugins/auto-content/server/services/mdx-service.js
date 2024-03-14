@@ -132,6 +132,15 @@ turndownService.addRule("python", {
   },
 });
 
+//rule for all <br> to <br/> replacement
+turndownService.addRule("linebreaks", {
+  filter: 'code',
+  replacement: function (content, node, options) {
+    content = content.replaceAll("<br>", "<br/>");
+    return `<Notebook code = {\`${content}\`}/>`;
+  },
+});
+
 // turndownService.addRule("dollar", {
 //   filter: function (content, node, options) {
 //     return node.nodeType === 3;
