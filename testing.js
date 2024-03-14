@@ -117,7 +117,7 @@ async function entryPages(textData, startingPath) {
           stream.write("## "+curChunk["Header"]+"\n");
         }
         if(curChunk["MDX"] != null){
-          stream.write(curChunk["MDX"]);
+          stream.write((curChunk["MDX"]).replaceAll("<br>","<br/>"));
         }
         stream.write("\n</div>\n");
       } else if (curChunk["__component"] === "page.video") {
