@@ -26,6 +26,9 @@ import ckeditor5TableDll from "@ckeditor/ckeditor5-table/build/table.js";
 import ckeditor5WordCountDll from "@ckeditor/ckeditor5-word-count/build/word-count.js";
 import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/maximum-length.js";
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
+import Info from "./plugins/Info/Info"
+import Callout from "./plugins/Callout/Callout"
+import Warning from "./plugins/Warning/Warning"
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -74,6 +77,9 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.wordCount.WordCount,
       window.CKEditor5.highlight.Highlight,
       StrapiMediaLib,
+      Info,
+      Callout,
+      Warning
     ],
     toolbar: {
       items: [
@@ -87,7 +93,11 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'bulletedList', 'numberedList',
         '-',
-        'sourceEditing', 'htmlEmbed'
+        'sourceEditing', 'htmlEmbed',
+        '|',
+        'Info',
+        'Callout',
+        'Warning'
       ],
       shouldNotGroupWhenFull: true
     },
