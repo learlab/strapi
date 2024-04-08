@@ -3,46 +3,23 @@ const fs = require('fs')
 let hasModules = true;
 let hasChapters = true;
 
-function getTitle() {
+function getTextID() {
   if (process.argv.length === 2) {
     console.error('Expected at least one argument!');
     process.exit(1);
   }
-  let result = "";
-  for(let i = 2; i < process.argv.length; ++i){
-    result += process.argv[i];
-    if(process.argv.length - 1 !== i){
-      result += " ";
-    }
-  }
-  return result;
-}
-
-async function getTextID(title) {
-  let textID = 0;
-  try {
-    const res = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts`, {cache: "no-store"});
-    let data = await res.json();
-
-
-    for (let i = 0; i < data["data"].length; ++i) {
-      let curData = data["data"][i]["attributes"];
-      if (curData["Title"] === title) {
-        textID = data["data"][i]["id"];
-      }
-    }
-  }
-  catch (err){
-    console.log(err);
-  }
-  return textID;
+  return process.argv[2];
 }
 
 async function getTextData(textID) {
-      const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*', {cache: "no-store"});
-      let data = await res.json();
+  const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*', {cache: "no-store"});
+  let data = await res.json();
 
-      return data["data"]["attributes"];
+  if(data["data"] == null){
+    process.exit(1);
+  }
+
+  return data["data"]["attributes"];
 }
 
 function makeDir(path) {
@@ -114,10 +91,23 @@ async function entryPages(textData, startingPath) {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\">\n";
         stream.write(inputString);
         if(curChunk["ShowHeader"] === true) {
-          stream.write("## "+curChunk["Header"]+"\n");
+          if(curChunk["HeaderLevel"]){
+            if(curChunk["HeaderLevel"] === "H2"){
+              stream.write("## "+curChunk["Header"]+"\n");
+            }
+            if(curChunk["HeaderLevel"] === "H3"){
+              stream.write("### "+curChunk["Header"]+"\n");
+            }
+            if(curChunk["HeaderLevel"] === "H4"){
+              stream.write("#### "+curChunk["Header"]+"\n");
+            }
+          }
+          else{
+            stream.write("## "+curChunk["Header"]+"\n");
+          }
         }
         if(curChunk["MDX"] != null){
-          stream.write((curChunk["MDX"]).replaceAll("<br>","<br/>"));
+          stream.write(curChunk["MDX"]);
         }
         stream.write("\n</div>\n");
       } else if (curChunk["__component"] === "page.video") {
@@ -177,11 +167,11 @@ async function makeChapters(textData) {
 }
 
 async function run() {
-  let title = getTitle();
-  let textID = await getTextID(title);
-  if(textID === 0){
-    return;
-  }
+  let textID = getTextID();
+  // let textID = await getTextID(title);
+  // if(textID === 0){
+  //   return;
+  // }
 
   let textData = await getTextData(textID);
 
@@ -200,3 +190,4 @@ async function run() {
 }
 
 run();
+
