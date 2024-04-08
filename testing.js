@@ -91,16 +91,12 @@ async function entryPages(textData, startingPath) {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\">\n";
         stream.write(inputString);
         if(curChunk["ShowHeader"] === true) {
-          if(curChunk["HeaderLevel"]){
-            if(curChunk["HeaderLevel"] === "H2"){
-              stream.write("## "+curChunk["Header"]+"\n");
-            }
-            if(curChunk["HeaderLevel"] === "H3"){
-              stream.write("### "+curChunk["Header"]+"\n");
-            }
-            if(curChunk["HeaderLevel"] === "H4"){
-              stream.write("#### "+curChunk["Header"]+"\n");
-            }
+
+          if(curChunk["HeaderLevel"] === "H3"){
+            stream.write("### "+curChunk["Header"]+"\n");
+          }
+          else if(curChunk["HeaderLevel"] === "H4"){
+            stream.write("#### "+curChunk["Header"]+"\n");
           }
           else{
             stream.write("## "+curChunk["Header"]+"\n");
