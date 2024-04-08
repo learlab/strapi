@@ -40,7 +40,7 @@ jobs:
       - name: Create output directory
         run: mkdir -p output
       - name: creates output
-        run: node ./testing.js ${{ inputs.textID }}
+        run: node ./testing.js ${{ inputs.text }}
       - name: List contents of the output directory
         run: ls -R output
       - name: Pushes to another repository
