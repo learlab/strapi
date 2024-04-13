@@ -29,6 +29,16 @@ async function generatePageEmbeddings(ctx) {
   payload.map((item) =>
     strapi.service("api::page.page").generateEmbedding(item)
   );
+
+  const deletePayload = {
+    text_slug: entry.text.slug,
+    module_slug: this_module_slug,
+    chapter_slug: chapter ? chapter.slug : null,
+    page_slug: entry.slug,
+    chunk_slugs: entry.Content.map((item) => item.Slug),
+  }
+
+  strapi.service("api::page.page").deleteEmbeddings(deletePayload);
 }
 
 module.exports = {

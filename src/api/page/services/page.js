@@ -30,4 +30,27 @@ module.exports = createCoreService('api::page.page', ({ strapi }) =>  ({
           console.log(error);
         }
       }
+
+      async deleteEmbeddings(ctx) {
+        // for testing 
+        // const targetURL = `https://httpbin.org/delete`
+        const targetURL = `https://itell-api.learlab.vanderbilt.edu/delete/unused`
+
+        try {
+          const response = await fetch(
+            targetURL,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(ctx),
+            }
+          );
+          const result = await response;
+          return result;
+        } catch (error) {
+          console.log(error);
+        }
+      }
 }));
