@@ -26,6 +26,7 @@ module.exports = ({ strapi }) => {
       return result.transcript;
     } catch (error) {
       console.log(error);
+      throw new utils.errors.ApplicationError("Bad youtube link");
     }
   };
 
