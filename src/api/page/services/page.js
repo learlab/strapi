@@ -29,11 +29,10 @@ module.exports = createCoreService('api::page.page', ({ strapi }) =>  ({
         } catch (error) {
           console.log(error);
         }
-      }
+      },
 
       async deleteEmbeddings(ctx) {
         // for testing 
-        // const targetURL = `https://httpbin.org/delete`
         const targetURL = `https://itell-api.learlab.vanderbilt.edu/delete/unused`
 
         try {
