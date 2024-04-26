@@ -39,7 +39,7 @@ module.exports = createCoreService('api::page.page', ({ strapi }) =>  ({
           const response = await fetch(
             targetURL,
             {
-              method: "DELETE",
+              method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
