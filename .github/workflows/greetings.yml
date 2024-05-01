@@ -6,6 +6,10 @@ on:
         description: 'text name'
         required: true
         type: string
+      textID:
+        description: 'text id'
+        required: true
+        type: string
       token:
         description: 'github token'
         required: true
@@ -36,7 +40,7 @@ jobs:
       - name: Create output directory
         run: mkdir -p output
       - name: creates output
-        run: node ./testing.js ${{ inputs.text }}
+        run: node ./testing.js ${{ inputs.textID }}
       - name: List contents of the output directory
         run: ls -R output
       - name: Pushes to another repository

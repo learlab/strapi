@@ -47,16 +47,13 @@ const HomePage = () => {
         },
         body: JSON.stringify({
           text: text,
+          textID: textID,
           token: token,
           owner: owner,
           repository: repository,
           dir: dir,
         }),
       });
-
-      if (res?.success !== true) {
-        handleError();
-      }
     } catch (e) {
       handleError(e);
     } finally {
@@ -139,6 +136,8 @@ const HomePage = () => {
 
   let [owner, setOwner] = useState("⬇️ Select a text ⬇️")
 
+  let [textID, setTextID] = useState("⬇️ Select a text ⬇️")
+
   let [repository, setRepository] = useState("⬇️ Select a text ⬇️")
 
   let [dir, setDir] = useState("⬇️ Select a text ⬇️")
@@ -148,6 +147,7 @@ const HomePage = () => {
     setText(inputs.text);
     setToken(inputs.token);
     setOwner(inputs.owner);
+    setTextID(inputs.textID);
     setRepository(inputs.repository);
     setDir(inputs.dir);
   }
@@ -167,8 +167,8 @@ const HomePage = () => {
         ) : (
           <div>
             { texts == "hi" ? (
-               <div/>
-              ) : (
+              <div/>
+            ) : (
               <div >
                 <br />
 
@@ -177,7 +177,7 @@ const HomePage = () => {
                   {texts.map((text) => <option value={JSON.stringify(text)}>{text.text}</option>)}
                 </select>
               </div>
-              )
+            )
             }
             <br />
             <PublishButton
