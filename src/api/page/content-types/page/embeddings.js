@@ -31,9 +31,6 @@ async function generatePageEmbeddings(ctx) {
   );
 
   const deletePayload = {
-    text_slug: entry.text.slug,
-    module_slug: this_module_slug,
-    chapter_slug: chapter ? chapter.slug : null,
     page_slug: entry.slug,
     chunk_slugs: entry.Content.map((item) => item.Slug),
   }
@@ -46,22 +43,7 @@ const deleteAllEmbeddings = async (id) => {
     populate: "*",
   });
 
-  var chapter = null;
-  const chapter_id = entry.chapter ? entry.chapter.id : null;
-  var this_module_slug = null;
-  if (chapter_id) {
-    chapter = await strapi.entityService.findOne(
-      "api::chapter.chapter",
-      chapter_id,
-      { populate: "module" }
-    );
-    this_module_slug = chapter.module ? chapter.module.slug : null;
-  }
-
   const deletePayload = {
-    text_slug: entry.text.slug,
-    module_slug: this_module_slug,
-    chapter_slug: chapter ? chapter.slug : null,
     page_slug: entry.slug,
     chunk_slugs: [],
   }
