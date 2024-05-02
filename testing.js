@@ -146,7 +146,7 @@ async function makeChapters(textData) {
   let chapterPath;
   for (let i = 0; i < newTextData.length; ++i) {
     if(newTextData[i]["attributes"]["ChapterNumber"]==null){
-      chapterPath="./output/chapter-" + (j+1)+"/";
+      chapterPath="./output/chapter-" + (i+1)+"/";
     }
     else{
       chapterPath="./output/chapter-" + newTextData[i]["attributes"]["ChapterNumber"]+"/";
