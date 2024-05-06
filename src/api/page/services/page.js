@@ -29,5 +29,27 @@ module.exports = createCoreService('api::page.page', ({ strapi }) =>  ({
         } catch (error) {
           console.log(error);
         }
+      },
+
+      async deleteEmbeddings(ctx) {
+        // for testing 
+        const targetURL = `https://itell-api.learlab.vanderbilt.edu/delete/embedding`
+
+        try {
+          const response = await fetch(
+            targetURL,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(ctx),
+            }
+          );
+          const result = await response;
+          return result;
+        } catch (error) {
+          console.log(error);
+        }
       }
 }));

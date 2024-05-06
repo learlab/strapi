@@ -1,4 +1,4 @@
-const { generatePageEmbeddings } = require('./embeddings');
+const { generatePageEmbeddings, deleteAllEmbeddings } = require('./embeddings');
 
 module.exports = { 
     afterCreate: async (event) => {
@@ -10,4 +10,9 @@ module.exports = {
         const { result, params } = event;
         generatePageEmbeddings(result);
     },
+
+    beforeDelete: async (event) => {
+        const { result, params } = event;
+        await deleteAllEmbeddings(params.where.id);
+    }
   };
