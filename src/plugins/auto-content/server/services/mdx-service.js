@@ -77,8 +77,8 @@ turndownService.addRule("styles", {
   replacement: function (content, node, options) {
     const tag = componentNameMap[node.nodeName];
     var attrStr = stringifyAttributes(node, " ");
-    console.log(`<${tag}${attrStr}>${content}</${tag}>`);
-    return `<${tag}${attrStr}>${content}</${tag}>`;
+    // console.log(`<${tag}${attrStr}>\n${content}\n</${tag}>`);
+    return `<${tag}${attrStr}>\n${content}\n</${tag}>`;
   },
 });
 
