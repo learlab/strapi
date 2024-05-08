@@ -103,7 +103,7 @@ async function entryPages(textData, startingPath) {
           }
         }
         if(curChunk["MDX"] != null){
-          stream.write(curChunk["MDX"]);
+          stream.write(curChunk["MDX"].replace(/[\u200B-\u200D\uFEFF]/g, ''));
         }
         stream.write("\n</div>\n");
       } else if (curChunk["__component"] === "page.video") {
