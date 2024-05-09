@@ -77,8 +77,8 @@ turndownService.addRule("styles", {
   replacement: function (content, node, options) {
     const tag = componentNameMap[node.nodeName];
     var attrStr = stringifyAttributes(node, " ");
-    console.log(`<${tag}${attrStr}>${content}</${tag}>`);
-    return `<${tag}${attrStr}>${content}</${tag}>`;
+    // console.log(`<${tag}${attrStr}>\n${content}\n</${tag}>`);
+    return `<${tag}${attrStr}>\n${content}\n</${tag}>`;
   },
 });
 
@@ -187,6 +187,13 @@ turndownService.addRule('convertLineBreaks', {
   replacement: function(content) {
     return '<br/>';
   }
+//rule for all <br> to <br/> replacement
+turndownService.addRule("linebreaks", {
+  filter: 'code',
+  replacement: function (content, node, options) {
+    content = content.replaceAll("<br>", "<br/>");
+    return `<Notebook code = {\`${content}\`}/>`;
+  },
 });
 
 // turndownService.addRule("dollar", {

@@ -29,8 +29,29 @@ async function generatePageEmbeddings(ctx) {
   payload.map((item) =>
     strapi.service("api::page.page").generateEmbedding(item)
   );
+
+  const deletePayload = {
+    page_slug: entry.slug,
+    chunk_slugs: entry.Content.map((item) => item.Slug),
+  }
+
+  strapi.service("api::page.page").deleteEmbeddings(deletePayload);
+}
+
+const deleteAllEmbeddings = async (id) => {
+  const entry = await strapi.entityService.findOne("api::page.page", id, {
+    populate: "*",
+  });
+
+  const deletePayload = {
+    page_slug: entry.slug,
+    chunk_slugs: [],
+  }
+
+  strapi.service("api::page.page").deleteEmbeddings(deletePayload);
 }
 
 module.exports = {
   generatePageEmbeddings,
+  deleteAllEmbeddings
 };

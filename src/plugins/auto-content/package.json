@@ -19,6 +19,7 @@
     "joplin-turndown-plugin-gfm": "^1.0.12",
     "prop-types": "^15.7.2",
     "rehype-parse": "7.0.1",
+    "strapi-utils": "^3.6.11",
     "unified": "9.2.2",
     "unist-util-remove": "2.1.0"
   },
