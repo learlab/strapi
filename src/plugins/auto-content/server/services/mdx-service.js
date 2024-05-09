@@ -87,23 +87,17 @@ turndownService.addRule('InfoRule', {
   filter: function(node) {
     return (
       node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Info' &&
-      node.getAttribute('title')
+      node.getAttribute('class') === 'Info'
     );
   },
   replacement: function(content, node) {
-    const title = node.getAttribute('title');
-    var titleContent;
-    try{
-      titleContent = node.querySelector('h3').textContent.trim();
-    }
-    catch(e){
-      titleContent = ""
-    }
+    const titles = Array.from(node.querySelectorAll('h1'));
+    const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+
 
     const paragraphs = Array.from(node.querySelectorAll('p'));
     const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
-    return `<Info title="${title || titleContent}">\n${paragraphContent}\n</Info>\n`;
+    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
   }
 });
 

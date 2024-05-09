@@ -33,6 +33,12 @@ export default class WarningEditing extends Plugin {
             allowIn: 'Warning',
             allowContentOf: '$root'
         } );
+
+      schema.addChildCheck( ( context, childDefinition ) => {
+        if ( context.endsWith( 'WarningContent' ) && childDefinition.name != 'paragraph') {
+          return false;
+        }
+      } );
     }
 
     _defineConverters() {

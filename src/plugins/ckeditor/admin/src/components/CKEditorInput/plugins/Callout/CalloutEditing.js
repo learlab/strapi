@@ -33,6 +33,12 @@ export default class CalloutEditing extends Plugin {
             allowIn: 'Callout',
             allowContentOf: '$root'
         } );
+
+      schema.addChildCheck( ( context, childDefinition ) => {
+        if ( context.endsWith( 'CalloutContent' ) && childDefinition.name != 'paragraph') {
+          return false;
+        }
+      } );
     }
 
     _defineConverters() {
