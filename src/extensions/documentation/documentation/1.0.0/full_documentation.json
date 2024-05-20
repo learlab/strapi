@@ -2353,6 +2353,10 @@
         ],
         "properties": {
           "data": {
+            "required": [
+              "Title",
+              "slug"
+            ],
             "type": "object",
             "properties": {
               "Title": {
@@ -2465,6 +2469,10 @@
       },
       "Page": {
         "type": "object",
+        "required": [
+          "Title",
+          "slug"
+        ],
         "properties": {
           "Title": {
             "type": "string"
