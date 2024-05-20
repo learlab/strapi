@@ -82,6 +82,55 @@ turndownService.addRule("styles", {
   },
 });
 
+//for Info sections
+turndownService.addRule('InfoRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Info'
+    );
+  },
+  replacement: function(content, node) {
+    const titles = Array.from(node.querySelectorAll('h1'));
+    const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+
+
+    const paragraphs = Array.from(node.querySelectorAll('p'));
+    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
+  }
+});
+
+//for Warning sections
+turndownService.addRule('WarningRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Warning'
+    );
+  },
+  replacement: function(content, node) {
+    const paragraphs = Array.from(node.querySelectorAll('p'));
+    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    return `<Warning>\n${paragraphContent}\n</Warning>`;
+  }
+});
+
+//for Callout sections
+turndownService.addRule('CalloutRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Callout'
+    );
+  },
+  replacement: function(content, node) {
+    const paragraphs = Array.from(node.querySelectorAll('p'));
+    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    return `<Callout>\n${paragraphContent}\n</Callout>`;
+  }
+});
+
 // Rule for images
 turndownService.addRule("image", {
   filter: function (node, options) {
@@ -132,6 +181,12 @@ turndownService.addRule("python", {
   },
 });
 
+//converts linebreaks
+turndownService.addRule('convertLineBreaks', {
+  filter: 'br',
+  replacement: function(content) {
+    return '<br/>';
+  }
 //rule for all <br> to <br/> replacement
 turndownService.addRule("linebreaks", {
   filter: 'code',
