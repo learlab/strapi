@@ -184,9 +184,11 @@ turndownService.addRule("python", {
 //converts linebreaks
 turndownService.addRule('convertLineBreaks', {
   filter: 'br',
-  replacement: function(content) {
+  replacement: function (content) {
     return '<br/>';
-  }
+  },
+});
+
 //rule for all <br> to <br/> replacement
 turndownService.addRule("linebreaks", {
   filter: 'code',
