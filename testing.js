@@ -53,6 +53,7 @@ async function entryPages(textData, startingPath) {
           + "\npage_slug: " + pageData["slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
+          + "\nreference_summary: " + pageData["ReferenceSummary"]
           + "\n---\n");
       } else {
         path = startingPath + "index.mdx";
