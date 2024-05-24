@@ -50,6 +50,9 @@
       "relation": "oneToOne",
       "target": "api::quiz.quiz",
       "mappedBy": "PreviousPage"
+    },
+    "ReferenceSummary": {
+      "type": "text"
     }
   }
 }
