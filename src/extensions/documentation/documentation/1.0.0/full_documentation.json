@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-05-21T18:18:58.526Z"
+    "x-generation-date": "2024-05-24T03:21:31.736Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1071,6 +1071,9 @@
                             }
                           }
                         },
+                        "ReferenceSummary": {
+                          "type": "string"
+                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
@@ -2109,6 +2112,9 @@
                                         }
                                       }
                                     },
+                                    "ReferenceSummary": {
+                                      "type": "string"
+                                    },
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -2416,6 +2422,9 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "ReferenceSummary": {
+                "type": "string"
               }
             }
           }
@@ -3273,6 +3282,9 @@
                                         }
                                       }
                                     },
+                                    "ReferenceSummary": {
+                                      "type": "string"
+                                    },
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -3460,6 +3472,9 @@
                 }
               }
             }
+          },
+          "ReferenceSummary": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -4622,6 +4637,9 @@
                             }
                           }
                         }
+                      },
+                      "ReferenceSummary": {
+                        "type": "string"
                       },
                       "createdAt": {
                         "type": "string",
@@ -5791,6 +5809,9 @@
                               }
                             }
                           }
+                        },
+                        "ReferenceSummary": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",
