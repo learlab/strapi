@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "Title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Content": {
       "type": "dynamiczone",
@@ -37,7 +38,8 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "Title"
+      "targetField": "Title",
+      "required": true
     },
     "HasSummary": {
       "type": "boolean",
@@ -48,6 +50,9 @@
       "relation": "oneToOne",
       "target": "api::quiz.quiz",
       "mappedBy": "PreviousPage"
+    },
+    "ReferenceSummary": {
+      "type": "text"
     }
   }
 }

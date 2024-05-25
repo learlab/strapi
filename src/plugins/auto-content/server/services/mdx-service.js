@@ -77,9 +77,58 @@ turndownService.addRule("styles", {
   replacement: function (content, node, options) {
     const tag = componentNameMap[node.nodeName];
     var attrStr = stringifyAttributes(node, " ");
-    console.log(`<${tag}${attrStr}>${content}</${tag}>`);
-    return `<${tag}${attrStr}>${content}</${tag}>`;
+    // console.log(`<${tag}${attrStr}>\n${content}\n</${tag}>`);
+    return `<${tag}${attrStr}>\n${content}\n</${tag}>`;
   },
+});
+
+//for Info sections
+turndownService.addRule('InfoRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Info'
+    );
+  },
+  replacement: function(content, node) {
+    const titles = Array.from(node.querySelectorAll('h1'));
+    const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+
+
+    const paragraphs = Array.from(node.querySelectorAll('p'));
+    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
+  }
+});
+
+//for Warning sections
+turndownService.addRule('WarningRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Warning'
+    );
+  },
+  replacement: function(content, node) {
+    const paragraphs = Array.from(node.querySelectorAll('p'));
+    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    return `<Warning>\n${paragraphContent}\n</Warning>`;
+  }
+});
+
+//for Callout sections
+turndownService.addRule('CalloutRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Callout'
+    );
+  },
+  replacement: function(content, node) {
+    const paragraphs = Array.from(node.querySelectorAll('p'));
+    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    return `<Callout>\n${paragraphContent}\n</Callout>`;
+  }
 });
 
 // Rule for images
@@ -129,6 +178,14 @@ turndownService.addRule("python", {
     content = content.replaceAll("\n", "\\n");
     content = content.replaceAll("'", "\'");
     return `<Notebook code = {\`${content}\`}/>`;
+  },
+});
+
+//converts linebreaks
+turndownService.addRule('convertLineBreaks', {
+  filter: 'br',
+  replacement: function (content) {
+    return '<br/>';
   },
 });
 

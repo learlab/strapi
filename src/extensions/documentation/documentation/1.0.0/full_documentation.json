@@ -1488,6 +1488,9 @@
                             }
                           }
                         },
+                        "ReferenceSummary": {
+                          "type": "string"
+                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
@@ -2526,6 +2529,9 @@
                                         }
                                       }
                                     },
+                                    "ReferenceSummary": {
+                                      "type": "string"
+                                    },
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -2770,6 +2776,10 @@
         ],
         "properties": {
           "data": {
+            "required": [
+              "Title",
+              "slug"
+            ],
             "type": "object",
             "properties": {
               "Title": {
@@ -2829,6 +2839,9 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "ReferenceSummary": {
+                "type": "string"
               }
             }
           }
@@ -2882,6 +2895,10 @@
       },
       "Page": {
         "type": "object",
+        "required": [
+          "Title",
+          "slug"
+        ],
         "properties": {
           "Title": {
             "type": "string"
@@ -3682,6 +3699,9 @@
                                         }
                                       }
                                     },
+                                    "ReferenceSummary": {
+                                      "type": "string"
+                                    },
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -3869,6 +3889,9 @@
                 }
               }
             }
+          },
+          "ReferenceSummary": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -5031,6 +5054,9 @@
                             }
                           }
                         }
+                      },
+                      "ReferenceSummary": {
+                        "type": "string"
                       },
                       "createdAt": {
                         "type": "string",
@@ -6200,6 +6226,9 @@
                               }
                             }
                           }
+                        },
+                        "ReferenceSummary": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",

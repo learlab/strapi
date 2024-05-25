@@ -12,7 +12,7 @@ function getTextID() {
 }
 
 async function getTextData(textID) {
-  const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*', {cache: "no-store"});
+  const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*&publicationState=live', {cache: "no-store"});
   let data = await res.json();
 
   if(data["data"] == null){
@@ -40,7 +40,7 @@ async function entryPages(textData, startingPath) {
     let path = startingPath;
     let stream;
 
-    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=*', {cache: "no-store"});
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=*&publicationState=live', {cache: "no-store"});
     let data = await res.json();
 
     let pageData = data["data"]["attributes"];
@@ -53,6 +53,7 @@ async function entryPages(textData, startingPath) {
           + "\npage_slug: " + pageData["slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
+          + "\nreference_summary: " + pageData["ReferenceSummary"]
           + "\n---\n");
       } else {
         path = startingPath + "index.mdx";
@@ -103,7 +104,7 @@ async function entryPages(textData, startingPath) {
           }
         }
         if(curChunk["MDX"] != null){
-          stream.write(curChunk["MDX"]);
+          stream.write(curChunk["MDX"].replace(/[\u200B-\u200D\uFEFF]/g, ''));
         }
         stream.write("\n</div>\n");
       } else if (curChunk["__component"] === "page.video") {
@@ -117,7 +118,7 @@ async function makeModules(textData) {
   let newTextData = textData["modules"]["data"];
   for (let i = 0; i < newTextData.length; ++i) {
     makeDir("./output/module-" + (i + 1));
-    let res = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/'+textData["modules"]["data"][i]["id"]+'?populate=chapters', {cache: "no-store"});
+    let res = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/'+textData["modules"]["data"][i]["id"]+'?populate=chapters&publicationState=live', {cache: "no-store"});
     let data = await res.json();
 
     let modulesData = data["data"]["attributes"]["chapters"]["data"];
@@ -132,7 +133,7 @@ async function makeModules(textData) {
       makeDir(chapterPath);
       let chapterID=modulesData[j]["id"];
 
-      res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/'+chapterID+'?populate=pages', {cache: "no-store"});
+      res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/'+chapterID+'?populate=pages&publicationState=live', {cache: "no-store"});
       data = await res.json();
 
       let chapterData = data["data"]["attributes"]["pages"]["data"];
@@ -146,7 +147,7 @@ async function makeChapters(textData) {
   let chapterPath;
   for (let i = 0; i < newTextData.length; ++i) {
     if(newTextData[i]["attributes"]["ChapterNumber"]==null){
-      chapterPath="./output/chapter-" + (j+1)+"/";
+      chapterPath="./output/chapter-" + (i+1)+"/";
     }
     else{
       chapterPath="./output/chapter-" + newTextData[i]["attributes"]["ChapterNumber"]+"/";
@@ -154,7 +155,7 @@ async function makeChapters(textData) {
     makeDir(chapterPath);
     let chapterID=newTextData[i]["id"];
 
-    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/'+chapterID+'?populate=pages', {cache: "no-store"});
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/'+chapterID+'?populate=pages&publicationState=live', {cache: "no-store"});
     let data = await res.json();
 
     let chapterData = data["data"]["attributes"]["pages"]["data"];
