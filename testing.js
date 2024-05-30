@@ -92,7 +92,7 @@ async function entryPages(textData, startingPath) {
         let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\" ";
         stream.write(inputString);
         if(curChunk["ShowHeader"] === true) {
-          stream.write("show-header = true>\n");
+          stream.write("show-header = \"true\">\n");
           if(curChunk["HeaderLevel"] === "H3"){
             stream.write("### "+curChunk["Header"]+"\n");
           }
@@ -104,7 +104,7 @@ async function entryPages(textData, startingPath) {
           }
         }
         else{
-          stream.write("show-header = false>\n");
+          stream.write("show-header = \"false\">\n");
         }
         if(curChunk["MDX"] != null){
           stream.write(curChunk["MDX"].replace(/[\u200B-\u200D\uFEFF]/g, ''));
