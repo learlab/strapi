@@ -13,13 +13,15 @@
   "pluginOptions": {},
   "attributes": {
     "Title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Owner": {
       "type": "string"
     },
     "Description": {
-      "type": "string"
+      "type": "string",
+      "required": false
     },
     "pages": {
       "type": "relation",
