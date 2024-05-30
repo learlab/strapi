@@ -21,7 +21,9 @@ export default function Index({
   const [dynamicZone, index, fieldName] = name.split(".");
 
   useEffect(() => {
-    if (modifiedData[dynamicZone][index]["QuestionAnswerResponse"]) {onChange({
+    if (modifiedData[dynamicZone][index]["QuestionAnswerResponse"] &&
+    JSON.parse(modifiedData[dynamicZone][index]["QuestionAnswerResponse"])["answer"] !== value
+    ) {onChange({
               target: { name, value: JSON.parse(modifiedData[dynamicZone][index]["QuestionAnswerResponse"])["answer"], type: attribute.type },
             })}
   }, [modifiedData[dynamicZone][index]["QuestionAnswerResponse"],]);

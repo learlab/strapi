@@ -53,6 +53,31 @@ export default function Index({
     });
   }
   
+  useEffect(() => {
+    const curJSON = JSON.parse(value);
+    let newJSON = curJSON;
+  
+    if (modifiedData[dynamicZone][index]["Question"]) {
+      const newQuestion = modifiedData[dynamicZone][index]["Question"];
+      if (newQuestion !== curJSON['question']) {
+        newJSON = { ...newJSON, question: newQuestion };
+      }
+    }
+  
+    if (modifiedData[dynamicZone][index]["ConstructedResponse"]) {
+      const newConstructedResponse = modifiedData[dynamicZone][index]["ConstructedResponse"];
+      if (newConstructedResponse !== curJSON['answer']) {
+        newJSON = { ...newJSON, answer: newConstructedResponse };
+      }
+    }
+  
+    if (JSON.stringify(newJSON) !== JSON.stringify(curJSON)) {
+      onChange({
+        target: { name, value: JSON.stringify(newJSON), type: attribute.type },
+      });
+    }
+  }, [modifiedData[dynamicZone][index]["Question"], modifiedData[dynamicZone][index]["ConstructedResponse"]]);
+
   async function getTargetText () {
     let cleanTextFeed;
     // Check content type

@@ -27,7 +27,9 @@ export default function Index({
   };
 
   useEffect(() => {
-    if (modifiedData[dynamicZone][index]["QuestionAnswerResponse"]) {onChange({
+    if (modifiedData[dynamicZone][index]["QuestionAnswerResponse"] &&
+        JSON.parse(modifiedData[dynamicZone][index]["QuestionAnswerResponse"])["question"] !== value
+    ) {onChange({
                   target: { name, value: JSON.parse(modifiedData[dynamicZone][index]["QuestionAnswerResponse"])["question"], type: attribute.type },
                 })}
   }, [modifiedData[dynamicZone][index]["QuestionAnswerResponse"],]);
