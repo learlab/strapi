@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "external_dashboard_uris",
+  "info": {
+    "singularName": "external-dashboard-uri",
+    "pluralName": "external-dashboard-uris",
+    "displayName": "external dashboard uri"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}
