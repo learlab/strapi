@@ -42,7 +42,6 @@ module.exports = createCoreService("api::api-key.api-key", ({ strapi }) => ({
                 body: JSON.stringify(ctx),
             });
             const result = await response;
-            console.log(result)
             return result.text()
         } catch (error) {
             console.log(error);
