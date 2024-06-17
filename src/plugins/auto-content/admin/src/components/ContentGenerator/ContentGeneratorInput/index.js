@@ -54,7 +54,13 @@ export default function Index({
   }
   
   useEffect(() => {
-    const curJSON = JSON.parse(value);
+    let curJSON;
+    try {
+      curJSON = JSON.parse(value);
+    } catch (error) {
+      curJSON = JSON.stringify({"question": "", 
+      "answer": ""});
+    }
     let newJSON = curJSON;
   
     if (modifiedData[dynamicZone][index]["Question"]) {
