@@ -4,7 +4,8 @@
   "info": {
     "singularName": "module",
     "pluralName": "modules",
-    "displayName": "Modules"
+    "displayName": "Modules",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -14,21 +15,21 @@
     "Title": {
       "type": "string"
     },
-    "text": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::text.text",
-      "inversedBy": "modules"
+    "Slug": {
+      "type": "uid",
+      "targetField": "Title"
     },
-    "chapters": {
+    "Chapters": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::chapter.chapter",
-      "mappedBy": "module"
+      "mappedBy": "Module"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "Title"
+    "Volume": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::text.text",
+      "inversedBy": "Modules"
     }
   }
 }

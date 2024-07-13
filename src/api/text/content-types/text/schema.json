@@ -4,7 +4,7 @@
   "info": {
     "singularName": "text",
     "pluralName": "texts",
-    "displayName": "Texts",
+    "displayName": "Volumes",
     "description": ""
   },
   "options": {
@@ -23,27 +23,27 @@
       "type": "string",
       "required": false
     },
-    "pages": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::page.page",
-      "mappedBy": "text"
+    "Slug": {
+      "type": "uid",
+      "targetField": "Title"
     },
-    "chapters": {
+    "Chapters": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::chapter.chapter",
-      "mappedBy": "text"
+      "mappedBy": "Volume"
     },
-    "modules": {
+    "Modules": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::module.module",
-      "mappedBy": "text"
+      "mappedBy": "Volume"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "Title"
+    "Pages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::page.page",
+      "mappedBy": "Volume"
     }
   }
 }
