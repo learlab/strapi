@@ -4,9 +4,9 @@ async function generatePageEmbeddings(ctx) {
   const entry = await strapi.entityService.findOne("api::page.page", ctx.id, {
     populate: "*",
   });
-
+  console.log(entry)
   var chapter = null;
-  const chapter_id = entry.chapter ? entry.chapter.id : null;
+  const chapter_id = entry.Chapter ? entry.Chapter.id : null;
   var this_module_slug = null;
   if (chapter_id) {
     chapter = await strapi.entityService.findOne(
@@ -18,10 +18,10 @@ async function generatePageEmbeddings(ctx) {
   }
 
   const payload = entry.Content.map((item) => ({
-    text_slug: entry.text.slug,
+    text_slug: entry.Volume.Slug,
     module_slug: this_module_slug,
-    chapter_slug: chapter ? chapter.slug : null,
-    page_slug: entry.slug,
+    chapter_slug: chapter ? chapter.Slug : null,
+    page_slug: entry.Slug,
     chunk_slug: item.Slug,
     content: item.CleanText,
   }));
@@ -31,7 +31,7 @@ async function generatePageEmbeddings(ctx) {
   );
 
   const deletePayload = {
-    page_slug: entry.slug,
+    page_slug: entry.Slug,
     chunk_slugs: entry.Content.map((item) => item.Slug),
   }
 
@@ -44,7 +44,7 @@ const deleteAllEmbeddings = async (id) => {
   });
 
   const deletePayload = {
-    page_slug: entry.slug,
+    page_slug: entry.Slug,
     chunk_slugs: [],
   }
 
