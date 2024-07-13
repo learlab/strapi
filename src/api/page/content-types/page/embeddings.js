@@ -18,7 +18,7 @@ async function generatePageEmbeddings(ctx) {
   }
 
   const payload = entry.Content.map((item) => ({
-    text_slug: entry.text.slug,
+    text_slug: entry.text?.slug,
     module_slug: this_module_slug,
     chapter_slug: chapter ? chapter.slug : null,
     page_slug: entry.slug,
