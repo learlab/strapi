@@ -14,6 +14,7 @@ module.exports = ({ strapi }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "API-Key": process.env.ITELL_API_KEY,
           },
           body: JSON.stringify({
             url: url,
