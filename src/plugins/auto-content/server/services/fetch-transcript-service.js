@@ -1,6 +1,8 @@
 "use strict";
 
 const fetch = require("node-fetch");
+const { errors } = require('@strapi/utils');
+const { ApplicationError } = errors;
 
 module.exports = ({ strapi }) => {
   const getTranscript = async (url, start, end) => {
@@ -26,8 +28,7 @@ module.exports = ({ strapi }) => {
       const result = await response.json();
       return result.transcript;
     } catch (error) {
-      console.log(error);
-      throw new utils.errors.ApplicationError("Bad youtube link");
+      throw new ApplicationError("YouTube transcript API error", { foo: 'bar' });
     }
   };
 
