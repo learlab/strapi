@@ -28,7 +28,7 @@ module.exports = ({ strapi }) => {
       const result = await response.json();
       return result.transcript;
     } catch (error) {
-      throw new ApplicationError("YouTube transcript API error", { foo: 'bar' });
+      throw new ApplicationError("Failed to generate transcript", { foo: 'bar' });
     }
   };
 
