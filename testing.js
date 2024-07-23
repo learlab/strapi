@@ -107,8 +107,10 @@ async function entryPages(textData, startingPath) {
           stream.write(` data-show-header="false">\n`);
           stream.write(`<h2 className="sr-only" id="${chunkSlug}">${curChunk.Header}</h2>\n\n`)
         }
-        if(curChunk.MDX != null){
-          stream.write(curChunk.MDX.replace(/[\u200B-\u200D\uFEFF]/g, ''));
+        if (curChunk.MDX != null) {
+          stream.write(curChunk.MDX.replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '')
+            .replace(/(<br\s*\/?>\s*)+/g, '\n\n')
+        )
         }
         stream.write("\n</section>\n\n");
       } else if (curChunk["__component"] === "page.video") {
@@ -179,6 +181,13 @@ async function run() {
   hasModules = textData["modules"]["data"].length > 0;
   hasChapters = textData["chapters"]["data"].length > 0;
 
+  if (!fs.existsSync("./output/")) {
+    fs.mkdir("./output/", (err) => {
+      if (err) {
+        console.log(err);
+      }
+  })}
+
   if(hasModules){
     await makeModules(textData);
   }
@@ -191,4 +200,3 @@ async function run() {
 }
 
 run();
-
