@@ -92,7 +92,7 @@ async function entryPages(textData, startingPath) {
         let inputString = `<section className="content-chunk" aria-labelledby="${chunkSlug}" data-subsection-id="${chunkSlug}"`;
         stream.write(inputString);
         if(curChunk.ShowHeader) {
-          stream.write(` data-show-header = "true">\n`);
+          stream.write(` data-show-header="true">\n`);
           if(curChunk.HeaderLevel === "H3"){
             stream.write(`### ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
