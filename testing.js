@@ -89,27 +89,28 @@ async function entryPages(textData, startingPath) {
           chunkSlug = ""
         }
 
-        let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\" ";
+        let inputString = `<section className="content-chunk" aria-labelledby="${chunkSlug}" data-subsection-id="${chunkSlug}"`;
         stream.write(inputString);
-        if(curChunk["ShowHeader"] === true) {
-          stream.write("show-header = \"true\">\n");
-          if(curChunk["HeaderLevel"] === "H3"){
-            stream.write("### "+curChunk["Header"]+"\n");
+        if(curChunk.ShowHeader) {
+          stream.write(` data-show-header = "true">\n`);
+          if(curChunk.HeaderLevel === "H3"){
+            stream.write(`### ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
-          else if(curChunk["HeaderLevel"] === "H4"){
-            stream.write("#### "+curChunk["Header"]+"\n");
+          else if(curChunk.HeaderLevel === "H4"){
+            stream.write(`#### ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
           else{
-            stream.write("## "+curChunk["Header"]+"\n");
+            stream.write(`## ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
         }
         else{
-          stream.write("show-header = \"false\">\n");
+          stream.write(` data-show-header="false">\n`);
+          stream.write(`<h2 className="sr-only" id="${chunkSlug}">${curChunk.Header}</h2>\n\n`)
         }
-        if(curChunk["MDX"] != null){
-          stream.write(curChunk["MDX"].replace(/[\u200B-\u200D\uFEFF]/g, ''));
+        if(curChunk.MDX != null){
+          stream.write(curChunk.MDX.replace(/[\u200B-\u200D\uFEFF]/g, ''));
         }
-        stream.write("\n</div>\n");
+        stream.write("\n</section>\n\n");
       } else if (curChunk["__component"] === "page.video") {
       }
     }
