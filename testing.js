@@ -12,7 +12,8 @@ function getTextID() {
 }
 
 async function getTextData(textID) {
-  const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*&publicationState=live', {cache: "no-store"});
+  const res = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts/${textID}?populate=*&publicationState=live`, {cache: "no-store"});
+
   let data = await res.json();
 
   if(data["data"] == null){
@@ -178,8 +179,8 @@ async function run() {
 
   let textData = await getTextData(textID);
 
-  hasModules = textData["modules"]["data"].length > 0;
-  hasChapters = textData["chapters"]["data"].length > 0;
+  hasModules = textData["Chapters"]["data"].length > 0;
+  hasChapters = textData["Modules"]["data"].length > 0;
 
   if (!fs.existsSync("./output/")) {
     fs.mkdir("./output/", (err) => {
@@ -195,7 +196,7 @@ async function run() {
     await makeChapters(textData);
   }
   else{
-    await entryPages(textData["pages"]["data"],"output/");
+    await entryPages(textData["Pages"]["data"],"output/");
   }
 }
 
