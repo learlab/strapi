@@ -110,7 +110,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
     },
     codeBlock: {
       languages: [
-        { language: 'python', label: 'Python' }
+        { language: 'python', label: 'Python' },
+        { language: 'javascript', label: 'JavaScript' }
       ]
     },
     image: {
