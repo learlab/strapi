@@ -50,7 +50,7 @@ async function entryPages(textData, startingPath) {
         path = startingPath + "section-" + i + ".mdx";
         stream = fs.createWriteStream(path);
         stream.write("---\ntitle: \"" + pageData["Title"] +"\""
-          + "\npage_slug: " + pageData["slug"]
+          + "\npage_slug: " + pageData["Slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
           + "\nreference_summary: " + pageData["ReferenceSummary"]
@@ -59,7 +59,7 @@ async function entryPages(textData, startingPath) {
         path = startingPath + "index.mdx";
         stream = fs.createWriteStream(path);
         stream.write("---\ntitle: \" " + pageData["Title"]+"\""
-          + "\npage_slug: " + pageData["slug"]
+          + "\npage_slug: " + pageData["Slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
           + "\n---\n");
@@ -69,7 +69,7 @@ async function entryPages(textData, startingPath) {
       path = startingPath + "chapter-" + i + ".mdx";
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: \"" + pageData["Title"] +"\""
-        + "\npage_slug: " + pageData["slug"]
+        + "\npage_slug: " + pageData["Slug"]
         +"\nsummary: " + pageData["HasSummary"]
         +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
         + "\n---\n");
@@ -118,13 +118,13 @@ async function entryPages(textData, startingPath) {
 }
 
 async function makeModules(textData) {
-  let newTextData = textData["modules"]["data"];
+  let newTextData = textData["Modules"]["data"];
   for (let i = 0; i < newTextData.length; ++i) {
     makeDir("./output/module-" + (i + 1));
     let res = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/'+textData["modules"]["data"][i]["id"]+'?populate=chapters&publicationState=live', {cache: "no-store"});
     let data = await res.json();
 
-    let modulesData = data["data"]["attributes"]["chapters"]["data"];
+    let modulesData = data["data"]["attributes"]["Chapters"]["data"];
     let chapterPath;
     for (let j = 0; j < modulesData.length; ++j) {
       if(modulesData[j]["attributes"]["ChapterNumber"]==null){
