@@ -44,7 +44,7 @@ export default class InfoEditing extends Plugin {
       allowIn: 'Info',
 
       // Allow content which is allowed in the root (e.g. paragraphs).
-      allowContentOf: '$block'
+      allowContentOf: '$root'
     } );
 
     schema.addChildCheck( ( context, childDefinition ) => {
