@@ -75,9 +75,9 @@ turndownService.addRule("styles", {
   },
 
   replacement: function (content, node, options) {
+    content = content.trim().replace("\n\n","\n")
     const tag = componentNameMap[node.nodeName];
     var attrStr = stringifyAttributes(node, " ");
-    // console.log(`<${tag}${attrStr}>\n${content}\n</${tag}>`);
     return `<${tag}${attrStr}>\n${content}\n</${tag}>`;
   },
 });
@@ -131,6 +131,32 @@ turndownService.addRule('CalloutRule', {
   }
 });
 
+//for Info sections
+turndownService.addRule('InfoRule', {
+  filter: function(node) {
+    return (
+      node.nodeName === 'SECTION' &&
+      node.getAttribute('class') === 'Accordion'
+    );
+  },
+  replacement: function(content, node) {
+    const items = Array.from(node.querySelectorAll('SECTION'));
+    let itemsContent = ""
+    let count = 0
+    items.map(item => {
+      const titles = Array.from(item.querySelectorAll('h1'));
+      const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+
+
+      const paragraphs = Array.from(item.querySelectorAll('p'));
+      const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+      itemsContent += `<AccordionItem value="${count += 1}" title="${title}">\n${paragraphContent}\n</AccordionItem>\n`
+    })
+
+    return `<Accordion value="first" className = "prose dark:prose-invert">\n${itemsContent}</Accordion>\n`;
+  }
+});
+
 // Rule for images
 turndownService.addRule("image", {
   filter: function (node, options) {
@@ -158,29 +184,6 @@ turndownService.addRule("image", {
   },
 });
 
-//rule for python notebook chunks
-turndownService.addRule("code", {
-  filter: 'pre',
-  replacement: function (content, node, options) {
-    const tag = componentNameMap[node.nodeName];
-    var attrStr = stringifyAttributes(node, " ");
-    //console.log(`<${tag}${attrStr}>${content}</${tag}>`);
-
-    return content;
-  },
-});
-
-//rule for python notebook chunks
-turndownService.addRule("python", {
-  filter: 'code',
-  replacement: function (content, node, options) {
-    content = content.replaceAll("\t", "\\t");
-    content = content.replaceAll("\n", "\\n");
-    content = content.replaceAll("'", "\'");
-    return `<Notebook code = {\`${content}\`}/>`;
-  },
-});
-
 //converts linebreaks
 turndownService.addRule('convertLineBreaks', {
   filter: 'br',
@@ -188,26 +191,6 @@ turndownService.addRule('convertLineBreaks', {
     return '<br/>';
   },
 });
-
-//rule for all <br> to <br/> replacement
-turndownService.addRule("linebreaks", {
-  filter: 'code',
-  replacement: function (content, node, options) {
-    content = content.replaceAll("<br>", "<br/>");
-    return `<Notebook code = {\`${content}\`}/>`;
-  },
-});
-
-// turndownService.addRule("dollar", {
-//   filter: function (content, node, options) {
-//     return node.nodeType === 3;
-//   },
-//   replacement: function (content, node, options) {
-//     // replace $ with \$ unless it's $$
-//     // $$ is used for MathJax
-//     return content.replace(/\$/g, "XXX");
-//   },
-// });
 
 module.exports = ({ strapi }) => {
   const mdx = async (html) => {
@@ -219,3 +202,28 @@ module.exports = ({ strapi }) => {
     mdx,
   };
 };
+
+//rule for static code chunks
+turndownService.addRule("code", {
+  // filter: 'pre',
+  filter: function (node) {
+    return (
+      node.nodeName === "SECTION" &&
+      node.getAttribute('class') === 'CodingSandbox'
+    );
+  },
+  replacement: function (content, node, options) {
+    const titles = Array.from(node.querySelectorAll('h4'));
+    const title = titles.map(h4 => h4.textContent.trim()).join(' <br/>\n');
+
+    const code = Array.from(node.querySelectorAll('code'));
+    const codeContent = code.map(c => c.textContent.trim()).join(' <br/>\n');
+
+    if(title.toLowerCase().includes("python")){
+      return `<Notebook code = {\`${codeContent}\`}/>\n`;
+    }
+    else if(title.toLowerCase().includes("javascript")){
+      return `<Sandbox code = {\`${codeContent}\`}/>\n`;
+    }
+  },
+});
