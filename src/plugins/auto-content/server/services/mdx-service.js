@@ -131,8 +131,8 @@ turndownService.addRule('CalloutRule', {
   }
 });
 
-//for Info sections
-turndownService.addRule('InfoRule', {
+//for Accordion sections
+turndownService.addRule('AccordionRule', {
   filter: function(node) {
     return (
       node.nodeName === 'SECTION' &&
@@ -192,17 +192,6 @@ turndownService.addRule('convertLineBreaks', {
   },
 });
 
-module.exports = ({ strapi }) => {
-  const mdx = async (html) => {
-    if (!html) return null;
-    return turndownService.turndown(html);
-  };
-
-  return {
-    mdx,
-  };
-};
-
 //rule for static code chunks
 turndownService.addRule("code", {
   // filter: 'pre',
@@ -227,3 +216,16 @@ turndownService.addRule("code", {
     }
   },
 });
+
+module.exports = ({ strapi }) => {
+  const mdx = async (html) => {
+    if (!html) return null;
+    return turndownService.turndown(html);
+  };
+
+  return {
+    mdx,
+  };
+};
+
+
