@@ -99,7 +99,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'bulletedList', 'numberedList',
         '|',
-        'sourceEditing', 'htmlEmbed',
+        'sourceEditing',
         '-',
         'Info',
         'Callout',

@@ -68,20 +68,6 @@ function stringifyAttributes(element, separator = " ") {
   return attrStr;
 }
 
-// Rule for elements that consist of attributes and content only
-turndownService.addRule("styles", {
-  filter: function (node, options) {
-    return ["INFO", "WARNING", "CALLOUT", "BLOCKQUOTE", "DEFINITION"].includes(node.nodeName);
-  },
-
-  replacement: function (content, node, options) {
-    content = content.trim().replace("\n\n","\n")
-    const tag = componentNameMap[node.nodeName];
-    var attrStr = stringifyAttributes(node, " ");
-    return `<${tag}${attrStr}>\n${content}\n</${tag}>`;
-  },
-});
-
 //for Info sections
 turndownService.addRule('InfoRule', {
   filter: function(node) {

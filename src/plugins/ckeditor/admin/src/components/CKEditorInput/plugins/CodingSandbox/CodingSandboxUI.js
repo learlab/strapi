@@ -33,36 +33,23 @@ export default class CodingSandboxUI extends Plugin {
 
         // to be displayed in the toolbar.
         editor.ui.componentFactory.add('CodingSandbox', locale => {
-            const dropdownView = ui.createDropdown( locale);
+            const dropdownView = ui.createDropdown(locale);
             const command = editor.commands.get( 'insertCodingSandbox' );
 
-            dropdownView.set({
-                label: "Coding Sandbox",
-                tooltip: true,
-                withText: true,
-            });
+            // dropdownView.set({
+                // tooltip: true,
+                // withText: true,
+            // });
 
             dropdownView.buttonView.set( {
-                label: t( 'Coding Sandbox' ),
+                label: t( 'REPL Sandbox' ),
                 tooltip: true,
-                isToggleable: true,
+                // isToggleable: true,
                 withText: true,
             } );
 
-            // splitButtonView.bind( 'isOn' ).to( command, 'value', value => !!value );
-            //
-            // splitButtonView.on( 'execute', () => {
-            //     editor.execute( 'insertCodingSandbox');
-            // } );
-
             dropdownView.on( 'execute', evt => {
                 editor.execute( 'insertCodingSandbox', (evt.source).label);
-            //     editor.execute( 'codeBlock', {
-            //         language: ( evt.source as any )._codeBlockLanguage,
-            //         forceValue: true
-            // } );
-            //
-            //     editor.editing.view.focus();
             } );
 
             dropdownView.class = 'ck-code-block-dropdown';
