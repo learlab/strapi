@@ -33,12 +33,6 @@ export default class CodingSandboxEditing extends Plugin {
             allowIn: 'CodingSandbox',
             allowContentOf: '$root'
         } );
-
-      schema.addChildCheck( ( context, childDefinition ) => {
-        if ( context.endsWith( 'CodingSandboxContent' ) && childDefinition.name != 'paragraph') {
-          return false;
-        }
-      } );
     }
 
     _defineConverters() {
@@ -97,7 +91,6 @@ export default class CodingSandboxEditing extends Plugin {
             view: ( modelElement, { writer: writer } ) => {
                 // Note: You use a more specialized createEditableElement() method here.
                 const div = writer.createEditableElement( 'div' );
-
                 return toWidgetEditable( div, writer );
             }
         } );
