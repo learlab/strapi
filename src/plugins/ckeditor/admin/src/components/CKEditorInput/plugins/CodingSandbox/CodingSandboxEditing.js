@@ -11,8 +11,6 @@ export default class CodingSandboxEditing extends Plugin {
         return [ Widget ];
     }
     init() {
-        console.log( 'CodingSandboxEditing#init() got called' );
-
         this._defineSchema();
         this._defineConverters();
         this.editor.commands.add( 'insertCodingSandbox', new InsertCodingSandboxCommand( this.editor ) );
@@ -24,21 +22,18 @@ export default class CodingSandboxEditing extends Plugin {
             // Behaves like a self-contained block object (e.g. a block image)
             // allowed in places where other blocks are allowed (e.g. directly in the root).
             inheritAllFrom: '$blockObject',
-            allowChildren: '$text',
+            allowChildren: [
+                'CodingSandboxContent'
+            ],
         });
 
         schema.register( 'CodingSandboxContent', {
             // Cannot be split or left by the caret.
             isLimit: true,
             allowIn: 'CodingSandbox',
-            allowContentOf: '$root'
+            allowChildren: ['codeBlock'],
         } );
 
-      schema.addChildCheck( ( context, childDefinition ) => {
-        if ( context.endsWith( 'CodingSandboxContent' ) && childDefinition.name != 'paragraph') {
-          return false;
-        }
-      } );
     }
 
     _defineConverters() {
@@ -78,26 +73,24 @@ export default class CodingSandboxEditing extends Plugin {
                 }
             } );
 
-
-
         conversion.for( 'upcast' ).elementToElement( {
             model: 'CodingSandboxContent',
             view: {
                 name: 'div',
             }
         } );
+
         conversion.for( 'dataDowncast' ).elementToElement( {
             model: 'CodingSandboxContent',
             view: {
                 name: 'div',
             }
         } );
+
         conversion.for( 'editingDowncast' ).elementToElement( {
             model: 'CodingSandboxContent',
             view: ( modelElement, { writer: writer } ) => {
-                // Note: You use a more specialized createEditableElement() method here.
                 const div = writer.createEditableElement( 'div' );
-
                 return toWidgetEditable( div, writer );
             }
         } );

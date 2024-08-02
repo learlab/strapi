@@ -34,11 +34,11 @@ export default class CalloutEditing extends Plugin {
             allowContentOf: '$root'
         } );
 
-      schema.addChildCheck( ( context, childDefinition ) => {
-        if ( context.endsWith( 'CalloutContent' ) && childDefinition.name != 'paragraph') {
-          return false;
-        }
-      } );
+        schema.addChildCheck( ( context, childDefinition ) => {
+            if ( context.endsWith( 'CalloutContent' ) && childDefinition.name != 'paragraph') {
+            return false;
+            }
+        } );
     }
 
     _defineConverters() {
@@ -77,8 +77,6 @@ export default class CalloutEditing extends Plugin {
                     return writer.createElement( 'Callout');
                 }
             } );
-
-
 
         conversion.for( 'upcast' ).elementToElement( {
             model: 'CalloutContent',

@@ -188,16 +188,16 @@ turndownService.addRule("code", {
     );
   },
   replacement: function (content, node, options) {
-    const titles = Array.from(node.querySelectorAll('h4'));
-    const title = titles.map(h4 => h4.textContent.trim()).join(' <br/>\n');
+    const codeBlock = node.querySelector('pre code');
+    const language = codeBlock.className.split('-')[1];
 
     const code = Array.from(node.querySelectorAll('code'));
     const codeContent = code.map(c => c.textContent.trim()).join(' <br/>\n');
 
-    if(title.toLowerCase().includes("python")){
+    if(language === "python"){
       return `<Notebook code = {\`${codeContent}\`}/>\n`;
     }
-    else if(title.toLowerCase().includes("javascript")){
+    else if(language === "javascript"){
       return `<Sandbox code = {\`${codeContent}\`}/>\n`;
     }
   },
@@ -213,5 +213,3 @@ module.exports = ({ strapi }) => {
     mdx,
   };
 };
-
-
