@@ -9,8 +9,6 @@ const fetch = require("node-fetch");
 
 module.exports = createCoreService("api::page.page", ({ strapi }) => ({
   async generateEmbedding(ctx) {
-    // for testing
-    // const targetURL = `https://httpbin.org/post `
     const targetURL = `${process.env.ITELL_API_URL}/generate/embedding`;
 
     try {

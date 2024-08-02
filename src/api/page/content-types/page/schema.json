@@ -24,19 +24,7 @@
         "page.plain-chunk"
       ]
     },
-    "text": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::text.text",
-      "inversedBy": "pages"
-    },
-    "chapter": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::chapter.chapter",
-      "inversedBy": "pages"
-    },
-    "slug": {
+    "Slug": {
       "type": "uid",
       "targetField": "Title",
       "required": true
@@ -53,6 +41,18 @@
     },
     "ReferenceSummary": {
       "type": "text"
+    },
+    "Chapter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::chapter.chapter",
+      "inversedBy": "Pages"
+    },
+    "Volume": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::text.text",
+      "inversedBy": "Pages"
     }
   }
 }

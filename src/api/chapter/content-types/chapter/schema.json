@@ -12,33 +12,33 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "pages": {
+    "Pages": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::page.page",
-      "mappedBy": "chapter"
-    },
-    "text": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::text.text",
-      "inversedBy": "chapters"
+      "mappedBy": "Chapter"
     },
     "Title": {
       "type": "string"
     },
-    "module": {
+    "Module": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::module.module",
-      "inversedBy": "chapters"
+      "inversedBy": "Chapters"
     },
-    "slug": {
+    "Slug": {
       "type": "uid",
       "targetField": "Title"
     },
     "ChapterNumber": {
       "type": "integer"
+    },
+    "Volume": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::text.text",
+      "inversedBy": "Chapters"
     }
   }
 }

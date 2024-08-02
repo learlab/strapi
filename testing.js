@@ -12,7 +12,8 @@ function getTextID() {
 }
 
 async function getTextData(textID) {
-  const res = await fetch('https://itell-strapi-um5h.onrender.com/api/texts/' + textID + '?populate=*&publicationState=live', {cache: "no-store"});
+  const res = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts/${textID}?populate=*&publicationState=live`, {cache: "no-store"});
+
   let data = await res.json();
 
   if(data["data"] == null){
@@ -50,7 +51,7 @@ async function entryPages(textData, startingPath) {
         path = startingPath + "section-" + i + ".mdx";
         stream = fs.createWriteStream(path);
         stream.write("---\ntitle: \"" + pageData["Title"] +"\""
-          + "\npage_slug: " + pageData["slug"]
+          + "\npage_slug: " + pageData["Slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
           + "\nreference_summary: " + pageData["ReferenceSummary"]
@@ -59,7 +60,7 @@ async function entryPages(textData, startingPath) {
         path = startingPath + "index.mdx";
         stream = fs.createWriteStream(path);
         stream.write("---\ntitle: \" " + pageData["Title"]+"\""
-          + "\npage_slug: " + pageData["slug"]
+          + "\npage_slug: " + pageData["Slug"]
           +"\nsummary: " + pageData["HasSummary"]
           +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
           + "\n---\n");
@@ -69,7 +70,7 @@ async function entryPages(textData, startingPath) {
       path = startingPath + "chapter-" + i + ".mdx";
       stream = fs.createWriteStream(path);
       stream.write("---\ntitle: \"" + pageData["Title"] +"\""
-        + "\npage_slug: " + pageData["slug"]
+        + "\npage_slug: " + pageData["Slug"]
         +"\nsummary: " + pageData["HasSummary"]
         +"\nquiz: " + (pageData["Quiz"]["data"]!==null)
         + "\n---\n");
@@ -89,27 +90,30 @@ async function entryPages(textData, startingPath) {
           chunkSlug = ""
         }
 
-        let inputString = "<div className=\"content-chunk\" data-subsection-id = \"" + chunkSlug + "\" ";
+        let inputString = `<section className="content-chunk" aria-labelledby="${chunkSlug}" data-subsection-id="${chunkSlug}"`;
         stream.write(inputString);
-        if(curChunk["ShowHeader"] === true) {
-          stream.write("show-header = \"true\">\n");
-          if(curChunk["HeaderLevel"] === "H3"){
-            stream.write("### "+curChunk["Header"]+"\n");
+        if(curChunk.ShowHeader) {
+          stream.write(` data-show-header="true">\n`);
+          if(curChunk.HeaderLevel === "H3"){
+            stream.write(`### ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
-          else if(curChunk["HeaderLevel"] === "H4"){
-            stream.write("#### "+curChunk["Header"]+"\n");
+          else if(curChunk.HeaderLevel === "H4"){
+            stream.write(`#### ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
           else{
-            stream.write("## "+curChunk["Header"]+"\n");
+            stream.write(`## ${curChunk.Header} \\{#${chunkSlug}}\n`);
           }
         }
         else{
-          stream.write("show-header = \"false\">\n");
+          stream.write(` data-show-header="false">\n`);
+          stream.write(`<h2 className="sr-only" id="${chunkSlug}">${curChunk.Header}</h2>\n\n`)
         }
-        if(curChunk["MDX"] != null){
-          stream.write(curChunk["MDX"].replace(/[\u200B-\u200D\uFEFF]/g, ''));
+        if (curChunk.MDX != null) {
+          stream.write(curChunk.MDX.replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '')
+            .replace(/(<br\s*\/?>\s*)+/g, '\n\n')
+        )
         }
-        stream.write("\n</div>\n");
+        stream.write("\n</section>\n\n");
       } else if (curChunk["__component"] === "page.video") {
       }
     }
@@ -118,13 +122,13 @@ async function entryPages(textData, startingPath) {
 }
 
 async function makeModules(textData) {
-  let newTextData = textData["modules"]["data"];
+  let newTextData = textData["Modules"]["data"];
   for (let i = 0; i < newTextData.length; ++i) {
     makeDir("./output/module-" + (i + 1));
     let res = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/'+textData["modules"]["data"][i]["id"]+'?populate=chapters&publicationState=live', {cache: "no-store"});
     let data = await res.json();
 
-    let modulesData = data["data"]["attributes"]["chapters"]["data"];
+    let modulesData = data["data"]["attributes"]["Chapters"]["data"];
     let chapterPath;
     for (let j = 0; j < modulesData.length; ++j) {
       if(modulesData[j]["attributes"]["ChapterNumber"]==null){
@@ -175,8 +179,15 @@ async function run() {
 
   let textData = await getTextData(textID);
 
-  hasModules = textData["modules"]["data"].length > 0;
-  hasChapters = textData["chapters"]["data"].length > 0;
+  hasModules = textData["Chapters"]["data"].length > 0;
+  hasChapters = textData["Modules"]["data"].length > 0;
+
+  if (!fs.existsSync("./output/")) {
+    fs.mkdir("./output/", (err) => {
+      if (err) {
+        console.log(err);
+      }
+  })}
 
   if(hasModules){
     await makeModules(textData);
@@ -185,9 +196,8 @@ async function run() {
     await makeChapters(textData);
   }
   else{
-    await entryPages(textData["pages"]["data"],"output/");
+    await entryPages(textData["Pages"]["data"],"output/");
   }
 }
 
 run();
-
