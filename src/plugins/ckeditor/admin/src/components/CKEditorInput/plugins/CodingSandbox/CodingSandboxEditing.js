@@ -91,6 +91,7 @@ export default class CodingSandboxEditing extends Plugin {
             model: 'CodingSandboxContent',
             view: ( modelElement, { writer: writer } ) => {
                 const div = writer.createEditableElement( 'div' );
+
                 return toWidgetEditable( div, writer );
             }
         } );
