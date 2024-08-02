@@ -29,6 +29,9 @@ import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
 import Info from "./plugins/Info/Info"
 import Callout from "./plugins/Callout/Callout"
 import Warning from "./plugins/Warning/Warning"
+import Accordion from "./plugins/Accordion/Accordion";
+import AccordionItem from "./plugins/Accordion/AccordionItem/AccordionItem";
+import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -79,7 +82,10 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       StrapiMediaLib,
       Info,
       Callout,
-      Warning
+      Warning,
+      Accordion,
+      AccordionItem,
+      CodingSandbox
     ],
     toolbar: {
       items: [
@@ -87,17 +93,20 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'heading',
         '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'code', 'codeBlock',
+        'bold', 'italic', 'underline', 'strikethrough', 'code', 'codeBlock', 'blockQuote',
         '|',
         'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'specialCharacters',
         '|',
         'bulletedList', 'numberedList',
-        '-',
-        'sourceEditing', 'htmlEmbed',
         '|',
+        'sourceEditing',
+        '-',
         'Info',
         'Callout',
-        'Warning'
+        'Warning',
+        'Accordion',
+        'AccordionItem',
+        'CodingSandbox'
       ],
       shouldNotGroupWhenFull: true
     },

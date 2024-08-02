@@ -1,0 +1,8 @@
+.Accordion{
+    padding: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    background: rgba( 247, 245, 223, 0.5 );
+    border: dashed 5px hsl(55, 94%, 52%);
+    border-radius: 2px;
+}

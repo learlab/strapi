@@ -33,17 +33,16 @@ export default class InfoEditing extends Plugin {
 
       allowIn: 'Info',
 
-      // Allow content which is allowed in blocks (i.e. text with attributes).
+      // Allow content which is allowed in blocks (e.g. text with attributes).
       allowContentOf: '$block'
     } );
 
     schema.register( 'InfoContent', {
       // Cannot be split or left by the caret.
       isLimit: true,
-
       allowIn: 'Info',
 
-      // Allow content which is allowed in the root (e.g. paragraphs).
+      // Allow content which is allowed in blocks (e.g. text with attributes).
       allowContentOf: '$block'
     } );
 
@@ -108,22 +107,22 @@ export default class InfoEditing extends Plugin {
     conversion.for( 'upcast' ).elementToElement( {
       model: 'InfoContent',
       view: {
-        name: 'div',
+        name: 'p',
       }
     } );
     conversion.for( 'dataDowncast' ).elementToElement( {
       model: 'InfoContent',
       view: {
-        name: 'div',
+        name: 'p',
       }
     } );
     conversion.for( 'editingDowncast' ).elementToElement( {
       model: 'InfoContent',
       view: ( modelElement, { writer: viewWriter } ) => {
         // Note: You use a more specialized createEditableElement() method here.
-        const div = viewWriter.createEditableElement( 'div' );
+        const p = viewWriter.createEditableElement( 'p' );
 
-        return toWidgetEditable( div, viewWriter );
+        return toWidgetEditable( p, viewWriter );
       }
     } );
   }
