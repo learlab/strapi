@@ -191,8 +191,7 @@ turndownService.addRule("code", {
     const codeBlock = node.querySelector('pre code');
     const language = codeBlock.className.split('-')[1];
 
-    const code = Array.from(node.querySelectorAll('code'));
-    const codeContent = code.map(c => c.textContent.trim()).join(' <br/>\n');
+    const codeContent = codeBlock.textContent.trim()
 
     if(language === "python"){
       return `<Notebook code = {\`${codeContent}\`}/>\n`;
