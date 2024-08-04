@@ -32,6 +32,7 @@ import Warning from "./plugins/Warning/Warning"
 import Accordion from "./plugins/Accordion/Accordion";
 import AccordionItem from "./plugins/Accordion/AccordionItem/AccordionItem";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
+import StaticCode from "./plugins/StaticCode/StaticCode";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -85,7 +86,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       Warning,
       Accordion,
       AccordionItem,
-      CodingSandbox
+      CodingSandbox,
+      StaticCode
     ],
     toolbar: {
       items: [
@@ -93,7 +95,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'heading',
         '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'code', 'codeBlock', 'blockQuote',
+        'bold', 'italic', 'underline', 'strikethrough', 'code', 'StaticCode', 'blockQuote',
         '|',
         'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'specialCharacters',
         '|',
@@ -106,7 +108,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         'Warning',
         'Accordion',
         'AccordionItem',
-        'CodingSandbox'
+        'CodingSandbox',
+
       ],
       shouldNotGroupWhenFull: true
     },
