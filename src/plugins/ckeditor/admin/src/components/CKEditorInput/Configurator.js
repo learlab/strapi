@@ -30,7 +30,6 @@ import Info from "./plugins/Info/Info"
 import Callout from "./plugins/Callout/Callout"
 import Warning from "./plugins/Warning/Warning"
 import Accordion from "./plugins/Accordion/Accordion";
-import AccordionItem from "./plugins/Accordion/AccordionItem/AccordionItem";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
@@ -84,7 +83,6 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       Callout,
       Warning,
       Accordion,
-      AccordionItem,
       CodingSandbox
     ],
     toolbar: {
@@ -105,7 +103,6 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         'Callout',
         'Warning',
         'Accordion',
-        'AccordionItem',
         'CodingSandbox'
       ],
       shouldNotGroupWhenFull: true
@@ -145,26 +142,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
           attributes: true,
           classes: true,
           styles: true
-        },
-    //     // Enables <div> elements with classes.
-    //     {
-    //       name: /^(div)$/,
-    //       classes: ['column', 'columns']
-    //     },
-
-    //     {
-    //       name: 'p',
-    //       classes: ['info', 'warning']
-    //     },
-
-    //     // Enables <div> with any class attribute (true is a wildcard).
-    //     {
-    //       name: 'div',
-    //       attributes: {
-    //         class: true,
-    //         style: true
-    //       }
-    //     }
+        }
       ]
     }
   }

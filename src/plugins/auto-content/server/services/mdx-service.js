@@ -11,39 +11,7 @@ var turndownService = new TurndownService({
 var gfm = turndownPluginGfm.gfm;
 turndownService.use(gfm);
 
-// MDX Components in iTELL
-// TODO: add support for nested components (steps, columns, accordion, tabs)
-// TODO: add support for multimedia (image, video, coding time)
-const componentNames = [
-  "Definition",
-  "Keyterm",
-  // 'Exercise', // <div class="exercise">...</div>
-  // 'Image', // <img alt="">...</img>
-  // 'Steps', // <div class="steps">...<ul>...</ul></div>
-  // 'YoutubeVideo', // VideoChunk only
-  // 'Accordion', // <details>...</details> (single element only)
-  "Info",
-  "Callout",
-  "Warning",
-  // 'Columns', // <div class="columns">...</div>
-  // 'Column', // <div class="column">...</div>
-  // 'Tabs', // <div class="tabs">...<div class="tabs-header|body">...</div>
-  // 'TabsHeader', // <div class="tabs-header">...</div>
-  // 'TabsBody', // <div class="tabs-body">...</div>
-  // 'TabPanel', // <div class="tab-panel">...</div>
-  // 'TextOverImage', // <img class="text-over-image">...</img>
-  "Caption",
-  "Blockquote",
-  // 'CodeRepl',
-  // 'CodingTime'
-];
-
-// construct component name map to handle case insensitivity in HTML DOM
-const componentNameMap = Object.fromEntries(
-  componentNames.map((compName) => [compName.toUpperCase(), compName])
-);
-
-// utility function to construct JSX attributes from HTML DOM
+// Utility function to construct JSX attributes from HTML DOM
 function stringifyAttributes(element, separator = " ") {
   var attrStr = Array.from(element.attributes)
     .filter((attr) => attr.specified && attr.name !== "class")
@@ -55,7 +23,7 @@ function stringifyAttributes(element, separator = " ") {
   return attrStr;
 }
 
-//for Info sections
+// Info
 turndownService.addRule("InfoRule", {
   filter: function (node) {
     return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
@@ -72,7 +40,7 @@ turndownService.addRule("InfoRule", {
   },
 });
 
-//for Warning sections
+// Warnings
 turndownService.addRule("WarningRule", {
   filter: function (node) {
     return (
@@ -88,7 +56,7 @@ turndownService.addRule("WarningRule", {
   },
 });
 
-//for Callout sections
+// Callouts
 turndownService.addRule("CalloutRule", {
   filter: function (node) {
     return (
@@ -104,34 +72,53 @@ turndownService.addRule("CalloutRule", {
   },
 });
 
-//for Accordion sections
+// Accordions
+/* DataModel
+  <div class="accordion accordion-items-stay-open" data-accordion-id="">
+    <div class="accordion-item">
+        <div class="accordion-header">
+            <a class="accordion-button" href="#">
+                Accordion Title
+            </a>
+        </div>
+        <div class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <p>Accordion Content</p>
+            </div>
+        </div>
+    </div>
+  </div>
+*/
+/* MDX Export
+  <Accordion value="first" className="prose dark:prose-invert">
+    <AccordionItem value="1" title="Accordion Title">
+        <p>Accordion Content</p>
+    </AccordionItem>
+  </Accordion>
+*/
 turndownService.addRule("AccordionRule", {
   filter: function (node) {
-    return (
-      node.nodeName === "DIV" &&
-      node.getAttribute("class").startsWith("ckeditor5-accordion__widget")
-    );
+    return node.nodeName === "DIV" && node.classList.contains("accordion");
   },
   replacement: function (content, node) {
-    const items = Array.from(node.querySelectorAll("ckeditor5-accordion-item"));
-    let itemsContent = "";
+    const itemsDataModel = Array.from(node.querySelectorAll(".accordion-item"));
+    let itemsJsxString = "";
     let count = 0;
-    items.map((item) => {
-      const titles = Array.from(item.querySelectorAll("h1"));
-      const title = titles.map((h1) => h1.textContent.trim()).join(" <br/>\n");
+    itemsDataModel.map((item) => {
+      // Get simple textContent from header. Otherwise, we would need to handle the href in the data model.
+      const title = item.querySelector(".accordion-header").textContent.trim();
 
-      const paragraphs = Array.from(item.querySelectorAll("p"));
-      const paragraphContent = paragraphs
-        .map((p) => p.textContent.trim())
-        .join(" <br/>\n");
-      itemsContent += `<AccordionItem value="${(count += 1)}" title="${title}">\n${paragraphContent}\n</AccordionItem>\n`;
+      // Get innerHtml from body. This has not been thoroughly tested, but is intended
+      // to preserve e.g., lists, linebreaks that would be lost with .textContent.
+      const content = item.querySelector(".accordion-body").innerHTML;
+
+      itemsJsxString += `<AccordionItem value="${(count += 1)}" title="${title}">\n${content}\n</AccordionItem>\n`;
     });
-
-    return `<Accordion value="first" className="prose dark:prose-invert">\n${itemsContent}</Accordion>\n`;
+    return `<Accordion value="first" className="prose dark:prose-invert">\n${itemsJsxString}</Accordion>\n`;
   },
 });
 
-// Rule for images
+// Images
 turndownService.addRule("image", {
   filter: function (node, options) {
     return (
@@ -158,7 +145,8 @@ turndownService.addRule("image", {
   },
 });
 
-//converts linebreaks
+// Converts linebreaks
+// TODO: Explain why this is needed.
 turndownService.addRule("convertLineBreaks", {
   filter: "br",
   replacement: function (content) {
@@ -166,9 +154,10 @@ turndownService.addRule("convertLineBreaks", {
   },
 });
 
-//rule for static code chunks
+// Static Code Chunks
+// An alternative to the simple fenced codeblocks that are natively available in Markdown.
+// Supports custom styling in iTELL.
 turndownService.addRule("code", {
-  // filter: 'pre',
   filter: function (node) {
     return (
       node.nodeName === "SECTION" &&

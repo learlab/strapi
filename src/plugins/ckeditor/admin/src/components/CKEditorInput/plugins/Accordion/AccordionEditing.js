@@ -1,97 +1,383 @@
-import InsertAccordionCommand from "./AccordionCommand.js";
+import {
+  InsertAccordionCommand,
+  InsertAccordionItemCommand,
+  RemoveAccordionItemCommand,
+  AccordionFirstItemOpenCommand,
+  ModifyAccordionCommand,
+  AccordionOpenAllCommand,
+  AccordionCollapseAllCommand,
+} from "./AccordionCommands";
 
 const Plugin = window.CKEditor5.core.Plugin;
 const Widget = window.CKEditor5.widget.Widget;
 const toWidget = window.CKEditor5.widget.toWidget;
 const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
+const uid = window.CKEditor5.utils.uid;
+const enablePlaceholder = window.CKEditor5.engine.enablePlaceholder;
 
 export default class AccordionEditing extends Plugin {
-    static get requires() {
-        return [ Widget ];
-    }
+  static get requires() {
+    return [Widget];
+  }
 
-    init() {
+  init() {
+    this._defineSchema();
+    this._defineConverters();
+    this._defineCommands();
+  }
 
-        this._defineSchema();
-        this._defineConverters();
+  _defineSchema() {
+    const schema = this.editor.model.schema;
 
-        this.editor.commands.add( 'insertAccordion', new InsertAccordionCommand( this.editor ) );
-    }
+    schema.register("AccordionBlock", {
+      isObject: true,
+      allowWhere: "$block",
+      allowAttributes: ["AccordionId", "AccordionItemsStayOpen"],
+      allowChildren: ["AccordionItem"],
+    });
+    schema.register("AccordionItem", {
+      // Behaves like a self-contained block object (e.g. a block image)
+      // allowed in places where other blocks are allowed (e.g. directly in the root).
+      inheritAllFrom: "$Object",
+      isObject: true,
+      allowIn: "AccordionBlock",
+      allowChildren: ["AccordionItemHeader", "AccordionItemContent"],
+    });
+    schema.register("AccordionItemHeader", {
+      // Cannot be split or left by the caret.
+      allowIn: "AccordionItem",
+      allowChildren: "AccordionItemButton",
+    });
+    schema.register("AccordionItemButton", {
+      // Limits commands like "select all" to its contents when the cursor is inside.
+      isLimit: true,
+      // Allows only text and text-like elements (like icons) inside.
+      allowContentOf: "$block",
+      allowAttributes: ["AccordionItemButtonCollapsed"],
+      allowIn: "AccordionItemHeader",
+    });
+    schema.register("AccordionCollapse", {
+      allowIn: "AccordionItem",
+      allowAttributes: ["AccordionCollapseShow"],
+    });
+    schema.register("AccordionItemContent", {
+      // Limits commands like "select all" to its contents when the cursor is inside.
+      isLimit: true,
+      // Allows almost everything inside, same as if at the root of the editor.
+      allowContentOf: "$root",
+      allowIn: "AccordionCollapse",
+    });
+    schema.addAttributeCheck((context, attributeName) => {
+      if (
+        ["linkHref", "anchorId"].includes(attributeName) &&
+        [...context.getNames()].includes("AccordionItemButton")
+      ) {
+        // Disallows links and anchors inside accordion buttons.
+        return false;
+      }
+      return;
+    });
+  }
 
-    _defineSchema() {
-        const schema = this.editor.model.schema;
+  _defineConverters() {
+    const { conversion, editing, t } = this.editor;
 
-        schema.register( 'Accordion', {
-            // Behaves like a self-contained block object (e.g. a block image)
-            // allowed in places where other blocks are allowed (e.g. directly in the root).
-            inheritAllFrom: '$blockObject'
-        } );
+    // Defines conversion for Accordion Attributes
+    conversion.attributeToAttribute({
+      model: "AccordionId",
+      view: "data-accordion-id",
+    });
+    conversion.attributeToAttribute({
+      model: {
+        key: "AccordionItemsStayOpen",
+        values: ["true"],
+      },
+      view: {
+        true: { key: "class", value: "accordion-items-stay-open" },
+      },
+    });
+    conversion.attributeToAttribute({
+      model: {
+        key: "AccordionItemButtonCollapsed",
+        values: ["true"],
+      },
+      view: {
+        true: { key: "class", value: "collapsed" },
+      },
+    });
+    conversion.attributeToAttribute({
+      model: {
+        key: "AccordionCollapseShow",
+        values: ["true"],
+      },
+      view: {
+        true: { key: "class", value: "show" },
+      },
+    });
 
-        schema.register( 'AccordionContent', {
-            // Cannot be split or left by the caret.
-            isLimit: true,
-
-            allowIn: 'Accordion',
-
-            // Allow content which is allowed in the root (e.g. paragraphs).
-            allowContentOf: ['AccordionItem', 'paragraph']
-        } );
-
-        schema.addChildCheck( ( context, childDefinition ) => {
-            if (context.endsWith( 'AccordionContent' ) && childDefinition.name == 'simpleBox' ) {
-                return false;
+    // Defines conversion for AccordionBlock.
+    conversion.for("upcast").add((dispatcher) => {
+      dispatcher.on("element:div", (_evt, data, conversionApi) => {
+        const viewItem = data.viewItem;
+        if (
+          conversionApi.consumable.consume(viewItem, {
+            name: true,
+            classes: "accordion",
+          })
+        ) {
+          const modelElement = conversionApi.writer.createElement(
+            "AccordionBlock",
+            {
+              // Enforces a default for accordion id.
+              AccordionId:
+                viewItem.getAttribute("data-accordion-id") ||
+                viewItem.getAttribute("id") ||
+                uid(),
             }
-        } );
-    }
+          );
+          // Forces insertion and conversion of a clean `Accordion`
+          // model element.
+          if (conversionApi.safeInsert(modelElement, data.modelCursor)) {
+            conversionApi.convertChildren(viewItem, modelElement);
+            conversionApi.updateConversionResult(modelElement, data);
+          }
+        }
+      });
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "AccordionBlock",
+      view: (_modelElement, { writer }) =>
+        toWidget(
+          writer.createContainerElement("div", {
+            class: "ckeditor5-accordion__widget",
+          }),
+          writer,
+          { label: t("Accordion widget"), hasSelectionHandle: true }
+        ),
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "AccordionBlock",
+      view: {
+        name: "div",
+        classes: "accordion",
+      },
+    });
 
-    _defineConverters() {
-        const conversion = this.editor.conversion;
+    // Defines conversion for AccordionItem.
+    conversion.for("upcast").elementToElement({
+      model: "AccordionItem",
+      view: {
+        name: "div",
+        classes: "accordion-item",
+      },
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "AccordionItem",
+      view: {
+        name: "div",
+        classes: "ckeditor5-accordion-item",
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "AccordionItem",
+      view: {
+        name: "div",
+        classes: "accordion-item",
+      },
+    });
+    // Defines conversion for AccordionItemHeader.
+    conversion.for("upcast").add((dispatcher) => {
+      dispatcher.on("element", (_evt, data, conversionApi) => {
+        if (
+          conversionApi.consumable.consume(data.viewItem, {
+            name: true,
+            classes: "accordion-header",
+          })
+        ) {
+          const modelElement = conversionApi.writer.createElement(
+            "AccordionItemHeader"
+          );
+          // Forces insertion and conversion of a clean
+          // `AccordionItemHeader` model element.
+          if (conversionApi.safeInsert(modelElement, data.modelCursor)) {
+            conversionApi.convertChildren(data.viewItem, modelElement);
+            conversionApi.updateConversionResult(modelElement, data);
+          }
+        }
+      });
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "AccordionItemHeader",
+      view: {
+        name: "div",
+        classes: "ckeditor5-accordion-header",
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "AccordionItemHeader",
+      view: {
+        name: "div",
+        classes: "accordion-header",
+      },
+    });
 
-        // <simpleBox> converters
-        conversion.for( 'upcast' ).elementToElement( {
-            model: 'Accordion',
-            view: {
-                name: 'section',
-                classes: 'Accordion'
-            }
-        } );
-        conversion.for( 'dataDowncast' ).elementToElement( {
-            model: 'Accordion',
-            view: {
-                name: 'section',
-                classes: 'Accordion'
-            }
-        } );
-        conversion.for( 'editingDowncast' ).elementToElement( {
-            model: 'Accordion',
-            view: ( modelElement, { writer: viewWriter } ) => {
-                const section = viewWriter.createContainerElement( 'section', { class: 'Accordion' } );
+    // Defines conversion for AccordionItemButton.
+    conversion.for("upcast").add((dispatcher) => {
+      dispatcher.on("element:a", (_evt, data, conversionApi) => {
+        if (
+          conversionApi.consumable.consume(data.viewItem, {
+            name: true,
+            classes: "accordion-button",
+            attributes: ["href"],
+          }) ||
+          conversionApi.consumable.consume(data.viewItem, {
+            name: true,
+            classes: "accordion-button",
+          })
+        ) {
+          const modelElement = conversionApi.writer.createElement(
+            "AccordionItemButton"
+          );
+          // Forces insertion and conversion of a clean
+          // `AccordionItemButton` model element.
+          if (conversionApi.safeInsert(modelElement, data.modelCursor)) {
+            conversionApi.convertChildren(data.viewItem, modelElement);
+            conversionApi.updateConversionResult(modelElement, data);
+          }
+        }
+      });
+      dispatcher.on("element:button", (_evt, data, conversionApi) => {
+        if (
+          conversionApi.consumable.consume(data.viewItem, {
+            name: true,
+            classes: "accordion-button",
+          })
+        ) {
+          const modelElement = conversionApi.writer.createElement(
+            "AccordionItemButton"
+          );
+          // Forces insertion and conversion of a clean
+          // `AccordionItemButton` model element.
+          if (!conversionApi.safeInsert(modelElement, data.modelCursor)) {
+            conversionApi.convertChildren(data.viewItem, modelElement);
+            conversionApi.updateConversionResult(modelElement, data);
+          }
+        }
+      });
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "AccordionItemButton",
+      view: (_modelElement, { writer }) => {
+        const element = writer.createEditableElement("a", {
+          class: "ckeditor5-accordion-button",
+          href: "#",
+        });
+        element.placeholder = t("Accordion item");
+        enablePlaceholder({
+          view: editing.view,
+          element,
+          keepOnFocus: true,
+        });
+        const widget = toWidgetEditable(element, writer, {
+          label: t("Accordion item header"),
+        });
+        return widget;
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "AccordionItemButton",
+      view: {
+        name: "a",
+        classes: "accordion-button",
+        attributes: {
+          href: "#",
+        },
+      },
+    });
 
-                return toWidget( section, viewWriter, { label: 'accordion widget' } );
-            }
-        } );
+    // Defines conversion for AccordionCollapse.
+    conversion.for("upcast").elementToElement({
+      model: "AccordionCollapse",
+      view: {
+        name: "div",
+        classes: "accordion-collapse",
+      },
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "AccordionCollapse",
+      view: {
+        name: "div",
+        classes: "ckeditor5-accordion-collapse",
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "AccordionCollapse",
+      view: {
+        name: "div",
+        classes: ["accordion-collapse", "collapse"],
+      },
+    });
 
-        // <simpleBoxDescription> converters
-        conversion.for( 'upcast' ).elementToElement( {
-            model: 'AccordionContent',
-            view: {
-                name: 'div',
-            }
-        } );
-        conversion.for( 'dataDowncast' ).elementToElement( {
-            model: 'AccordionContent',
-            view: {
-                name: 'div',
-            }
-        } );
-        conversion.for( 'editingDowncast' ).elementToElement( {
-            model: 'AccordionContent',
-            view: ( modelElement, { writer: viewWriter } ) => {
-                // Note: You use a more specialized createEditableElement() method here.
-                const div = viewWriter.createEditableElement( 'div' );
+    // Defines conversion for AccordionItemContent.
+    conversion.for("upcast").elementToElement({
+      model: "AccordionItemContent",
+      view: {
+        name: "div",
+        classes: "accordion-body",
+      },
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "AccordionItemContent",
+      view: (_modelElement, { writer }) => {
+        const element = writer.createEditableElement("div", {
+          class: "ckeditor5-accordion-body",
+        });
+        element.placeholder = t("Accordion item body");
+        enablePlaceholder({
+          view: editing.view,
+          element,
+          isDirectHost: false,
+          keepOnFocus: true,
+        });
+        return toWidgetEditable(element, writer, {
+          label: t("Accordion item body"),
+        });
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "AccordionItemContent",
+      view: {
+        name: "div",
+        classes: "accordion-body",
+      },
+    });
+  }
 
-                return toWidgetEditable( div, viewWriter );
-            }
-        } );
-    }
+  /**
+   * Defines the commands for inserting or modifying the accordion.
+   */
+  _defineCommands() {
+    const editor = this.editor;
+    const commands = editor.commands;
+    commands.add("insertAccordion", new InsertAccordionCommand(editor));
+    commands.add("insertAccordionItem", new InsertAccordionItemCommand(editor));
+    commands.add("removeAccordionItem", new RemoveAccordionItemCommand(editor));
+    commands.add(
+      "AccordionFirstItemOpen",
+      new AccordionFirstItemOpenCommand(editor)
+    );
+    commands.add(
+      "AccordionItemsStayOpen",
+      new ModifyAccordionCommand(
+        editor,
+        "AccordionItemsStayOpen",
+        true // Default value for AccordionItemsStayOpen
+      )
+    );
+    commands.add("AccordionOpenAll", new AccordionOpenAllCommand(editor));
+    commands.add(
+      "AccordionCollapseAll",
+      new AccordionCollapseAllCommand(editor)
+    );
+  }
 }
