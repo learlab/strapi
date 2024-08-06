@@ -2,19 +2,6 @@
 
 var TurndownService = require("joplin-turndown");
 var turndownPluginGfm = require("joplin-turndown-plugin-gfm");
-// Overrides the escape() method, enlarging it.
-
-const originalEscape = TurndownService.prototype.escape;
-TurndownService.prototype.escape = function escape(string) {
-  string = originalEscape(string);
-
-  // Escape "$" so they are not interpreted by NextJS as inline math
-  // Uses a negative lookahead and negative look behind
-  // This leaves "$$" unescaped, to allow for MathJax inline math ("$$...$$")
-  //string = string.replace(/\$(?!\$)(?<!\$\$)(?<!\\\$)/g, "$");
-
-  return string;
-};
 
 var turndownService = new TurndownService({
   codeBlockStyle: "fenced",
@@ -69,78 +56,79 @@ function stringifyAttributes(element, separator = " ") {
 }
 
 //for Info sections
-turndownService.addRule('InfoRule', {
-  filter: function(node) {
-    return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Info'
-    );
+turndownService.addRule("InfoRule", {
+  filter: function (node) {
+    return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
   },
-  replacement: function(content, node) {
-    const titles = Array.from(node.querySelectorAll('h1'));
-    const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+  replacement: function (content, node) {
+    const titles = Array.from(node.querySelectorAll("h1"));
+    const title = titles.map((h1) => h1.textContent.trim()).join(" <br/>\n");
 
-
-    const paragraphs = Array.from(node.querySelectorAll('p'));
-    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+    const paragraphs = Array.from(node.querySelectorAll("p"));
+    const paragraphContent = paragraphs
+      .map((p) => p.textContent.trim())
+      .join(" <br/>\n");
     return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
-  }
+  },
 });
 
 //for Warning sections
-turndownService.addRule('WarningRule', {
-  filter: function(node) {
+turndownService.addRule("WarningRule", {
+  filter: function (node) {
     return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Warning'
+      node.nodeName === "SECTION" && node.getAttribute("class") === "Warning"
     );
   },
-  replacement: function(content, node) {
-    const paragraphs = Array.from(node.querySelectorAll('p'));
-    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+  replacement: function (content, node) {
+    const paragraphs = Array.from(node.querySelectorAll("p"));
+    const paragraphContent = paragraphs
+      .map((p) => p.textContent.trim())
+      .join(" <br/>\n");
     return `<Warning>\n${paragraphContent}\n</Warning>`;
-  }
+  },
 });
 
 //for Callout sections
-turndownService.addRule('CalloutRule', {
-  filter: function(node) {
+turndownService.addRule("CalloutRule", {
+  filter: function (node) {
     return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Callout'
+      node.nodeName === "SECTION" && node.getAttribute("class") === "Callout"
     );
   },
-  replacement: function(content, node) {
-    const paragraphs = Array.from(node.querySelectorAll('p'));
-    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
+  replacement: function (content, node) {
+    const paragraphs = Array.from(node.querySelectorAll("p"));
+    const paragraphContent = paragraphs
+      .map((p) => p.textContent.trim())
+      .join(" <br/>\n");
     return `<Callout>\n${paragraphContent}\n</Callout>`;
-  }
+  },
 });
 
 //for Accordion sections
-turndownService.addRule('AccordionRule', {
-  filter: function(node) {
+turndownService.addRule("AccordionRule", {
+  filter: function (node) {
     return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Accordion'
+      node.nodeName === "DIV" &&
+      node.getAttribute("class").startsWith("ckeditor5-accordion__widget")
     );
   },
-  replacement: function(content, node) {
-    const items = Array.from(node.querySelectorAll('SECTION'));
-    let itemsContent = ""
-    let count = 0
-    items.map(item => {
-      const titles = Array.from(item.querySelectorAll('h1'));
-      const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+  replacement: function (content, node) {
+    const items = Array.from(node.querySelectorAll("ckeditor5-accordion-item"));
+    let itemsContent = "";
+    let count = 0;
+    items.map((item) => {
+      const titles = Array.from(item.querySelectorAll("h1"));
+      const title = titles.map((h1) => h1.textContent.trim()).join(" <br/>\n");
 
+      const paragraphs = Array.from(item.querySelectorAll("p"));
+      const paragraphContent = paragraphs
+        .map((p) => p.textContent.trim())
+        .join(" <br/>\n");
+      itemsContent += `<AccordionItem value="${(count += 1)}" title="${title}">\n${paragraphContent}\n</AccordionItem>\n`;
+    });
 
-      const paragraphs = Array.from(item.querySelectorAll('p'));
-      const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
-      itemsContent += `<AccordionItem value="${count += 1}" title="${title}">\n${paragraphContent}\n</AccordionItem>\n`
-    })
-
-    return `<Accordion value="first" className = "prose dark:prose-invert">\n${itemsContent}</Accordion>\n`;
-  }
+    return `<Accordion value="first" className="prose dark:prose-invert">\n${itemsContent}</Accordion>\n`;
+  },
 });
 
 // Rule for images
@@ -171,10 +159,10 @@ turndownService.addRule("image", {
 });
 
 //converts linebreaks
-turndownService.addRule('convertLineBreaks', {
-  filter: 'br',
+turndownService.addRule("convertLineBreaks", {
+  filter: "br",
   replacement: function (content) {
-    return '<br/>';
+    return "<br/>";
   },
 });
 
@@ -184,19 +172,18 @@ turndownService.addRule("code", {
   filter: function (node) {
     return (
       node.nodeName === "SECTION" &&
-      node.getAttribute('class') === 'CodingSandbox'
+      node.getAttribute("class") === "CodingSandbox"
     );
   },
   replacement: function (content, node, options) {
-    const codeBlock = node.querySelector('pre code');
-    const language = codeBlock.className.split('-')[1];
+    const codeBlock = node.querySelector("pre code");
+    const language = codeBlock.className.split("-")[1];
 
-    const codeContent = codeBlock.textContent.trim()
+    const codeContent = codeBlock.textContent.trim();
 
-    if(language === "python"){
+    if (language === "python") {
       return `<Notebook code = {\`${codeContent}\`}/>\n`;
-    }
-    else if(language === "javascript"){
+    } else if (language === "javascript") {
       return `<Sandbox code = {\`${codeContent}\`}/>\n`;
     }
   },
