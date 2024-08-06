@@ -5,9 +5,8 @@ const pluginId = "plugin.github-publish";
 module.exports = ({ strapi }) => ({
   // Check if workflow is in_progress https://docs.github.com/en/rest/reference/actions#list-workflow-runs
   check: async (ctx) => {
-    const { owner, repo, workflow_id, token, branch} = strapi.config.get(
-      pluginId
-    );
+    const { owner, repo, workflow_id, token, branch } =
+      strapi.config.get(pluginId);
 
     const headers = {
       Accept: "application/vnd.github.v3+json",
@@ -35,7 +34,7 @@ module.exports = ({ strapi }) => ({
       repo,
       workflow_id,
       token,
-      branch: ref
+      branch: ref,
     } = strapi.config.get(pluginId);
 
     const headers = {
@@ -47,9 +46,8 @@ module.exports = ({ strapi }) => ({
 
     const data = {
       ref: ref,
-      inputs
+      inputs,
     };
-    console.log(data);
 
     const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`;
 
@@ -59,15 +57,16 @@ module.exports = ({ strapi }) => ({
       ctx.send({ success });
     } catch (error) {
       // Log the full error response for debugging
-      console.error('Error triggering GitHub workflow:', error.response?.data || error.message);
-      ctx.throw(500, 'Failed to trigger GitHub workflow');
+      console.error(
+        "Error triggering GitHub workflow:",
+        error.response?.data || error.message
+      );
+      ctx.throw(500, "Failed to trigger GitHub workflow");
     }
   },
 
   getTexts: (ctx) => {
-    const
-      text_json
-     = strapi.config.get(pluginId);
+    const text_json = strapi.config.get(pluginId);
     return {
       text_json,
     };

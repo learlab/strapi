@@ -4,7 +4,6 @@ async function generatePageEmbeddings(ctx) {
   const entry = await strapi.entityService.findOne("api::page.page", ctx.id, {
     populate: "*",
   });
-  console.log(entry)
   var chapter = null;
   const chapter_id = entry.Chapter ? entry.Chapter.id : null;
   var this_module_slug = null;

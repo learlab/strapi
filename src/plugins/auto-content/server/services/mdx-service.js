@@ -128,7 +128,6 @@ turndownService.addRule("image", {
   },
 
   replacement: function (content, node, options) {
-    console.log(content);
     const tag = "Image";
     let firstImg = null;
     let figcaption = null;

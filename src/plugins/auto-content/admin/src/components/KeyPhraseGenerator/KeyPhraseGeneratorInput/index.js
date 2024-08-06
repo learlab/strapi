@@ -120,9 +120,6 @@ export default function Index({
 
       const parsedResponse = await response.json().then((res) => {
         // Probably will need to add a new column in Strapi db if we want to use the JSON feature
-        // const resArr = Object.values(JSON.parse(res.choices[0].message.content))[0];
-        // console.log(resArr);
-        // return resArr.join("\n");
         if ("error" in res) {
           return `Error generating kephrases!: ${res.error.message}`
         } else {
