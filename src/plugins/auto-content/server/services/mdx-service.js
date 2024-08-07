@@ -25,8 +25,25 @@ function stringifyAttributes(element, separator = " ") {
   }
   return attrStr;
 }
-//rule for coding sandboxes
-turndownService.addRule("static code", {
+
+// Rule for Fancy Fenced Code Blocks
+/* DataModel
+  <section class="StaticCode">
+      Attributes:
+      <p class="StaticAttributes">
+        attr_string
+      </p>
+      <div>
+          <pre><code class="language-python">code_content</code></pre>
+      </div>
+  </section>
+*/
+/* MDX Export
+  ```python attr_string
+  code_content
+  ```
+*/
+turndownService.addRule("StaticCode", {
   filter: function (node) {
     return (
       node.nodeName === "SECTION" &&
@@ -46,7 +63,18 @@ turndownService.addRule("static code", {
 });
 
 // Info
-turndownService.addRule("InfoRule", {
+/* DataModel
+  <section class="Info">
+    <h3>info_title</h3>
+    <p>info_contentt</p>
+  </section>
+*/
+/* MDX Export
+  <Info title="info_title">
+    info_content
+  </Info>
+*/
+turndownService.addRule("Info", {
   filter: function (node) {
     return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
   },
@@ -65,7 +93,17 @@ turndownService.addRule("InfoRule", {
 });
 
 // Warnings
-turndownService.addRule("WarningRule", {
+/* DataModel
+  <section class="Warning">
+    <p>warning_content</p>
+  </section>
+*/
+/* MDX Export
+  <Warning>
+    warning_content
+  </Warning>
+*/
+turndownService.addRule("Warning", {
   filter: function (node) {
     return (
       node.nodeName === "SECTION" && node.getAttribute("class") === "Warning"
@@ -78,7 +116,17 @@ turndownService.addRule("WarningRule", {
 });
 
 // Callouts
-turndownService.addRule("CalloutRule", {
+/* DataModel
+  <section class="Callout">
+    <p>callout_content</p>
+  </section>
+*/
+/* MDX Export
+  <Callout>
+    callout_content
+  </Callout>
+*/
+turndownService.addRule("Callout", {
   filter: function (node) {
     return (
       node.nodeName === "SECTION" && node.getAttribute("class") === "Callout"
@@ -96,12 +144,12 @@ turndownService.addRule("CalloutRule", {
     <div class="accordion-item">
         <div class="accordion-header">
             <a class="accordion-button" href="#">
-                Accordion Title
+                accordion_title
             </a>
         </div>
         <div class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <p>Accordion Content</p>
+                <p>accordion_content</p>
             </div>
         </div>
     </div>
@@ -109,12 +157,12 @@ turndownService.addRule("CalloutRule", {
 */
 /* MDX Export
   <Accordion value="first" className="prose dark:prose-invert">
-    <AccordionItem value="1" title="Accordion Title">
-        <p>Accordion Content</p>
+    <AccordionItem value="1" title="accordion_title">
+        accordion_content
     </AccordionItem>
   </Accordion>
 */
-turndownService.addRule("AccordionRule", {
+turndownService.addRule("Accordion", {
   filter: function (node) {
     return node.nodeName === "DIV" && node.classList.contains("accordion");
   },
@@ -137,7 +185,18 @@ turndownService.addRule("AccordionRule", {
 });
 
 // Images
-turndownService.addRule("image", {
+/* DataModel
+  <figure class="image">
+    <img src="image.jpg" alt="image_description" />
+    <figcaption>image_caption</figcaption>
+  </figure>
+*/
+/* MDX Export
+  <Image src="image.jpg" alt="image_description">
+    image_caption
+  </Image>
+*/
+turndownService.addRule("Image", {
   filter: function (node, options) {
     return (
       node.nodeName === "FIGURE" &&
@@ -164,7 +223,7 @@ turndownService.addRule("image", {
 
 // Converts linebreaks
 // TODO: Explain why this is needed.
-turndownService.addRule("convertLineBreaks", {
+turndownService.addRule("LineBreaks", {
   filter: "br",
   replacement: function (content) {
     return "<br/>";
@@ -172,7 +231,16 @@ turndownService.addRule("convertLineBreaks", {
 });
 
 // Interactive Coding Sandboxes (REPLs)
-turndownService.addRule("code", {
+// Exports <Sandbox> for JavaScript and <Notebook> for Python
+/* DataModel
+  <section class="CodingSandbox">
+    <pre><code class="language-javascript">Code Content</code></pre>
+  </section>
+*/
+/* MDX Export
+  <Sandbox code = {`Code Content`}/>
+*/
+turndownService.addRule("REPL", {
   filter: function (node) {
     return (
       node.nodeName === "SECTION" &&
