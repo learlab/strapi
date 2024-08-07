@@ -27,24 +27,24 @@ export default class InfoEditing extends Plugin {
     });
 
     schema.register("InfoTitle", {
-      // Cannot be split or left by the caret.
       isLimit: true,
+      isContent: true, // Preserve in data view even when empty.
       allowIn: "Info",
-      allowContentOf: ["heading3"] // Behaves like a heading
+      // Allows only text and text-like elements (like icons) inside.
+      allowContentOf: "$block", // $text attributes disallowed by PlainText plugin.
     });
 
     schema.register("InfoContent", {
-      // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Info",
-      allowContentOf: "paragraph" // Behaves like a paragraph
+      allowContentOf: "paragraph", // Behaves like a paragraph
     });
   }
 
   _defineConverters() {
     const conversion = this.editor.conversion;
 
-    // <simpleBox> converters
+    // Info converters
     conversion.for("upcast").elementToElement({
       model: "Info",
       view: {
@@ -70,17 +70,19 @@ export default class InfoEditing extends Plugin {
       },
     });
 
-    // <simpleBoxTitle> converters
+    // InfoTitle converters
     conversion.for("upcast").elementToElement({
       model: "InfoTitle",
       view: {
         name: "h3",
+        classes: "InfoTitle",
       },
     });
     conversion.for("dataDowncast").elementToElement({
       model: "InfoTitle",
       view: {
         name: "h3",
+        classes: "InfoTitle",
       },
     });
     conversion.for("editingDowncast").elementToElement({
@@ -93,17 +95,19 @@ export default class InfoEditing extends Plugin {
       },
     });
 
-    // <simpleBoxDescription> converters
+    // InfoContent converters
     conversion.for("upcast").elementToElement({
       model: "InfoContent",
       view: {
         name: "p",
+        classes: "InfoContent",
       },
     });
     conversion.for("dataDowncast").elementToElement({
       model: "InfoContent",
       view: {
         name: "p",
+        classes: "InfoContent",
       },
     });
     conversion.for("editingDowncast").elementToElement({

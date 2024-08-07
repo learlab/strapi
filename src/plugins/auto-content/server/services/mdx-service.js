@@ -51,7 +51,7 @@ turndownService.addRule("StaticCode", {
     );
   },
   replacement: function (content, node, options) {
-    const attributes = node.querySelector('p');;
+    const attributes = node.querySelector('p');
 
     const codeBlock = node.querySelector('pre code');
     const language = codeBlock.className.split('-')[1];
@@ -65,8 +65,8 @@ turndownService.addRule("StaticCode", {
 // Info
 /* DataModel
   <section class="Info">
-    <h3>info_title</h3>
-    <p>info_contentt</p>
+    <h3 class="InfoTitle">info_title</h3>
+    <p class="InfoContent">info_content</p>
   </section>
 */
 /* MDX Export
@@ -79,28 +79,22 @@ turndownService.addRule("Info", {
     return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
   },
   replacement: function (content, node) {
-    // Must use querySelectorAll because h3 and p are not direct children of node.
-    // Should probably make them children of a div instead of directly in the section.
-    const titles = Array.from(node.querySelectorAll("h3"));
-    const title = titles.map((h3) => h3.textContent.trim()).join(" <br/>\n");
+    const infoTitle = node.querySelector(".InfoTitle").textContent;
+    const infoContent = td(node.querySelector(".InfoContent").innerHTML);
 
-    const paragraphs = Array.from(node.querySelectorAll("p"));
-    const paragraphContent = paragraphs
-      .map((p) => p.textContent.trim())
-      .join(" <br/>\n");
-    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
+    return `<Info title="${infoTitle}">\n${infoContent}\n</Info>\n`;
   },
 });
 
 // Warnings
 /* DataModel
   <section class="Warning">
-    <p>warning_content</p>
+    warning_content_HTML
   </section>
 */
 /* MDX Export
   <Warning>
-    warning_content
+    warning_content_MD
   </Warning>
 */
 turndownService.addRule("Warning", {
@@ -118,12 +112,12 @@ turndownService.addRule("Warning", {
 // Callouts
 /* DataModel
   <section class="Callout">
-    <p>callout_content</p>
+    callout_content_HTML
   </section>
 */
 /* MDX Export
   <Callout>
-    callout_content
+    callout_content_MD
   </Callout>
 */
 turndownService.addRule("Callout", {
@@ -149,7 +143,7 @@ turndownService.addRule("Callout", {
         </div>
         <div class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <p>accordion_content</p>
+                accordion_content_HTML
             </div>
         </div>
     </div>
@@ -158,7 +152,7 @@ turndownService.addRule("Callout", {
 /* MDX Export
   <Accordion value="first" className="prose dark:prose-invert">
     <AccordionItem value="1" title="accordion_title">
-        accordion_content
+        accordion_content_MD
     </AccordionItem>
   </Accordion>
 */
@@ -171,7 +165,7 @@ turndownService.addRule("Accordion", {
     let itemsJsxString = "";
     let count = 0;
     itemsDataModel.map((item) => {
-      // Get simple textContent from header. Otherwise, we would need to handle the href in the data model.
+      // Get simple textContent from header.
       const title = item.querySelector(".accordion-header").textContent.trim();
 
       // Get innerHtml from body. This has not been thoroughly tested, but is intended

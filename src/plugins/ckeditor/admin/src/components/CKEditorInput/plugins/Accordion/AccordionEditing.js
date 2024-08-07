@@ -52,7 +52,7 @@ export default class AccordionEditing extends Plugin {
       // Limits commands like "select all" to its contents when the cursor is inside.
       isLimit: true,
       // Allows only text and text-like elements (like icons) inside.
-      allowContentOf: "$block",
+      allowContentOf: "$block", // $text attributes disallowed by PlainText plugin.
       allowAttributes: ["AccordionItemButtonCollapsed"],
       allowIn: "AccordionItemHeader",
     });
