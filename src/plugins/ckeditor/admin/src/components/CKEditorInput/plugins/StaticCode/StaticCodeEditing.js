@@ -42,9 +42,7 @@ export default class StaticCodeEditing extends Plugin {
             isLimit: true,
 
             allowIn: 'StaticCode',
-
-            // Allow content which is allowed in the root (e.g. paragraphs).
-            allowContentOf: '$root'
+            allowChildren: ["codeBlock"],
         } );
     }
 
