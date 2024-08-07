@@ -19,29 +19,17 @@ function stringifyAttributes(element, separator = " ") {
 // Factory function to create a TurndownService instance with
 // custom rules based on pageSlug
 const initializeTurndownService = (pageSlug) => {
-
-  // Replacement function for REPLs
-  // Used in the blankReplacement rule and in the REPL rule
-  const replaceREPL = (node) => {
-    const codeBlock = node.querySelector("pre code");
-    const language = codeBlock.className.split("-")[1];
-
-    const codeContent = codeBlock.textContent.trim();
-
-    if (language === "python") {
-      return `<Notebook  pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
-    } else if (language === "javascript") {
-      return `<Sandbox pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
-    }
-  };
-
-
   var turndownService = new TurndownService({
     codeBlockStyle: "fenced",
     blankReplacement: function (content, node) {
-      if (node.nodeName === "SECTION" && node.classList.contains("CodingSandbox")) {
+      if (
+        node.nodeName === "SECTION" &&
+        node.classList.contains("CodingSandbox")
+      ) {
         // Preserve REPLs even when they are empty.
-        return replaceREPL(node);
+        const language = node.querySelector("pre code").className.split(" ")[1];
+        const blockType = language === "python" ? "Notebook" : "Sandbox";
+        return `<${blockType} pageSlug="${pageSlug}" code=""/>\n`;
       } else if (node.isBlock) {
         // Default behavior of blankReplacement is newlines for blank block elements.
         return "\n\n";
@@ -49,7 +37,7 @@ const initializeTurndownService = (pageSlug) => {
         // Empty string for blank inline elements.
         return "";
       }
-    }
+    },
   });
 
   turndownService.use(gfm);
@@ -195,7 +183,7 @@ const initializeTurndownService = (pageSlug) => {
     },
     replacement: function (content, node) {
       const itemsDataModel = Array.from(
-        node.querySelectorAll(".accordion-item")
+        node.querySelectorAll(".accordion-item"),
       );
       let itemsJsxString = "";
       let count = 0;
@@ -257,7 +245,7 @@ const initializeTurndownService = (pageSlug) => {
   });
 
   // Converts linebreaks
-  // Intended to help HTMLEmbeds create jsx compatible linebreaks. 
+  // Intended to help HTMLEmbeds create jsx compatible linebreaks.
   turndownService.addRule("LineBreaks", {
     filter: "br",
     replacement: function (content) {
@@ -283,7 +271,16 @@ const initializeTurndownService = (pageSlug) => {
       );
     },
     replacement: function (content, node, options) {
-      return replaceREPL(node);
+      const codeBlock = node.querySelector("pre code");
+      const language = codeBlock.className.split("-")[1];
+
+      const codeContent = codeBlock.textContent.trim();
+
+      if (language === "python") {
+        return `<Notebook  pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
+      } else if (language === "javascript") {
+        return `<Sandbox pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
+      }
     },
   });
 
