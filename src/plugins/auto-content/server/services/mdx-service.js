@@ -67,6 +67,25 @@ function stringifyAttributes(element, separator = " ") {
   }
   return attrStr;
 }
+//rule for coding sandboxes
+turndownService.addRule("static code", {
+  filter: function (node) {
+    return (
+      node.nodeName === "SECTION" &&
+      node.getAttribute('class') === 'StaticCode'
+    );
+  },
+  replacement: function (content, node, options) {
+    const attributes = node.querySelector('p');;
+
+    const codeBlock = node.querySelector('pre code');
+    const language = codeBlock.className.split('-')[1];
+
+    const codeContent = codeBlock.textContent.trim()
+
+    return `\`\`\`${language} ${attributes.textContent.trim()}\n${codeContent}\n\`\`\``;
+  },
+});
 
 //for Info sections
 turndownService.addRule('InfoRule', {
@@ -178,7 +197,7 @@ turndownService.addRule('convertLineBreaks', {
   },
 });
 
-//rule for static code chunks
+//rule for coding sandboxes
 turndownService.addRule("code", {
   // filter: 'pre',
   filter: function (node) {
