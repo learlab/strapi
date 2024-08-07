@@ -51,8 +51,8 @@ turndownService.addRule("InfoRule", {
     return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
   },
   replacement: function (content, node) {
-    const titles = Array.from(node.querySelectorAll("h1"));
-    const title = titles.map((h1) => h1.textContent.trim()).join(" <br/>\n");
+    const titles = Array.from(node.querySelectorAll("h3"));
+    const title = titles.map((h3) => h3.textContent.trim()).join(" <br/>\n");
 
     const paragraphs = Array.from(node.querySelectorAll("p"));
     const paragraphContent = paragraphs
