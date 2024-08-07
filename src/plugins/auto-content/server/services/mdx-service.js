@@ -11,6 +11,9 @@ var turndownService = new TurndownService({
 var gfm = turndownPluginGfm.gfm;
 turndownService.use(gfm);
 
+// Short name for turndownService.turndown
+const td = (html) => turndownService.turndown(html);
+
 // Utility function to construct JSX attributes from HTML DOM
 function stringifyAttributes(element, separator = " ") {
   var attrStr = Array.from(element.attributes)
@@ -67,11 +70,8 @@ turndownService.addRule("WarningRule", {
     );
   },
   replacement: function (content, node) {
-    const paragraphs = Array.from(node.querySelectorAll("p"));
-    const paragraphContent = paragraphs
-      .map((p) => p.textContent.trim())
-      .join(" <br/>\n");
-    return `<Warning>\n${paragraphContent}\n</Warning>`;
+    const warningContent = td(node.innerHTML);
+    return `<Warning>\n${warningContent}\n</Warning>\n`;
   },
 });
 
@@ -83,11 +83,8 @@ turndownService.addRule("CalloutRule", {
     );
   },
   replacement: function (content, node) {
-    const paragraphs = Array.from(node.querySelectorAll("p"));
-    const paragraphContent = paragraphs
-      .map((p) => p.textContent.trim())
-      .join(" <br/>\n");
-    return `<Callout>\n${paragraphContent}\n</Callout>`;
+    const calloutContent = td(node.innerHTML);
+    return `<Callout>\n${calloutContent}\n</Callout>\n`;
   },
 });
 
@@ -197,7 +194,7 @@ turndownService.addRule("code", {
 module.exports = ({ strapi }) => {
   const mdx = async (html) => {
     if (!html) return null;
-    return turndownService.turndown(html);
+    return td(html);
   };
 
   return {
