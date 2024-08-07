@@ -26,10 +26,10 @@ var turndownService = new TurndownService({
     
     
         if(language === "python"){
-          return `<Notebook code = {}/>\n`;
+          return `<Notebook code = ""/>\n`;
         }
         else if(language === "javascript"){
-          return `<Sandbox code = {}/>\n`;
+          return `<Sandbox code = ""/>\n`;
         }    }
   }
 });
