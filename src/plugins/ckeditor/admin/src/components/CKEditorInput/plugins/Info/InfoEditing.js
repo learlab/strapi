@@ -63,7 +63,7 @@ export default class InfoEditing extends Plugin {
       model: "Info",
       view: (modelElement, { writer: viewWriter }) => {
         const section = viewWriter.createContainerElement("section", {
-          class: "Callout", // TODO: Fix the class name and CSS styles!
+          class: "Info", 
         });
 
         return toWidget(section, viewWriter, { label: "info widget" });
