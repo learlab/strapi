@@ -31,16 +31,7 @@ export default class WarningEditing extends Plugin {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Warning",
-      allowContentOf: "$root",
-    });
-
-    schema.addChildCheck((context, childDefinition) => {
-      if (
-        context.endsWith("WarningContent") &&
-        childDefinition.name != "paragraph"
-      ) {
-        return false;
-      }
+      allowChildren: ["paragraph"],
     });
   }
 

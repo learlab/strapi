@@ -31,16 +31,7 @@ export default class CalloutEditing extends Plugin {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Callout",
-      allowContentOf: "$root",
-    });
-
-    schema.addChildCheck((context, childDefinition) => {
-      if (
-        context.endsWith("CalloutContent") &&
-        childDefinition.name != "paragraph"
-      ) {
-        return false;
-      }
+      allowChildren: ["paragraph", "list"],
     });
   }
 
