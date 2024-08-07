@@ -13,10 +13,7 @@ module.exports = ({ strapi }) => {
         ctx.throw(500, err);
       }
     }
-    return ctx.throw(
-      400,
-      "Text is missing."
-    );
+    return ctx.throw(400, "Text is missing.");
   };
 
   return {

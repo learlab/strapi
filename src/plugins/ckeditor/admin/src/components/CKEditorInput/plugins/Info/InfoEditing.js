@@ -7,123 +7,117 @@ const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
 
 export default class InfoEditing extends Plugin {
   static get requires() {
-    return [ Widget ];
+    return [Widget];
   }
 
   init() {
-
     this._defineSchema();
     this._defineConverters();
 
-    this.editor.commands.add( 'insertInfo', new InsertInfoCommand( this.editor ) );
+    this.editor.commands.add("insertInfo", new InsertInfoCommand(this.editor));
   }
 
   _defineSchema() {
     const schema = this.editor.model.schema;
 
-    schema.register( 'Info', {
+    schema.register("Info", {
       // Behaves like a self-contained block object (e.g. a block image)
       // allowed in places where other blocks are allowed (e.g. directly in the root).
-      inheritAllFrom: '$blockObject'
-    } );
+      inheritAllFrom: "$blockObject",
+    });
 
-    schema.register( 'InfoTitle', {
-      // Cannot be split or left by the caret.
+    schema.register("InfoTitle", {
       isLimit: true,
+      isContent: true, // Preserve in data view even when empty.
+      allowIn: "Info",
+      // Allows only text and text-like elements (like icons) inside.
+      allowContentOf: "$block", // $text attributes disallowed by PlainText plugin.
+    });
 
-      allowIn: 'Info',
-
-      // Allow content which is allowed in blocks (e.g. text with attributes).
-      allowContentOf: '$block'
-    } );
-
-    schema.register( 'InfoContent', {
-      // Cannot be split or left by the caret.
+    schema.register("InfoContent", {
       isLimit: true,
-      allowIn: 'Info',
-
-      // Allow content which is allowed in blocks (e.g. text with attributes).
-      allowContentOf: '$block'
-    } );
-
-    schema.addChildCheck( ( context, childDefinition ) => {
-      if ( (context.endsWith( 'InfoContent' )||context.endsWith( 'InfoTitle' )) && childDefinition.name == 'Info' ) {
-        return false;
-      }
-    } );
+      allowIn: "Info",
+      allowContentOf: "paragraph", // Behaves like a paragraph
+    });
   }
 
   _defineConverters() {
     const conversion = this.editor.conversion;
 
-    // <simpleBox> converters
-    conversion.for( 'upcast' ).elementToElement( {
-      model: 'Info',
+    // Info converters
+    conversion.for("upcast").elementToElement({
+      model: "Info",
       view: {
-        name: 'section',
-        classes: 'Info'
-      }
-    } );
-    conversion.for( 'dataDowncast' ).elementToElement( {
-      model: 'Info',
+        name: "section",
+        classes: "Info",
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "Info",
       view: {
-        name: 'section',
-        classes: 'Info'
-      }
-    } );
-    conversion.for( 'editingDowncast' ).elementToElement( {
-      model: 'Info',
-      view: ( modelElement, { writer: viewWriter } ) => {
-        const section = viewWriter.createContainerElement( 'section', { class: 'Callout' } );
+        name: "section",
+        classes: "Info",
+      },
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "Info",
+      view: (modelElement, { writer: viewWriter }) => {
+        const section = viewWriter.createContainerElement("section", {
+          class: "Info", 
+        });
 
-        return toWidget( section, viewWriter, { label: 'info widget' } );
-      }
-    } );
+        return toWidget(section, viewWriter, { label: "info widget" });
+      },
+    });
 
-    // <simpleBoxTitle> converters
-    conversion.for( 'upcast' ).elementToElement( {
-      model: 'InfoTitle',
+    // InfoTitle converters
+    conversion.for("upcast").elementToElement({
+      model: "InfoTitle",
       view: {
-        name: 'h1',
-      }
-    } );
-    conversion.for( 'dataDowncast' ).elementToElement( {
-      model: 'InfoTitle',
+        name: "h3",
+        classes: "InfoTitle",
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "InfoTitle",
       view: {
-        name: 'h1',
-      }
-    } );
-    conversion.for( 'editingDowncast' ).elementToElement( {
-      model: 'InfoTitle',
-      view: ( modelElement, { writer: viewWriter } ) => {
+        name: "h3",
+        classes: "InfoTitle",
+      },
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "InfoTitle",
+      view: (modelElement, { writer: viewWriter }) => {
         // Note: You use a more specialized createEditableElement() method here.
-        const h1 = viewWriter.createEditableElement( 'h1');
+        const h3 = viewWriter.createEditableElement("h3");
 
-        return toWidgetEditable( h1, viewWriter );
-      }
-    } );
+        return toWidgetEditable(h3, viewWriter);
+      },
+    });
 
-    // <simpleBoxDescription> converters
-    conversion.for( 'upcast' ).elementToElement( {
-      model: 'InfoContent',
+    // InfoContent converters
+    conversion.for("upcast").elementToElement({
+      model: "InfoContent",
       view: {
-        name: 'p',
-      }
-    } );
-    conversion.for( 'dataDowncast' ).elementToElement( {
-      model: 'InfoContent',
+        name: "p",
+        classes: "InfoContent",
+      },
+    });
+    conversion.for("dataDowncast").elementToElement({
+      model: "InfoContent",
       view: {
-        name: 'p',
-      }
-    } );
-    conversion.for( 'editingDowncast' ).elementToElement( {
-      model: 'InfoContent',
-      view: ( modelElement, { writer: viewWriter } ) => {
+        name: "p",
+        classes: "InfoContent",
+      },
+    });
+    conversion.for("editingDowncast").elementToElement({
+      model: "InfoContent",
+      view: (modelElement, { writer: viewWriter }) => {
         // Note: You use a more specialized createEditableElement() method here.
-        const p = viewWriter.createEditableElement( 'p' );
+        const p = viewWriter.createEditableElement("p");
 
-        return toWidgetEditable( p, viewWriter );
-      }
-    } );
+        return toWidgetEditable(p, viewWriter);
+      },
+    });
   }
 }

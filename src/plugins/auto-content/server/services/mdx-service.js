@@ -2,61 +2,9 @@
 
 var TurndownService = require("joplin-turndown");
 var turndownPluginGfm = require("joplin-turndown-plugin-gfm");
-// Overrides the escape() method, enlarging it.
+var gfm = turndownPluginGfm.gfm; // GitHub Flavored Markdown
 
-const originalEscape = TurndownService.prototype.escape;
-TurndownService.prototype.escape = function escape(string) {
-  string = originalEscape(string);
-
-  // Escape "$" so they are not interpreted by NextJS as inline math
-  // Uses a negative lookahead and negative look behind
-  // This leaves "$$" unescaped, to allow for MathJax inline math ("$$...$$")
-  //string = string.replace(/\$(?!\$)(?<!\$\$)(?<!\\\$)/g, "$");
-
-  return string;
-};
-
-var turndownService = new TurndownService({
-  codeBlockStyle: "fenced",
-});
-
-// Use the GitHub Flavored Markdown plugin
-var gfm = turndownPluginGfm.gfm;
-turndownService.use(gfm);
-
-// MDX Components in iTELL
-// TODO: add support for nested components (steps, columns, accordion, tabs)
-// TODO: add support for multimedia (image, video, coding time)
-const componentNames = [
-  "Definition",
-  "Keyterm",
-  // 'Exercise', // <div class="exercise">...</div>
-  // 'Image', // <img alt="">...</img>
-  // 'Steps', // <div class="steps">...<ul>...</ul></div>
-  // 'YoutubeVideo', // VideoChunk only
-  // 'Accordion', // <details>...</details> (single element only)
-  "Info",
-  "Callout",
-  "Warning",
-  // 'Columns', // <div class="columns">...</div>
-  // 'Column', // <div class="column">...</div>
-  // 'Tabs', // <div class="tabs">...<div class="tabs-header|body">...</div>
-  // 'TabsHeader', // <div class="tabs-header">...</div>
-  // 'TabsBody', // <div class="tabs-body">...</div>
-  // 'TabPanel', // <div class="tab-panel">...</div>
-  // 'TextOverImage', // <img class="text-over-image">...</img>
-  "Caption",
-  "Blockquote",
-  // 'CodeRepl',
-  // 'CodingTime'
-];
-
-// construct component name map to handle case insensitivity in HTML DOM
-const componentNameMap = Object.fromEntries(
-  componentNames.map((compName) => [compName.toUpperCase(), compName])
-);
-
-// utility function to construct JSX attributes from HTML DOM
+// Utility function to construct JSX attributes from HTML DOM
 function stringifyAttributes(element, separator = " ") {
   var attrStr = Array.from(element.attributes)
     .filter((attr) => attr.specified && attr.name !== "class")
@@ -67,164 +15,268 @@ function stringifyAttributes(element, separator = " ") {
   }
   return attrStr;
 }
-//rule for coding sandboxes
-turndownService.addRule("static code", {
-  filter: function (node) {
-    return (
-      node.nodeName === "SECTION" &&
-      node.getAttribute('class') === 'StaticCode'
-    );
-  },
-  replacement: function (content, node, options) {
-    const attributes = node.querySelector('p');;
 
-    const codeBlock = node.querySelector('pre code');
-    const language = codeBlock.className.split('-')[1];
+// Factory function to create a TurndownService instance with
+// custom rules based on pageSlug
+const initializeTurndownService = (pageSlug) => {
+  var turndownService = new TurndownService({
+    codeBlockStyle: "fenced",
+  });
 
-    const codeContent = codeBlock.textContent.trim()
+  turndownService.use(gfm);
 
-    return `\`\`\`${language} ${attributes.textContent.trim()}\n${codeContent}\n\`\`\``;
-  },
-});
+  // Short name for turndownService.turndown
+  const td = (html) => turndownService.turndown(html);
 
-//for Info sections
-turndownService.addRule('InfoRule', {
-  filter: function(node) {
-    return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Info'
-    );
-  },
-  replacement: function(content, node) {
-    const titles = Array.from(node.querySelectorAll('h1'));
-    const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+  // Rule for Fancy Fenced Code Blocks
+  /* DataModel
+    <section class="StaticCode">
+        Attributes:
+        <p class="StaticAttributes">
+          attr_string
+        </p>
+        <div>
+            <pre><code class="language-python">code_content</code></pre>
+        </div>
+    </section>
+  */
+  /* MDX Export
+    ```python attr_string
+    code_content
+    ```
+  */
+  turndownService.addRule("StaticCode", {
+    filter: function (node) {
+      return (
+        node.nodeName === "SECTION" &&
+        node.getAttribute("class") === "StaticCode"
+      );
+    },
+    replacement: function (content, node, options) {
+      const attributes = node.querySelector("p");
 
+      const codeBlock = node.querySelector("pre code");
+      const language = codeBlock.className.split("-")[1];
 
-    const paragraphs = Array.from(node.querySelectorAll('p'));
-    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
-    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
-  }
-});
+      const codeContent = codeBlock.textContent.trim();
 
-//for Warning sections
-turndownService.addRule('WarningRule', {
-  filter: function(node) {
-    return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Warning'
-    );
-  },
-  replacement: function(content, node) {
-    const paragraphs = Array.from(node.querySelectorAll('p'));
-    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
-    return `<Warning>\n${paragraphContent}\n</Warning>`;
-  }
-});
+      return `\`\`\`${language} ${attributes.textContent.trim()}\n${codeContent}\n\`\`\``;
+    },
+  });
 
-//for Callout sections
-turndownService.addRule('CalloutRule', {
-  filter: function(node) {
-    return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Callout'
-    );
-  },
-  replacement: function(content, node) {
-    const paragraphs = Array.from(node.querySelectorAll('p'));
-    const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
-    return `<Callout>\n${paragraphContent}\n</Callout>`;
-  }
-});
+  // Info
+  /* DataModel
+    <section class="Info">
+      <h3 class="InfoTitle">info_title</h3>
+      <p class="InfoContent">info_content</p>
+    </section>
+  */
+  /* MDX Export
+    <Info title="info_title">
+      info_content
+    </Info>
+  */
+  turndownService.addRule("Info", {
+    filter: function (node) {
+      return (
+        node.nodeName === "SECTION" && node.getAttribute("class") === "Info"
+      );
+    },
+    replacement: function (content, node) {
+      const infoTitle = node.querySelector(".InfoTitle").textContent;
+      const infoContent = td(node.querySelector(".InfoContent").innerHTML);
 
-//for Accordion sections
-turndownService.addRule('AccordionRule', {
-  filter: function(node) {
-    return (
-      node.nodeName === 'SECTION' &&
-      node.getAttribute('class') === 'Accordion'
-    );
-  },
-  replacement: function(content, node) {
-    const items = Array.from(node.querySelectorAll('SECTION'));
-    let itemsContent = ""
-    let count = 0
-    items.map(item => {
-      const titles = Array.from(item.querySelectorAll('h1'));
-      const title = titles.map(h1 => h1.textContent.trim()).join(' <br/>\n');
+      return `<Info title="${infoTitle}">\n${infoContent}\n</Info>\n`;
+    },
+  });
 
+  // Warnings
+  /* DataModel
+    <section class="Warning">
+      warning_content_HTML
+    </section>
+  */
+  /* MDX Export
+    <Warning>
+      warning_content_MD
+    </Warning>
+  */
+  turndownService.addRule("Warning", {
+    filter: function (node) {
+      return (
+        node.nodeName === "SECTION" && node.getAttribute("class") === "Warning"
+      );
+    },
+    replacement: function (content, node) {
+      const warningContent = td(node.innerHTML);
+      return `<Warning>\n${warningContent}\n</Warning>\n`;
+    },
+  });
 
-      const paragraphs = Array.from(item.querySelectorAll('p'));
-      const paragraphContent = paragraphs.map(p => p.textContent.trim()).join(' <br/>\n');
-      itemsContent += `<AccordionItem value="${count += 1}" title="${title}">\n${paragraphContent}\n</AccordionItem>\n`
-    })
+  // Callouts
+  /* DataModel
+    <section class="Callout">
+      callout_content_HTML
+    </section>
+  */
+  /* MDX Export
+    <Callout>
+      callout_content_MD
+    </Callout>
+  */
+  turndownService.addRule("Callout", {
+    filter: function (node) {
+      return (
+        node.nodeName === "SECTION" && node.getAttribute("class") === "Callout"
+      );
+    },
+    replacement: function (content, node) {
+      const calloutContent = td(node.innerHTML);
+      return `<Callout>\n${calloutContent}\n</Callout>\n`;
+    },
+  });
 
-    return `<Accordion value="first" className = "prose dark:prose-invert">\n${itemsContent}</Accordion>\n`;
-  }
-});
+  // Accordions
+  /* DataModel
+    <div class="accordion accordion-items-stay-open" data-accordion-id="">
+      <div class="accordion-item">
+          <div class="accordion-header">
+              <a class="accordion-button" href="#">
+                  accordion_title
+              </a>
+          </div>
+          <div class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                  accordion_content_HTML
+              </div>
+          </div>
+      </div>
+    </div>
+  */
+  /* MDX Export
+    <Accordion value="first" className="prose dark:prose-invert">
+      <AccordionItem value="1" title="accordion_title">
+          accordion_content_MD
+      </AccordionItem>
+    </Accordion>
+  */
+  turndownService.addRule("Accordion", {
+    filter: function (node) {
+      return node.nodeName === "DIV" && node.classList.contains("accordion");
+    },
+    replacement: function (content, node) {
+      const itemsDataModel = Array.from(
+        node.querySelectorAll(".accordion-item")
+      );
+      let itemsJsxString = "";
+      let count = 0;
+      itemsDataModel.map((item) => {
+        // Get simple textContent from header.
+        const title = item
+          .querySelector(".accordion-header")
+          .textContent.trim();
 
-// Rule for images
-turndownService.addRule("image", {
-  filter: function (node, options) {
-    return (
-      node.nodeName === "FIGURE" &&
-      node.getAttribute("class").startsWith("image")
-    );
-  },
+        // Get innerHtml from body. This has not been thoroughly tested, but is intended
+        // to preserve e.g., lists, linebreaks that would be lost with .textContent.
+        const itemContent = td(item.querySelector(".accordion-body").innerHTML);
 
-  replacement: function (content, node, options) {
-    console.log(content);
-    const tag = "Image";
-    let firstImg = null;
-    let figcaption = null;
+        itemsJsxString += `<AccordionItem value="${(count += 1)}" title="${title}">\n${itemContent}\n</AccordionItem>\n`;
+      });
+      return `<Accordion value="first" className="prose dark:prose-invert">\n${itemsJsxString}</Accordion>\n`;
+    },
+  });
 
-    for (let i = 0; i < node.childNodes.length; i++) {
-      const child = node.childNodes[i];
-      if (child.nodeName === "IMG") firstImg = child;
-      if (child.nodeName === "FIGCAPTION") figcaption = child.textContent;
-    }
+  // Images
+  /* DataModel
+    <figure class="image">
+      <img src="image.jpg" alt="image_description" />
+      <figcaption>image_caption</figcaption>
+    </figure>
+  */
+  /* MDX Export
+    <Image src="image.jpg" alt="image_description">
+      image_caption
+    </Image>
+  */
+  turndownService.addRule("Image", {
+    filter: function (node, options) {
+      return (
+        node.nodeName === "FIGURE" &&
+        node.getAttribute("class").startsWith("image")
+      );
+    },
 
-    var attrStr = stringifyAttributes(firstImg, "\n  ");
+    replacement: function (content, node, options) {
+      const tag = "Image";
+      let firstImg = null;
+      let figcaption = null;
 
-    return `<${tag}${attrStr}>\n${figcaption}\n</${tag}>`;
-  },
-});
+      for (let i = 0; i < node.childNodes.length; i++) {
+        const child = node.childNodes[i];
+        if (child.nodeName === "IMG") firstImg = child;
+        if (child.nodeName === "FIGCAPTION") figcaption = child.textContent;
+      }
 
-//converts linebreaks
-turndownService.addRule('convertLineBreaks', {
-  filter: 'br',
-  replacement: function (content) {
-    return '<br/>';
-  },
-});
+      var attrStr = stringifyAttributes(firstImg, "\n  ");
 
-//rule for coding sandboxes
-turndownService.addRule("code", {
-  // filter: 'pre',
-  filter: function (node) {
-    return (
-      node.nodeName === "SECTION" &&
-      node.getAttribute('class') === 'CodingSandbox'
-    );
-  },
-  replacement: function (content, node, options) {
-    const codeBlock = node.querySelector('pre code');
-    const language = codeBlock.className.split('-')[1];
+      if (figcaption) {
+        return `<${tag}${attrStr}>\n${figcaption}\n</${tag}>`;
+      } else {
+        return `<${tag}${attrStr} />`;
+      }
+    },
+  });
 
-    const codeContent = codeBlock.textContent.trim()
+  // Converts linebreaks
+  // TODO: Explain why this is needed.
+  turndownService.addRule("LineBreaks", {
+    filter: "br",
+    replacement: function (content) {
+      return "<br/>";
+    },
+  });
 
-    if(language === "python"){
-      return `<Notebook code = {\`${codeContent}\`}/>\n`;
-    }
-    else if(language === "javascript"){
-      return `<Sandbox code = {\`${codeContent}\`}/>\n`;
-    }
-  },
-});
+  // Interactive Coding Sandboxes (REPLs)
+  // Exports <Sandbox> for JavaScript and <Notebook> for Python
+  /* DataModel
+    <section class="CodingSandbox">
+      <pre><code class="language-javascript">code_content</code></pre>
+    </section>
+  */
+  /* MDX Export
+    <Sandbox code = {`code_content`}/>
+  */
+  turndownService.addRule("REPL", {
+    filter: function (node) {
+      return (
+        node.nodeName === "SECTION" &&
+        node.getAttribute("class") === "CodingSandbox"
+      );
+    },
+    replacement: function (content, node, options) {
+      const codeBlock = node.querySelector("pre code");
+      const language = codeBlock.className.split("-")[1];
+
+      const codeContent = codeBlock.textContent.trim();
+
+      if (language === "python") {
+        return `<Notebook  pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
+      } else if (language === "javascript") {
+        return `<Sandbox pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
+      }
+    },
+  });
+
+  return td;
+};
 
 module.exports = ({ strapi }) => {
-  const mdx = async (html) => {
+  const mdx = async (pageSlug, html) => {
     if (!html) return null;
-    return turndownService.turndown(html);
+
+    const td = initializeTurndownService(pageSlug);
+
+    return td(html);
   };
 
   return {

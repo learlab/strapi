@@ -31,7 +31,7 @@ export default function Index({
 
   const debouncedTextFieldValue = useDebounce(
     modifiedData[dynamicZone][index]["Text"],
-    300
+    300,
   );
 
   const debouncedVideoFieldValue = useDebounce(
@@ -40,7 +40,7 @@ export default function Index({
       startTime: modifiedData[dynamicZone][index]["StartTime"],
       endTime: modifiedData[dynamicZone][index]["EndTime"],
     },
-    300
+    300,
   );
 
   // check if content type is text or video
@@ -120,11 +120,8 @@ export default function Index({
 
       const parsedResponse = await response.json().then((res) => {
         // Probably will need to add a new column in Strapi db if we want to use the JSON feature
-        // const resArr = Object.values(JSON.parse(res.choices[0].message.content))[0];
-        // console.log(resArr);
-        // return resArr.join("\n");
         if ("error" in res) {
-          return `Error generating kephrases!: ${res.error.message}`
+          return `Error generating kephrases!: ${res.error.message}`;
         } else {
           return res.choices[0].message.content.trim();
         }

@@ -10,7 +10,8 @@ module.exports = ({ strapi }) => {
         {
           role: "user",
           content:
-            'Generate a question and a short answer based on the passage below. The answer should be one sentence long. Provide your response as a properly formatted JSON object with the following schema: {"question": `a question based on the passage.`, "answer": `a correct short answer to the question. The answer should be one sentence long.`}\n\nPassage: ' + text,
+            'Generate a question and a short answer based on the passage below. The answer should be one sentence long. Provide your response as a properly formatted JSON object with the following schema: {"question": `a question based on the passage.`, "answer": `a correct short answer to the question. The answer should be one sentence long.`}\n\nPassage: ' +
+            text,
         },
       ];
       const response = await fetch(
@@ -29,7 +30,7 @@ module.exports = ({ strapi }) => {
             temperature: 0.7,
             max_tokens: 100,
           }),
-        }
+        },
       );
       const res = await response.json();
       return res;

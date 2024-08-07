@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import { Flex, Icon } from '@strapi/design-system';
-import { Write } from '@strapi/icons';
-import styled from 'styled-components';
+import { Flex, Icon } from "@strapi/design-system";
+import { Write } from "@strapi/icons";
+import styled from "styled-components";
 
 const IconBox = styled(Flex)`
   /* Hard code color values */
@@ -17,7 +17,14 @@ const IconBox = styled(Flex)`
 
 const SlugFieldIcon = () => {
   return (
-    <IconBox justifyContent="center" alignItems="center" width={7} height={6} hasRadius aria-hidden>
+    <IconBox
+      justifyContent="center"
+      alignItems="center"
+      width={7}
+      height={6}
+      hasRadius
+      aria-hidden
+    >
       <Icon as={Write} />
     </IconBox>
   );

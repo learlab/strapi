@@ -8,7 +8,7 @@ import ckeditor5CodeBlockDll from "@ckeditor/ckeditor5-code-block/build/code-blo
 import ckeditor5EssentialsDll from "@ckeditor/ckeditor5-essentials/build/essentials.js";
 import ckeditor5FontDll from "@ckeditor/ckeditor5-font/build/font.js";
 import ckeditor5HeadingDll from "@ckeditor/ckeditor5-heading/build/heading.js";
-import ckeditor5HighlightDll from '@ckeditor/ckeditor5-highlight/build/highlight.js';
+import ckeditor5HighlightDll from "@ckeditor/ckeditor5-highlight/build/highlight.js";
 import ckeditor5HtmlSupportDll from "@ckeditor/ckeditor5-html-support/build/html-support.js";
 import ckeditor5HtmlEmbedDll from "@ckeditor/ckeditor5-html-embed/build/html-embed.js";
 import ckeditor5HorizontalLineDll from "@ckeditor/ckeditor5-horizontal-line/build/horizontal-line.js";
@@ -26,13 +26,13 @@ import ckeditor5TableDll from "@ckeditor/ckeditor5-table/build/table.js";
 import ckeditor5WordCountDll from "@ckeditor/ckeditor5-word-count/build/word-count.js";
 import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/maximum-length.js";
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
-import Info from "./plugins/Info/Info"
-import Callout from "./plugins/Callout/Callout"
-import Warning from "./plugins/Warning/Warning"
+import Info from "./plugins/Info/Info";
+import Callout from "./plugins/Callout/Callout";
+import Warning from "./plugins/Warning/Warning";
 import Accordion from "./plugins/Accordion/Accordion";
-import AccordionItem from "./plugins/Accordion/AccordionItem/AccordionItem";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 import StaticCode from "./plugins/StaticCode/StaticCode";
+import PlainText from "./plugins/PlainText/PlainText";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -85,9 +85,9 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       Callout,
       Warning,
       Accordion,
-      AccordionItem,
       CodingSandbox,
-      StaticCode
+      StaticCode,
+      PlainText, // Adds a simple attribute check to prevent formatting on specific elements
     ],
     toolbar: {
       items: [
@@ -95,50 +95,60 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'heading',
         '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'code', 'StaticCode', 'blockQuote',
+        'code', 'StaticCode', 'CodingSandbox',   
         '|',
-        'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'specialCharacters',
-        '|',
-        'bulletedList', 'numberedList',
-        '|',
-        'sourceEditing', 'htmlEmbed',
-        '-',
         'Info',
         'Callout',
         'Warning',
-        'Accordion',
-        'AccordionItem',
-        'CodingSandbox',
-
+        '|',
+        'sourceEditing', 'htmlEmbed',      
+        '-',
+        'bold', 'italic', 'underline', 'strikethrough', 'specialCharacters',
+        '|',
+        'link', 'strapiMediaLib', 'insertTable', 'blockQuote',
+        '|',
+        'bulletedList', 'numberedList', 'Accordion',
       ],
-      shouldNotGroupWhenFull: true
+      shouldNotGroupWhenFull: true,
     },
     heading: {
       options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-      ]
+        {
+          model: "paragraph",
+          title: "Paragraph",
+          class: "ck-heading_paragraph",
+        },
+        {
+          model: "heading3",
+          view: "h3",
+          title: "Heading 3",
+          class: "ck-heading_heading3",
+        },
+        {
+          model: "heading4",
+          view: "h4",
+          title: "Heading 4",
+          class: "ck-heading_heading4",
+        },
+      ],
     },
     codeBlock: {
       languages: [
-        { language: 'python', label: 'Python' },
-        { language: 'javascript', label: 'JavaScript' }
-      ]
+        { language: "python", label: "Python" },
+        { language: "javascript", label: "JavaScript" },
+      ],
     },
     image: {
-      toolbar: [
-        'toggleImageCaption', 'imageTextAlternative',
-      ]
+      toolbar: ["toggleImageCaption", "imageTextAlternative"],
     },
     table: {
       contentToolbar: [
-        'tableColumn',
-        'tableRow',
-        'mergeTableCells',
-        '|',
-        'toggleTableCaption'
-      ]
+        "tableColumn",
+        "tableRow",
+        "mergeTableCells",
+        "|",
+        "toggleTableCaption",
+      ],
     },
     htmlSupport: {
       allow: [
@@ -147,30 +157,11 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
           name: /.*/,
           attributes: true,
           classes: true,
-          styles: true
+          styles: true,
         },
-    //     // Enables <div> elements with classes.
-    //     {
-    //       name: /^(div)$/,
-    //       classes: ['column', 'columns']
-    //     },
-
-    //     {
-    //       name: 'p',
-    //       classes: ['info', 'warning']
-    //     },
-
-    //     // Enables <div> with any class attribute (true is a wildcard).
-    //     {
-    //       name: 'div',
-    //       attributes: {
-    //         class: true,
-    //         style: true
-    //       }
-    //     }
-      ]
-    }
-  }
+      ],
+    },
+  },
 };
 
 export default class Configurator {
@@ -188,7 +179,7 @@ export default class Configurator {
       config.plugins.push(window.CKEditor5.maximumLength.MaximumLength);
 
       config.maximumLength = {
-        characters: maxLength
+        characters: maxLength,
       };
     }
 
@@ -199,10 +190,10 @@ export default class Configurator {
     const presetName = this.fieldConfig.options.preset;
 
     switch (presetName) {
-      case 'standard':
+      case "standard":
         return CKEDITOR_BASE_CONFIG_FOR_PRESETS.standard;
       default:
-        throw new Error('Invalid preset name ' + presetName);
+        throw new Error("Invalid preset name " + presetName);
     }
   }
 }

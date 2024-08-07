@@ -1,8 +1,0 @@
-.AccordionItem{
-    padding: 10px;
-    margin: 1em 0;
-
-    background: rgba( 220, 236, 247, 0.5 );
-    border: dashed 2px hsl(204, 100%, 80%);
-    border-radius: 2px;
-}
