@@ -35,3 +35,9 @@ Our deployment is hosted on [Render](https://itell-strapi-um5h.onrender.com/admi
 We use prettier for code formatting. Please run `npm run format` before committing your changes.
 
 Linting is not strictly enforced, but we are working towards a more consistent codebase. Please run `npm run lint` before committing your changes.
+
+## Backup
+
+1. SSH into the Strapi server on Render.
+2. Run `npm run strapi export -- -file strapi-backup --no-encrypt`
+3. Download the backup file from the server using [scp](https://docs.render.com/disks). 
