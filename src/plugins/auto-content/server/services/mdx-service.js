@@ -228,7 +228,7 @@ const initializeTurndownService = (pageSlug) => {
   });
 
   // Converts linebreaks
-  // TODO: Explain why this is needed.
+  // Intended to help HTMLEmbeds create jsx compatible linebreaks. 
   turndownService.addRule("LineBreaks", {
     filter: "br",
     replacement: function (content) {
