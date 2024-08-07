@@ -51,14 +51,10 @@ turndownService.addRule("InfoRule", {
     return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
   },
   replacement: function (content, node) {
-    const titles = Array.from(node.querySelectorAll("h3"));
-    const title = titles.map((h3) => h3.textContent.trim()).join(" <br/>\n");
+    const infoTitle = td(node.querySelector("h3").innerHTML);
+    const infoContent = td(node.querySelector("p").innerHTML);
 
-    const paragraphs = Array.from(node.querySelectorAll("p"));
-    const paragraphContent = paragraphs
-      .map((p) => p.textContent.trim())
-      .join(" <br/>\n");
-    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
+    return `<Info title="${infoTitle}">\n${infoContent}\n</Info>\n`;
   },
 });
 
@@ -126,9 +122,9 @@ turndownService.addRule("AccordionRule", {
 
       // Get innerHtml from body. This has not been thoroughly tested, but is intended
       // to preserve e.g., lists, linebreaks that would be lost with .textContent.
-      const content = item.querySelector(".accordion-body").innerHTML;
+      const itemContent = td(item.querySelector(".accordion-body").innerHTML);
 
-      itemsJsxString += `<AccordionItem value="${(count += 1)}" title="${title}">\n${content}\n</AccordionItem>\n`;
+      itemsJsxString += `<AccordionItem value="${(count += 1)}" title="${title}">\n${itemContent}\n</AccordionItem>\n`;
     });
     return `<Accordion value="first" className="prose dark:prose-invert">\n${itemsJsxString}</Accordion>\n`;
   },
