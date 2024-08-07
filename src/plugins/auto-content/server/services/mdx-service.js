@@ -211,7 +211,11 @@ turndownService.addRule("Image", {
 
     var attrStr = stringifyAttributes(firstImg, "\n  ");
 
-    return `<${tag}${attrStr}>\n${figcaption}\n</${tag}>`;
+    if (figcaption) {
+      return `<${tag}${attrStr}>\n${figcaption}\n</${tag}>`;
+    } else {
+      return `<${tag}${attrStr} />`;
+    }
   },
 });
 

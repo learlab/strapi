@@ -96,7 +96,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         'heading',
         '|',
         'code', 'StaticCode', 'CodingSandbox',   
-        '-',
+        '|',
         'Info',
         'Callout',
         'Warning',
