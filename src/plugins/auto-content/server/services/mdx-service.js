@@ -18,6 +18,20 @@ TurndownService.prototype.escape = function escape(string) {
 
 var turndownService = new TurndownService({
   codeBlockStyle: "fenced",
+  blankReplacement (content, node) {
+    if (node.nodeName === "SECTION" &&
+      node.getAttribute('class') === 'CodingSandbox') {
+        const codeBlock = node.querySelector('pre code');
+        const language = codeBlock.className.split('-')[1];
+    
+    
+        if(language === "python"){
+          return `<Notebook code = {}/>\n`;
+        }
+        else if(language === "javascript"){
+          return `<Sandbox code = {}/>\n`;
+        }    }
+  }
 });
 
 // Use the GitHub Flavored Markdown plugin
