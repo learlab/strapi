@@ -24,7 +24,7 @@ export default class WarningEditing extends Plugin {
       // Behaves like a self-contained block object (e.g. a block image)
       // allowed in places where other blocks are allowed (e.g. directly in the root).
       inheritAllFrom: "$blockObject",
-      allowChildren: "$text",
+      allowChildren: "WarningContent",
     });
 
     schema.register("WarningContent", {
