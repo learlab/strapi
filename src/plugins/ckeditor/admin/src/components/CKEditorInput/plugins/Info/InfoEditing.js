@@ -29,29 +29,15 @@ export default class InfoEditing extends Plugin {
     schema.register("InfoTitle", {
       // Cannot be split or left by the caret.
       isLimit: true,
-
       allowIn: "Info",
-
-      // Allow content which is allowed in blocks (e.g. text with attributes).
-      allowContentOf: "$block",
+      allowContentOf: ["heading3"] // Behaves like a heading
     });
 
     schema.register("InfoContent", {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Info",
-
-      // Allow content which is allowed in blocks (e.g. text with attributes).
-      allowContentOf: "$block",
-    });
-
-    schema.addChildCheck((context, childDefinition) => {
-      if (
-        (context.endsWith("InfoContent") || context.endsWith("InfoTitle")) &&
-        childDefinition.name == "Info"
-      ) {
-        return false;
-      }
+      allowContentOf: "paragraph" // Behaves like a paragraph
     });
   }
 
@@ -77,7 +63,7 @@ export default class InfoEditing extends Plugin {
       model: "Info",
       view: (modelElement, { writer: viewWriter }) => {
         const section = viewWriter.createContainerElement("section", {
-          class: "Callout",
+          class: "Callout", // TODO: Fix the class name and CSS styles!
         });
 
         return toWidget(section, viewWriter, { label: "info widget" });
@@ -88,22 +74,22 @@ export default class InfoEditing extends Plugin {
     conversion.for("upcast").elementToElement({
       model: "InfoTitle",
       view: {
-        name: "h1",
+        name: "h3",
       },
     });
     conversion.for("dataDowncast").elementToElement({
       model: "InfoTitle",
       view: {
-        name: "h1",
+        name: "h3",
       },
     });
     conversion.for("editingDowncast").elementToElement({
       model: "InfoTitle",
       view: (modelElement, { writer: viewWriter }) => {
         // Note: You use a more specialized createEditableElement() method here.
-        const h1 = viewWriter.createEditableElement("h1");
+        const h3 = viewWriter.createEditableElement("h3");
 
-        return toWidgetEditable(h1, viewWriter);
+        return toWidgetEditable(h3, viewWriter);
       },
     });
 

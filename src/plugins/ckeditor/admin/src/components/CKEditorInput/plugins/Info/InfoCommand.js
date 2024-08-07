@@ -27,7 +27,5 @@ function createInfo(writer) {
   writer.append(InfoTitle, Info);
   writer.append(InfoContent, Info);
 
-  writer.appendElement("paragraph", InfoContent);
-
   return Info;
 }
