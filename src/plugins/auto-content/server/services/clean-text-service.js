@@ -8,33 +8,33 @@ const rehypeParse = require("rehype-parse");
 
 function removeTables() {
   return (tree) =>
-      remove(tree, { cascade: true }, (node) => {
-          return isElement(node, "table")
-      }) || undefined
+    remove(tree, { cascade: true }, (node) => {
+      return isElement(node, "table");
+    }) || undefined;
 }
 
 function rehypeText(options) {
-  const self = this
-  const settings = { ...self.data('settings'), ...options }
+  const self = this;
+  const settings = { ...self.data("settings"), ...options };
 
-  self.Compiler = Compiler
+  self.Compiler = Compiler;
 
   function Compiler(tree) {
-      return toText(tree, settings)
+    return toText(tree, settings);
   }
 }
 
 module.exports = ({ strapi }) => {
   const cleanText = async (html) => {
     if (!html) return null;
-    
+
     return await unified()
-    .use(rehypeParse)
-    .use(removeTables)
-    .use(rehypeText)
-    .process(html)
+      .use(rehypeParse)
+      .use(removeTables)
+      .use(rehypeText)
+      .process(html);
   };
-  
+
   return {
     cleanText,
   };

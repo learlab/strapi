@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Stack } from "@strapi/design-system/Stack";
-import { Flex } from '@strapi/design-system';
+import { Flex } from "@strapi/design-system";
 import { Button } from "@strapi/design-system/Button";
 import { Textarea, Grid, GridItem } from "@strapi/design-system";
 import { auth } from "@strapi/helper-plugin";

@@ -133,7 +133,7 @@ export default class AccordionEditing extends Plugin {
                 viewItem.getAttribute("data-accordion-id") ||
                 viewItem.getAttribute("id") ||
                 uid(),
-            }
+            },
           );
           // Forces insertion and conversion of a clean `Accordion`
           // model element.
@@ -152,7 +152,7 @@ export default class AccordionEditing extends Plugin {
             class: "ckeditor5-accordion__widget",
           }),
           writer,
-          { label: t("Accordion widget"), hasSelectionHandle: true }
+          { label: t("Accordion widget"), hasSelectionHandle: true },
         ),
     });
     conversion.for("dataDowncast").elementToElement({
@@ -195,7 +195,7 @@ export default class AccordionEditing extends Plugin {
           })
         ) {
           const modelElement = conversionApi.writer.createElement(
-            "AccordionItemHeader"
+            "AccordionItemHeader",
           );
           // Forces insertion and conversion of a clean
           // `AccordionItemHeader` model element.
@@ -236,7 +236,7 @@ export default class AccordionEditing extends Plugin {
           })
         ) {
           const modelElement = conversionApi.writer.createElement(
-            "AccordionItemButton"
+            "AccordionItemButton",
           );
           // Forces insertion and conversion of a clean
           // `AccordionItemButton` model element.
@@ -254,7 +254,7 @@ export default class AccordionEditing extends Plugin {
           })
         ) {
           const modelElement = conversionApi.writer.createElement(
-            "AccordionItemButton"
+            "AccordionItemButton",
           );
           // Forces insertion and conversion of a clean
           // `AccordionItemButton` model element.
@@ -364,20 +364,20 @@ export default class AccordionEditing extends Plugin {
     commands.add("removeAccordionItem", new RemoveAccordionItemCommand(editor));
     commands.add(
       "AccordionFirstItemOpen",
-      new AccordionFirstItemOpenCommand(editor)
+      new AccordionFirstItemOpenCommand(editor),
     );
     commands.add(
       "AccordionItemsStayOpen",
       new ModifyAccordionCommand(
         editor,
         "AccordionItemsStayOpen",
-        true // Default value for AccordionItemsStayOpen
-      )
+        true, // Default value for AccordionItemsStayOpen
+      ),
     );
     commands.add("AccordionOpenAll", new AccordionOpenAllCommand(editor));
     commands.add(
       "AccordionCollapseAll",
-      new AccordionCollapseAllCommand(editor)
+      new AccordionCollapseAllCommand(editor),
     );
   }
 }

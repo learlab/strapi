@@ -18,14 +18,14 @@ const HomePage = () => {
         <Typography variant="epsilon">
           Content generator adds a new auto-content field type. This field is
           intended to be used within a component that contains another field
-          called "CleanText". To generate content, simply press "Generate", and the
-          "CleanText" field will be used to populate the auto-content field.
+          called CleanText. To generate content, simply press Generate, and
+          the CleanText field will be used to populate the auto-content field.
           <br />
           <br />
-          Currently, question generation is supported for "Chunk" and "Video" components. 
-          It supports Question, Answer, and Keyphrase Generation. It is also capable 
-          of fetching a transcript for YouTube videos and generating the same content 
-          for them.
+          Currently, question generation is supported for Chunk and Video
+          components. It supports Question, Answer, and Keyphrase Generation. It
+          is also capable of fetching a transcript for YouTube videos and
+          generating the same content for them.
           <br />
           <br />
           After generating content, you should review it to make sure it meets

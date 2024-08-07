@@ -6,7 +6,7 @@ const fieldSuffixes = require("./fieldSuffixes");
 async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
   if (chunkName) {
     //removes all special characters from the chunk before slugging it
-    const slug = slugify(chunkName, {remove: /[*+~.()'"!:@]/g});
+    const slug = slugify(chunkName, { remove: /[*+~.()'"!:@]/g });
     return `${slug}-${databaseID.toString()}${chunkTypeSuffix}`;
   } else {
     return "";
