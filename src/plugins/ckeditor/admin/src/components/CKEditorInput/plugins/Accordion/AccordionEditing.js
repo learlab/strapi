@@ -63,8 +63,7 @@ export default class AccordionEditing extends Plugin {
     schema.register("AccordionItemContent", {
       // Limits commands like "select all" to its contents when the cursor is inside.
       isLimit: true,
-      // Allows almost everything inside, same as if at the root of the editor.
-      allowContentOf: "$root",
+      allowChildren: ["paragraph", "list"],
       allowIn: "AccordionCollapse",
     });
     schema.addAttributeCheck((context, attributeName) => {
