@@ -32,6 +32,7 @@ import Warning from "./plugins/Warning/Warning";
 import Accordion from "./plugins/Accordion/Accordion";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 import StaticCode from "./plugins/StaticCode/StaticCode";
+import PlainText from "./plugins/PlainText/PlainText";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -85,7 +86,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       Warning,
       Accordion,
       CodingSandbox,
-      StaticCode
+      StaticCode,
+      PlainText, // Adds a simple attribute check to prevent formatting on specific elements
     ],
     toolbar: {
       items: [
