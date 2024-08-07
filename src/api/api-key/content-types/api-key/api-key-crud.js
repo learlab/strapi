@@ -6,7 +6,7 @@ async function createAPIKey(ctx) {
     ctx.id,
     {
       populate: "*",
-    }
+    },
   );
 
   const payload = {
@@ -26,20 +26,15 @@ async function createAPIKey(ctx) {
 }
 
 async function deleteAPIKey(id) {
-  const entry = await strapi.entityService.findOne(
-    "api::api-key.api-key",
-    id,
-    {
-      populate: "*",
-    });
+  const entry = await strapi.entityService.findOne("api::api-key.api-key", id, {
+    populate: "*",
+  });
 
   const payload = {
     api_key: entry.api_key,
   };
 
-  await strapi
-    .service("api::api-key.api-key")
-    .deleteAPIKey(payload);
+  await strapi.service("api::api-key.api-key").deleteAPIKey(payload);
 }
 
 module.exports = {

@@ -1,6 +1,7 @@
 module.exports = ({ strapi }) => {
-  const fetchTranscriptService =
-    strapi.plugins["auto-content"].service("fetchTranscriptService");
+  const fetchTranscriptService = strapi.plugins["auto-content"].service(
+    "fetchTranscriptService",
+  );
 
   const fetchTranscript = async (ctx) => {
     const url = ctx.request.body.url;
@@ -14,12 +15,9 @@ module.exports = ({ strapi }) => {
         console.log(err);
         ctx.throw(500, err);
       }
-    };
+    }
 
-    return ctx.throw(
-      400,
-      "URL is missing."
-    );
+    return ctx.throw(400, "URL is missing.");
   };
 
   return {

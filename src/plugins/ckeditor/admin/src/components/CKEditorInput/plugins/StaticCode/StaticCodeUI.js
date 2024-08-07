@@ -6,8 +6,6 @@ const utils = window.CKEditor5.utils
 
 export default class StaticCodeUI extends Plugin {
     init() {
-        console.log('StaticCodeUI#init() got called');
-
         const editor = this.editor;
         const t = editor.t;
         const items = new utils.Collection();

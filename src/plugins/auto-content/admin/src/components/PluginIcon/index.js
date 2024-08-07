@@ -4,8 +4,8 @@
  *
  */
 
-import React from 'react';
-import { Alien } from '@strapi/icons';
+import React from "react";
+import { Alien } from "@strapi/icons";
 
 const PluginIcon = () => <Alien />;
 

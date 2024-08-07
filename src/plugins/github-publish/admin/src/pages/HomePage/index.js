@@ -1,13 +1,18 @@
-import React, {memo, useEffect, useState} from "react";
+import React, { memo, useEffect, useState } from "react";
 
 import { auth } from "@strapi/helper-plugin";
 
-import {Alert, BaseHeaderLayout, Box, ContentLayout,} from "@strapi/design-system";
-import {request} from "@strapi/helper-plugin";
-import {useIntl} from "react-intl";
+import {
+  Alert,
+  BaseHeaderLayout,
+  Box,
+  ContentLayout,
+} from "@strapi/design-system";
+import { request } from "@strapi/helper-plugin";
+import { useIntl } from "react-intl";
 import styled from "styled-components";
 
-import {PublishButton, PublishPrompt} from "../../components/HomePage";
+import { PublishButton, PublishPrompt } from "../../components/HomePage";
 import pluginId from "../../pluginId";
 
 const POLL_INTERVAL = 10000;
@@ -75,13 +80,12 @@ const HomePage = () => {
           },
           body: JSON.stringify({
             text: text,
-            token: token
+            token: token,
           }),
         });
 
         try {
           setTexts(await res.text());
-
         } catch (error) {
           console.error(error);
         }
@@ -89,7 +93,7 @@ const HomePage = () => {
         timeout = setTimeout(textJSON, POLL_INTERVAL);
       } catch (e) {
         handleError(e);
-      }finally {
+      } finally {
         setReady(tempReady);
       }
     };
@@ -125,22 +129,21 @@ const HomePage = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  if(texts != "hi" && texts != undefined){
+  if (texts != "hi" && texts != undefined) {
     texts = JSON.parse(JSON.parse(texts).text_json.text_json);
   }
 
+  let [token, setToken] = useState("⬇️ Select a text ⬇️");
 
-  let [token, setToken] = useState("⬇️ Select a text ⬇️")
+  let [text, setText] = useState("⬇️ Select a text ⬇️");
 
-  let [text, setText] = useState("⬇️ Select a text ⬇️")
+  let [owner, setOwner] = useState("⬇️ Select a text ⬇️");
 
-  let [owner, setOwner] = useState("⬇️ Select a text ⬇️")
+  let [textID, setTextID] = useState("⬇️ Select a text ⬇️");
 
-  let [textID, setTextID] = useState("⬇️ Select a text ⬇️")
+  let [repository, setRepository] = useState("⬇️ Select a text ⬇️");
 
-  let [repository, setRepository] = useState("⬇️ Select a text ⬇️")
-
-  let [dir, setDir] = useState("⬇️ Select a text ⬇️")
+  let [dir, setDir] = useState("⬇️ Select a text ⬇️");
 
   let handleTextChange = (e) => {
     const inputs = JSON.parse(e.target.value);
@@ -150,7 +153,7 @@ const HomePage = () => {
     setTextID(inputs.textID);
     setRepository(inputs.repository);
     setDir(inputs.dir);
-  }
+  };
 
   return (
     <Box>
@@ -166,19 +169,23 @@ const HomePage = () => {
           </StyledAlert>
         ) : (
           <div>
-            { texts == "hi" ? (
-              <div/>
+            {texts == "hi" ? (
+              <div />
             ) : (
-              <div >
+              <div>
                 <br />
 
                 <select onChange={handleTextChange}>
-                  <option value="⬇️ Select a text ⬇️"> -- Select a text -- </option>
-                  {texts.map((text) => <option value={JSON.stringify(text)}>{text.text}</option>)}
+                  <option value="⬇️ Select a text ⬇️">
+                    {" "}
+                    -- Select a text --{" "}
+                  </option>
+                  {texts.map((text) => (
+                    <option value={JSON.stringify(text)}>{text.text}</option>
+                  ))}
                 </select>
               </div>
-            )
-            }
+            )}
             <br />
             <PublishButton
               loading={!ready || busy}
@@ -188,7 +195,6 @@ const HomePage = () => {
               texts={texts}
             />
           </div>
-
         )}
       </ContentLayout>
       <PublishPrompt
