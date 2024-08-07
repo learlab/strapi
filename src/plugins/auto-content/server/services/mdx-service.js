@@ -22,6 +22,25 @@ function stringifyAttributes(element, separator = " ") {
   }
   return attrStr;
 }
+//rule for coding sandboxes
+turndownService.addRule("static code", {
+  filter: function (node) {
+    return (
+      node.nodeName === "SECTION" &&
+      node.getAttribute('class') === 'StaticCode'
+    );
+  },
+  replacement: function (content, node, options) {
+    const attributes = node.querySelector('p');;
+
+    const codeBlock = node.querySelector('pre code');
+    const language = codeBlock.className.split('-')[1];
+
+    const codeContent = codeBlock.textContent.trim()
+
+    return `\`\`\`${language} ${attributes.textContent.trim()}\n${codeContent}\n\`\`\``;
+  },
+});
 
 // Info
 turndownService.addRule("InfoRule", {
@@ -153,9 +172,7 @@ turndownService.addRule("convertLineBreaks", {
   },
 });
 
-// Static Code Chunks
-// An alternative to the simple fenced codeblocks that are natively available in Markdown.
-// Supports custom styling in iTELL.
+// Interactive Coding Sandboxes (REPLs)
 turndownService.addRule("code", {
   filter: function (node) {
     return (

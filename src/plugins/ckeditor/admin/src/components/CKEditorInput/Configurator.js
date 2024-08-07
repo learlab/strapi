@@ -31,6 +31,7 @@ import Callout from "./plugins/Callout/Callout"
 import Warning from "./plugins/Warning/Warning"
 import Accordion from "./plugins/Accordion/Accordion";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
+import StaticCode from "./plugins/StaticCode/StaticCode";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -83,7 +84,8 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       Callout,
       Warning,
       Accordion,
-      CodingSandbox
+      CodingSandbox,
+      StaticCode
     ],
     toolbar: {
       items: [
@@ -91,13 +93,13 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         '|',
         'heading',
         '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'code', 'codeBlock', 'blockQuote',
+        'bold', 'italic', 'underline', 'strikethrough', 'code', 'StaticCode', 'blockQuote',
         '|',
         'link', 'strapiMediaLib', 'insertTable', 'horizontalLine', 'specialCharacters',
         '|',
         'bulletedList', 'numberedList',
         '|',
-        'sourceEditing',
+        'sourceEditing', 'htmlEmbed',
         '-',
         'Info',
         'Callout',
