@@ -51,10 +51,16 @@ turndownService.addRule("InfoRule", {
     return node.nodeName === "SECTION" && node.getAttribute("class") === "Info";
   },
   replacement: function (content, node) {
-    const infoTitle = td(node.querySelector("h3").innerHTML);
-    const infoContent = td(node.querySelector("p").innerHTML);
+    // Must use querySelectorAll because h3 and p are not direct children of node.
+    // Should probably make them children of a div instead of directly in the section.
+    const titles = Array.from(node.querySelectorAll("h3"));
+    const title = titles.map((h3) => h3.textContent.trim()).join(" <br/>\n");
 
-    return `<Info title="${infoTitle}">\n${infoContent}\n</Info>\n`;
+    const paragraphs = Array.from(node.querySelectorAll("p"));
+    const paragraphContent = paragraphs
+      .map((p) => p.textContent.trim())
+      .join(" <br/>\n");
+    return `<Info title="${title}">\n${paragraphContent}\n</Info>\n`;
   },
 });
 
