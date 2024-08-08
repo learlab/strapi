@@ -54,13 +54,14 @@ const initializeTurndownService = (pageSlug) => {
     },
     replacement: function (content, node, options) {
       const attributes = node.querySelector("p");
+      const attrStr = attributes? attributes.textContent.trim() : ""
 
       const codeBlock = node.querySelector("pre code");
       const language = codeBlock.className.split("-")[1];
 
       const codeContent = codeBlock.textContent.trim();
 
-      return `\`\`\`${language} ${attributes.textContent.trim()}\n${codeContent}\n\`\`\``;
+      return `\`\`\`${language} ${attrStr}\n${codeContent}\n\`\`\``;
     },
   });
 
