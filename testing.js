@@ -113,7 +113,7 @@ async function entryPages(textData, startingPath) {
             .replace(/(<br\s*\/?>\s*)+/g, '\n\n')
         )
         }
-        stream.write("\n</section>\n\n");
+        stream.write("\n\n</section>\n\n");
       } else if (curChunk["__component"] === "page.video") {
       }
     }
