@@ -93,19 +93,19 @@ async function entryPages(textData, startingPath) {
         let inputString = `<section className="content-chunk" aria-labelledby="${chunkSlug}" data-subsection-id="${chunkSlug}"`;
         stream.write(inputString);
         if(curChunk.ShowHeader) {
-          stream.write(` data-show-header="true">\n`);
+          stream.write(` data-show-header="true">\n\n`);
           if(curChunk.HeaderLevel === "H3"){
-            stream.write(`### ${curChunk.Header} \\{#${chunkSlug}}\n`);
+            stream.write(`### ${curChunk.Header} \\{#${chunkSlug}}\n\n`);
           }
           else if(curChunk.HeaderLevel === "H4"){
-            stream.write(`#### ${curChunk.Header} \\{#${chunkSlug}}\n`);
+            stream.write(`#### ${curChunk.Header} \\{#${chunkSlug}}\n\n`);
           }
           else{
-            stream.write(`## ${curChunk.Header} \\{#${chunkSlug}}\n`);
+            stream.write(`## ${curChunk.Header} \\{#${chunkSlug}}\n\n`);
           }
         }
         else{
-          stream.write(` data-show-header="false">\n`);
+          stream.write(` data-show-header="false">\n\n`);
           stream.write(`<h2 className="sr-only" id="${chunkSlug}">${curChunk.Header}</h2>\n\n`)
         }
         if (curChunk.MDX != null) {
