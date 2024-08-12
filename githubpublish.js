@@ -12,7 +12,7 @@ function getTextID() {
 }
 
 async function getTextData(textID) {
-  const res = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts/${textID}?populate=*&publicationState=live`, {cache: "no-store"});
+  const res = await fetch(`https://itell-strapi-um5h.onrender.com/api/texts/${textID}?populate=*`, {cache: "no-store"});
 
   let data = await res.json();
 
@@ -41,10 +41,10 @@ async function entryPages(textData, startingPath) {
     let path = startingPath;
     let stream;
 
-    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages/' + textData[i]["id"] + '?populate=*&publicationState=live', {cache: "no-store"});
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/pages?filters[Slug][$eq]=' + textData[i]["attributes"]["Slug"] + '&populate=*', {cache: "no-store"});
     let data = await res.json();
 
-    let pageData = data["data"]["attributes"];
+    let pageData = data["data"][0]["attributes"];
 
     if(hasChapters){
       if (i !== 0) {
@@ -125,7 +125,7 @@ async function makeModules(textData) {
   let newTextData = textData["Modules"]["data"];
   for (let i = 0; i < newTextData.length; ++i) {
     makeDir("./output/module-" + (i + 1));
-    let res = await fetch('https://itell-strapi-um5h.onrender.com/api/modules/'+textData["modules"]["data"][i]["id"]+'?populate=chapters&publicationState=live', {cache: "no-store"});
+    let res = await fetch('https://itell-strapi-um5h.onrender.com/api/modules?filters[Slug][$eq]='+textData["modules"]["data"][i]["attributes"]["Slug"]+'&populate=chapters', {cache: "no-store"});
     let data = await res.json();
 
     let modulesData = data["data"]["attributes"]["Chapters"]["data"];
@@ -138,9 +138,9 @@ async function makeModules(textData) {
         chapterPath="./output/module-" + (i + 1)+"/chapter-" + modulesData[j]["attributes"]["ChapterNumber"]+"/";
       }
       makeDir(chapterPath);
-      let chapterID=modulesData[j]["id"];
+      let chapterSlug = modulesData[j]["attributes"]["Slug"];
 
-      res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/'+chapterID+'?populate=pages&publicationState=live', {cache: "no-store"});
+      res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters?filters[Slug][$eq]='+chapterSlug+'&populate=pages', {cache: "no-store"});
       data = await res.json();
 
       let chapterData = data["data"]["attributes"]["pages"]["data"];
@@ -150,7 +150,7 @@ async function makeModules(textData) {
 }
 
 async function makeChapters(textData) {
-  let newTextData = textData["chapters"]["data"];
+  let newTextData = textData["Chapters"]["data"];
   let chapterPath;
   for (let i = 0; i < newTextData.length; ++i) {
     if(newTextData[i]["attributes"]["ChapterNumber"]==null){
@@ -160,27 +160,24 @@ async function makeChapters(textData) {
       chapterPath="./output/chapter-" + newTextData[i]["attributes"]["ChapterNumber"]+"/";
     }
     makeDir(chapterPath);
-    let chapterID=newTextData[i]["id"];
+    let chapterSlug = newTextData[i]["attributes"]["Slug"];
 
-    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters/'+chapterID+'?populate=pages&publicationState=live', {cache: "no-store"});
+    const res = await fetch('https://itell-strapi-um5h.onrender.com/api/chapters?filters[Slug][$eq]='+chapterSlug+'&populate=*', {cache: "no-store"});
     let data = await res.json();
 
-    let chapterData = data["data"]["attributes"]["pages"]["data"];
-    await entryPages(chapterData,chapterPath);
+    if(data["data"][0]["attributes"]["Pages"]){
+      let chapterData = data["data"][0]["attributes"]["Pages"]["data"];
+      await entryPages(chapterData,chapterPath);
+    }
   }
 }
 
 async function run() {
   let textID = getTextID();
-  // let textID = await getTextID(title);
-  // if(textID === 0){
-  //   return;
-  // }
-
   let textData = await getTextData(textID);
 
-  hasModules = textData["Chapters"]["data"].length > 0;
-  hasChapters = textData["Modules"]["data"].length > 0;
+  hasChapters = textData["Chapters"]["data"].length > 0;
+  hasModules = textData["Modules"]["data"].length > 0;
 
   if (!fs.existsSync("./output/")) {
     fs.mkdir("./output/", (err) => {
