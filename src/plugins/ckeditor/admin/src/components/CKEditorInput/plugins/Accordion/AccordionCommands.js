@@ -23,11 +23,10 @@ export class InsertAccordionCommand extends Command {
     // Determine if the cursor (selection) is in a position where adding an
     // accordion is permitted. This is based on the schema of the model(s)
     // currently containing the cursor.
-    this.isEnabled =
-      schema.checkChild(
-        getParentElement(document.selection, model),
-        "AccordionBlock",
-      );
+    this.isEnabled = schema.checkChild(
+      getParentElement(document.selection, model),
+      "AccordionBlock"
+    );
   }
 
   execute() {
@@ -68,7 +67,7 @@ export class InsertAccordionItemCommand extends Command {
     model.change((writer) => {
       const newAccordionItem = createAccordionItem(
         writer,
-        true, // isOpen
+        true // isOpen
       ).accordionItem;
       writer.insert(newAccordionItem, accordionItem, value);
     });
@@ -127,7 +126,7 @@ export class AccordionFirstItemOpenCommand extends Command {
   refresh() {
     const model = this.editor.model;
     this.accordionWidget = getSelectedAccordionModelElement(
-      model.document.selection,
+      model.document.selection
     );
     // Disables any AccordionFirstItemOpenCommand if there is no
     // selected accordion.
@@ -141,8 +140,8 @@ export class AccordionFirstItemOpenCommand extends Command {
       setAccordionItemIsOpen(
         this.accordionWidget?.getChild(0),
         writer,
-        options.value,
-      ),
+        options.value
+      )
     );
   }
 }
@@ -159,7 +158,7 @@ export class AccordionOpenAllCommand extends Command {
   refresh() {
     const model = this.editor.model;
     this.accordionWidget = getSelectedAccordionModelElement(
-      model.document.selection,
+      model.document.selection
     );
     // Disables any AccordionOpenAllCommand if there is no selected
     // accordion or only one item can be open at once.
@@ -172,7 +171,7 @@ export class AccordionOpenAllCommand extends Command {
     this.editor.model.change((writer) => {
       if (this.accordionWidget) {
         [...this.accordionWidget.getChildren()].forEach((accordionItem) =>
-          setAccordionItemIsOpen(accordionItem, writer, true),
+          setAccordionItemIsOpen(accordionItem, writer, true)
         );
       }
     });
@@ -191,7 +190,7 @@ export class AccordionCollapseAllCommand extends Command {
 
   refresh() {
     this.accordionWidget = getSelectedAccordionModelElement(
-      this.editor.model.document.selection,
+      this.editor.model.document.selection
     );
     // Disables any AccordionOpenAllCommand if there is no selected
     // accordion or only one item can be open at once.
@@ -205,8 +204,8 @@ export class AccordionCollapseAllCommand extends Command {
     }
     this.editor.model.change((writer) =>
       [...accordionItemIterator].forEach((accordionItem) =>
-        setAccordionItemIsOpen(accordionItem, writer, false),
-      ),
+        setAccordionItemIsOpen(accordionItem, writer, false)
+      )
     );
   }
 }
@@ -228,7 +227,7 @@ export class ModifyAccordionCommand extends Command {
     const attributeName = this.attributeName;
     const defaultValue = this.defaultValue;
     this.accordionWidget = getSelectedAccordionModelElement(
-      model.document.selection,
+      model.document.selection
     );
     // Disables any ModifyAccordionCommand if there is no selected
     // accordion.
@@ -247,7 +246,7 @@ export class ModifyAccordionCommand extends Command {
     // Sets the attribute of the selected accordion to a new value upon
     // execution of this command.
     model.change((writer) =>
-      writer.setAttribute(this.attributeName, options.value, accordionWidget),
+      writer.setAttribute(this.attributeName, options.value, accordionWidget)
     );
   }
 }

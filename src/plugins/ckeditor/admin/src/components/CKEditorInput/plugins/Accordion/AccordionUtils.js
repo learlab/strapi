@@ -86,7 +86,7 @@ export function setAccordionItemIsOpen(accordionItem, writer, isOpen) {
           writer.setAttribute(
             "AccordionItemButtonCollapsed",
             isOpen ? "false" : "true",
-            node,
+            node
           );
         }
       });
@@ -94,7 +94,7 @@ export function setAccordionItemIsOpen(accordionItem, writer, isOpen) {
       writer.setAttribute(
         "AccordionCollapseShow",
         isOpen ? "true" : "false",
-        node,
+        node
       );
     }
   });

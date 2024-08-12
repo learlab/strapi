@@ -71,7 +71,7 @@ const initializeTurndownService = (pageSlug) => {
     },
     replacement: function (content, node, options) {
       const attributes = node.querySelector("p");
-      const attrStr = attributes? attributes.textContent.trim() : ""
+      const attrStr = attributes ? attributes.textContent.trim() : "";
 
       const codeBlock = node.querySelector("pre code");
       const language = codeBlock.className.split("-")[1];
@@ -184,7 +184,7 @@ const initializeTurndownService = (pageSlug) => {
     },
     replacement: function (content, node) {
       const itemsDataModel = Array.from(
-        node.querySelectorAll(".accordion-item"),
+        node.querySelectorAll(".accordion-item")
       );
       let itemsJsxString = "";
       let count = 0;
