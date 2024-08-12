@@ -1,59 +1,61 @@
-import './StaticCode.css';
-
+import "./StaticCode.css";
+import { StaticCodeIcon } from "./StaticCodeIcon";
 const Plugin = window.CKEditor5.core.Plugin;
-const ui = window.CKEditor5.ui
-const utils = window.CKEditor5.utils
+const ui = window.CKEditor5.ui;
+const utils = window.CKEditor5.utils;
 
 export default class StaticCodeUI extends Plugin {
-    init() {
-        const editor = this.editor;
-        const t = editor.t;
-        const items = new utils.Collection();
-        items.add({
-            type: 'button',
-            model: {
-                withText: true,
-                label: t('Python'),
-                class: undefined
-            }
-        })
+  init() {
+    const editor = this.editor;
+    const t = editor.t;
+    const items = new utils.Collection();
+    items.add({
+      type: "button",
+      model: {
+        withText: true,
+        label: t("Python"),
+        class: undefined,
+      },
+    });
 
-        items.add({
-            type: 'button',
-            model: {
-                withText: true,
-                label: t('JavaScript'),
-                class: undefined
-            }
-        })
-        // to be displayed in the toolbar.
-        editor.ui.componentFactory.add('StaticCode', locale => {
-            const dropdownView = ui.createDropdown( locale);
-            const command = editor.commands.get( 'insertStaticCode' );
+    items.add({
+      type: "button",
+      model: {
+        withText: true,
+        label: t("JavaScript"),
+        class: undefined,
+      },
+    });
 
-            dropdownView.set({
-                label: "Static Code",
-                tooltip: true,
-                withText: true,
-            });
+    // to be displayed in the toolbar.
+    editor.ui.componentFactory.add("StaticCode", (locale) => {
+      const dropdownView = ui.createDropdown(locale);
+      const command = editor.commands.get("insertStaticCode");
 
-            dropdownView.buttonView.set( {
-                label: t( 'Static Code' ),
-                tooltip: true,
-                isToggleable: true,
-                withText: true,
-            } );
+      dropdownView.set({
+        label: "Static Code",
+        tooltip: true,
+        withText: true,
+      });
 
-            dropdownView.on( 'execute', evt => {
-                editor.execute( 'insertStaticCode', (evt.source).label);
-            } );
+      dropdownView.buttonView.set({
+        label: t("CodeBlock"),
+        tooltip: true,
+        icon: StaticCodeIcon,
+        isToggleable: true,
+        withText: false,
+      });
 
-            dropdownView.class = 'ck-code-block-dropdown';
-            dropdownView.bind( 'isEnabled' ).to( command );
+      dropdownView.on("execute", (evt) => {
+        editor.execute("insertStaticCode", evt.source.label);
+      });
 
-            ui.addListToDropdown( dropdownView, items);
+      dropdownView.class = "ck-code-block-dropdown";
+      dropdownView.bind("isEnabled").to(command);
 
-            return dropdownView;
-        });
-    }
+      ui.addListToDropdown(dropdownView, items);
+
+      return dropdownView;
+    });
+  }
 }
