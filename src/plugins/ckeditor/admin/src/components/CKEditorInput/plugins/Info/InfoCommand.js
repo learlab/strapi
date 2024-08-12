@@ -12,7 +12,7 @@ export default class InsertInfoCommand extends Command {
     const selection = model.document.selection;
     const allowedIn = model.schema.findAllowedParent(
       selection.getFirstPosition(),
-      "Info",
+      "Info"
     );
 
     this.isEnabled = allowedIn !== null;

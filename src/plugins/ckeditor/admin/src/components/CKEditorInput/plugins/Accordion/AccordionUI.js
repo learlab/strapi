@@ -63,11 +63,11 @@ export default class AccordionUI extends Plugin {
     });
 
     componentFactory.add("AccordionItem", (locale) =>
-      this._buildAccordionItemToolbarDropdown(locale, this.events),
+      this._buildAccordionItemToolbarDropdown(locale, this.events)
     );
 
     componentFactory.add("AccordionOpenCollapse", (locale) =>
-      this._buildAccordionOpenCollapseToolbarDropdown(locale, this.events),
+      this._buildAccordionOpenCollapseToolbarDropdown(locale, this.events)
     );
   }
 
@@ -97,7 +97,7 @@ export default class AccordionUI extends Plugin {
         this.commands.get("insertAccordionItem"),
         null,
         "insertAbove",
-        locale.t("Insert item above"),
+        locale.t("Insert item above")
       ),
     });
     list.add({
@@ -106,7 +106,7 @@ export default class AccordionUI extends Plugin {
         this.commands.get("insertAccordionItem"),
         null,
         "insertBelow",
-        locale.t("Insert item below"),
+        locale.t("Insert item below")
       ),
     });
     list.add({
@@ -115,14 +115,14 @@ export default class AccordionUI extends Plugin {
         this.commands.get("removeAccordionItem"),
         null,
         "remove",
-        locale.t("Delete item"),
+        locale.t("Delete item")
       ),
     });
 
     addListToDropdown(dropdownView, list);
 
     dropdownView.on("execute", (eventInfo) =>
-      events.fire("accordionItem", eventInfo.source.name),
+      events.fire("accordionItem", eventInfo.source.name)
     );
 
     buttonView.set({
@@ -150,7 +150,7 @@ export default class AccordionUI extends Plugin {
         this.commands.get("AccordionFirstItemOpen"),
         true,
         "toggleFirstItemOpen",
-        locale.t("Open first item"),
+        locale.t("Open first item")
       ),
     });
     list.add({
@@ -159,7 +159,7 @@ export default class AccordionUI extends Plugin {
         this.commands.get("AccordionItemsStayOpen"),
         "true",
         "toggleItemsStayOpen",
-        locale.t("Allow opening multiple items"),
+        locale.t("Allow opening multiple items")
       ),
     });
     list.add({ type: "separator" });
@@ -169,7 +169,7 @@ export default class AccordionUI extends Plugin {
         this.commands.get("AccordionOpenAll"),
         "true",
         "openAll",
-        locale.t("Open all items"),
+        locale.t("Open all items")
       ),
     });
     list.add({
@@ -178,14 +178,14 @@ export default class AccordionUI extends Plugin {
         this.commands.get("AccordionCollapseAll"),
         "true",
         "collapseAll",
-        locale.t("Collapse all items"),
+        locale.t("Collapse all items")
       ),
     });
 
     addListToDropdown(dropdownView, list);
 
     dropdownView.on("execute", (eventInfo) =>
-      events.fire("accordion", eventInfo.source.name),
+      events.fire("accordion", eventInfo.source.name)
     );
 
     buttonView.set({

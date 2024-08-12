@@ -7,5 +7,5 @@
 const { createCoreService } = require("@strapi/strapi").factories;
 
 module.exports = createCoreService(
-  "api::external-dashboard-uri.external-dashboard-uri",
+  "api::external-dashboard-uri.external-dashboard-uri"
 );

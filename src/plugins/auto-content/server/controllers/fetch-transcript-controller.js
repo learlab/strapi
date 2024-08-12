@@ -1,6 +1,6 @@
 module.exports = ({ strapi }) => {
   const fetchTranscriptService = strapi.plugins["auto-content"].service(
-    "fetchTranscriptService",
+    "fetchTranscriptService"
   );
 
   const fetchTranscript = async (ctx) => {

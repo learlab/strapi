@@ -49,7 +49,7 @@ export class StrapiMediaLib extends Plugin {
   toggle() {
     if (typeof this.strapiToggle !== "function") {
       throw new Error(
-        "Strapi media library toggle function not connected. Use connect function first",
+        "Strapi media library toggle function not connected. Use connect function first"
       );
     }
 

@@ -37,7 +37,7 @@ export default function Index({
         target: {
           name,
           value: JSON.parse(
-            modifiedData[dynamicZone][index]["QuestionAnswerResponse"],
+            modifiedData[dynamicZone][index]["QuestionAnswerResponse"]
           )["question"],
           type: attribute.type,
         },

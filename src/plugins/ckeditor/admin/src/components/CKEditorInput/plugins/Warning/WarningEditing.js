@@ -14,7 +14,7 @@ export default class WarningEditing extends Plugin {
     this._defineConverters();
     this.editor.commands.add(
       "insertWarning",
-      new InsertWarningCommand(this.editor),
+      new InsertWarningCommand(this.editor)
     );
   }
   _defineSchema() {
