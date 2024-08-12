@@ -23,11 +23,10 @@ export class InsertAccordionCommand extends Command {
     // Determine if the cursor (selection) is in a position where adding an
     // accordion is permitted. This is based on the schema of the model(s)
     // currently containing the cursor.
-    this.isEnabled =
-      schema.checkChild(
-        getParentElement(document.selection, model),
-        "AccordionBlock",
-      );
+    this.isEnabled = schema.checkChild(
+      getParentElement(document.selection, model),
+      "AccordionBlock",
+    );
   }
 
   execute() {
