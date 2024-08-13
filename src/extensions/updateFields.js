@@ -24,7 +24,7 @@ async function generateSlugAfterCreate(event) {
 
   result.Slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
 
-  const update = await strapi.query(String(model.uid)).update({
+  await strapi.query(String(model.uid)).update({
     where: { id: databaseID },
     data: result,
   });
@@ -49,23 +49,34 @@ async function generateSlugBeforeUpdate(event) {
 async function generateChunkFields(event) {
   const { data } = event.params;
 
-  // Finds the page that contains the current component
-  const page = await strapi.query("api::page.page").findOne({
-    select: ["Slug"],
-    populate: {
-      Content: { on: { [data.__component]: { where: { id: data.id } } } },
-    },
-  });
+  let pageSlug;
+  let pageID;
 
-  if (!page) {
-    console.error(
-      `Attempted to generate chunk fields, but a parent page for chunk ${data.id} could not be found.`
-    );
-    return event;
+  // Database entry needs to exist before the parent page can be located
+  // Database will not exist on "beforeCreate"
+  if (event.action === "beforeUpdate") {
+    // Finds the page that contains the current component
+    // Uses the underlying knex connection to interact directly with the DB.
+    pageID = await strapi.db
+      .connection("pages_components")
+      .where({ component_id: data.id })
+      .pluck("entity_id")
+      .then((arr) => arr[0]); // entity_id is unique; only one value in this array
+  }
+  if (pageID) {
+    // Using the pageID, find the Slug of the parent page.
+    const page = await strapi.entityService.findOne("api::page.page", pageID, {
+      fields: ["Slug"],
+    });
+    pageSlug = page.Slug;
+  } else {
+    // TODO: Handle the case where the chunk is being created.
+    // Probably need to set a field on the chunk to store the page slug.
+    // Strapi does not make the page available in the Chunk's event object.
+    pageSlug = "placeholder-page-slug-until-chunk-is-updated";
   }
 
-  const pageSlug = page.Slug;
-
+  // Update the Fields
   const cleanText = await strapi
     .service("plugin::auto-content.cleanTextService")
     .cleanText(data.Text);
@@ -82,8 +93,6 @@ async function generateChunkFields(event) {
 
 async function generateVideoFields(event) {
   const { data } = event.params;
-
-  // validateKeyPhraseField(data.KeyPhrase);
 
   const transcript = await strapi
     .service("plugin::auto-content.fetchTranscriptService")
