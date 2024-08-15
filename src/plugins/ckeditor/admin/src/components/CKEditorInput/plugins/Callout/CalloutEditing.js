@@ -14,7 +14,7 @@ export default class CalloutEditing extends Plugin {
     this._defineConverters();
     this.editor.commands.add(
       "insertCallout",
-      new InsertCalloutCommand(this.editor)
+      new InsertCalloutCommand(this.editor),
     );
   }
   _defineSchema() {
@@ -24,14 +24,14 @@ export default class CalloutEditing extends Plugin {
       // Behaves like a self-contained block object (e.g. a block image)
       // allowed in places where other blocks are allowed (e.g. directly in the root).
       inheritAllFrom: "$blockObject",
-      allowChildren: ["CalloutContent"],
+      allowChildren: "$text",
     });
 
     schema.register("CalloutContent", {
       // Cannot be split or left by the caret.
       isLimit: true,
-      allowIn: ["Callout"],
-      allowChildren: ["paragraph", "listItem"],
+      allowIn: "Callout",
+      allowContentOf: "$root",
     });
   }
 

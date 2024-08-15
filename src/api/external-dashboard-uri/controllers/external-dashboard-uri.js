@@ -7,5 +7,5 @@
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController(
-  "api::external-dashboard-uri.external-dashboard-uri"
+  "api::external-dashboard-uri.external-dashboard-uri",
 );

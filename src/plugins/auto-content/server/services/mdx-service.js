@@ -184,7 +184,7 @@ const initializeTurndownService = (pageSlug) => {
     },
     replacement: function (content, node) {
       const itemsDataModel = Array.from(
-        node.querySelectorAll(".accordion-item")
+        node.querySelectorAll(".accordion-item"),
       );
       let itemsJsxString = "";
       let count = 0;

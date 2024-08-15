@@ -16,7 +16,7 @@ export default class StaticCodeEditing extends Plugin {
 
     this.editor.commands.add(
       "insertStaticCode",
-      new InsertStaticCodeCommand(this.editor)
+      new InsertStaticCodeCommand(this.editor),
     );
   }
 
@@ -38,7 +38,7 @@ export default class StaticCodeEditing extends Plugin {
     schema.register("StaticCodeContent", {
       isLimit: true,
       allowIn: "StaticCode",
-      allowChildren: ["codeBlock"],
+      allowChildren: ["hljsCodeBlock"],
     });
   }
 

@@ -4,7 +4,7 @@ import ckeditor5AlignmentDll from "@ckeditor/ckeditor5-alignment/build/alignment
 import ckeditor5AutoformatDll from "@ckeditor/ckeditor5-autoformat/build/autoformat.js";
 import ckeditor5BasicStylesDll from "@ckeditor/ckeditor5-basic-styles/build/basic-styles.js";
 import ckeditor5BlockQuoteDll from "@ckeditor/ckeditor5-block-quote/build/block-quote.js";
-import ckeditor5CodeBlockDll from "@ckeditor/ckeditor5-code-block/build/code-block.js";
+// import ckeditor5CodeBlockDll from "@ckeditor/ckeditor5-code-block/build/code-block.js";
 import ckeditor5EssentialsDll from "@ckeditor/ckeditor5-essentials/build/essentials.js";
 import ckeditor5FontDll from "@ckeditor/ckeditor5-font/build/font.js";
 import ckeditor5HeadingDll from "@ckeditor/ckeditor5-heading/build/heading.js";
@@ -33,6 +33,7 @@ import Accordion from "./plugins/Accordion/Accordion";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 import StaticCode from "./plugins/StaticCode/StaticCode";
 import PlainText from "./plugins/PlainText/PlainText";
+import HLJSCodeBlock from "./plugins/HLJSCodeBlock/hljscodeblock";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -47,7 +48,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.basicStyles.Subscript,
       window.CKEditor5.basicStyles.Superscript,
       window.CKEditor5.blockQuote.BlockQuote,
-      window.CKEditor5.codeBlock.CodeBlock,
+      // window.CKEditor5.codeBlock.CodeBlock,
       window.CKEditor5.essentials.Essentials,
       window.CKEditor5.findAndReplace.FindAndReplace,
       window.CKEditor5.heading.Heading,
@@ -88,6 +89,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       CodingSandbox,
       StaticCode,
       PlainText, // Adds a simple attribute check to prevent formatting on specific elements
+      HLJSCodeBlock,
     ],
     toolbar: {
       items: [

@@ -59,7 +59,7 @@ async function generateChunkFields(event) {
 
   if (!page) {
     console.error(
-      `Attempted to generate chunk fields, but a parent page for chunk ${data.id} could not be found.`
+      `Attempted to generate chunk fields, but a parent page for chunk ${data.id} could not be found.`,
     );
     return event;
   }

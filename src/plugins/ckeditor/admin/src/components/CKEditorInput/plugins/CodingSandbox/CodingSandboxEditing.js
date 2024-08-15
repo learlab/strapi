@@ -14,7 +14,7 @@ export default class CodingSandboxEditing extends Plugin {
     this._defineConverters();
     this.editor.commands.add(
       "insertCodingSandbox",
-      new InsertCodingSandboxCommand(this.editor)
+      new InsertCodingSandboxCommand(this.editor),
     );
   }
   _defineSchema() {
@@ -31,7 +31,7 @@ export default class CodingSandboxEditing extends Plugin {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "CodingSandbox",
-      allowChildren: ["codeBlock"],
+      allowChildren: ["hljsCodeBlock"],
     });
   }
 
@@ -88,7 +88,6 @@ export default class CodingSandboxEditing extends Plugin {
       model: "CodingSandboxContent",
       view: (modelElement, { writer: writer }) => {
         const div = writer.createEditableElement("div");
-
         return toWidgetEditable(div, writer);
       },
     });

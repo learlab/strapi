@@ -14,7 +14,7 @@ export default class WarningEditing extends Plugin {
     this._defineConverters();
     this.editor.commands.add(
       "insertWarning",
-      new InsertWarningCommand(this.editor)
+      new InsertWarningCommand(this.editor),
     );
   }
   _defineSchema() {
@@ -24,14 +24,14 @@ export default class WarningEditing extends Plugin {
       // Behaves like a self-contained block object (e.g. a block image)
       // allowed in places where other blocks are allowed (e.g. directly in the root).
       inheritAllFrom: "$blockObject",
-      allowChildren: "WarningContent",
+      allowChildren: "$text",
     });
 
     schema.register("WarningContent", {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Warning",
-      allowChildren: ["paragraph"],
+      allowContentOf: "$root",
     });
   }
 

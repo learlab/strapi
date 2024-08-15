@@ -1,0 +1,41 @@
+.ck-content pre {
+	padding: 1em;
+	color: hsl(0, 0%, 20.8%);
+
+	/* Code block are language direction–agnostic. */
+	text-align: left;
+	direction: ltr;
+
+	tab-size: 4;
+	white-space: pre-wrap;
+
+	/* Don't inherit the style, e.g. when in a block quote. */
+	font-style: normal;
+
+	/* Don't let the code be squashed e.g. when in a table cell. */
+	min-width: 200px;
+
+	& code {
+		background: unset;
+		padding: 0;
+		border-radius: 0;
+	}
+}
+
+.ck.ck-editor__editable pre {
+	position: relative;
+
+	&[data-language]::after {
+		content: attr(data-language);
+		position: absolute;
+		top: -1px;
+    right: 10px;
+    background: #757575;
+    font-size: 10px;
+    font-family: Helvetica,Arial,Tahoma,Verdana,Sans-Serif;
+    line-height: 16px;
+    padding: 1.8px 4.8px;
+    color: #fff;
+    white-space: nowrap;
+	}
+}

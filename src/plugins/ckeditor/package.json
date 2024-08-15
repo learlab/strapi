@@ -59,7 +59,8 @@
     "@ckeditor/ckeditor5-word-count": "^40.0.0",
     "@reinmar/ckeditor5-maximum-length": "^0.0.1",
     "ckeditor5": "^40.0.0",
-    "ckeditor5-custom-element": "^9.0.1"
+    "ckeditor5-custom-element": "^9.0.1",
+    "highlight.js": "^11.10.0"
   },
   "peerDependencies": {
     "@strapi/strapi": "^4.4.0"

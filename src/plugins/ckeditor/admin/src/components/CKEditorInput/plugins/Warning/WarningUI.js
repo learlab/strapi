@@ -19,7 +19,7 @@ export default class WarningUI extends Plugin {
       buttonView.set({
         // The t() function helps localize the editor. All strings enclosed in t() can be
         // translated and change when the language of the editor changes.
-        label: t("Red Box"),
+        label: t("Warning"),
         withText: true,
         tooltip: true,
       });
@@ -29,7 +29,7 @@ export default class WarningUI extends Plugin {
 
       // Execute the command when the button is clicked (executed).
       this.listenTo(buttonView, "execute", () =>
-        editor.execute("insertWarning")
+        editor.execute("insertWarning"),
       );
 
       return buttonView;
