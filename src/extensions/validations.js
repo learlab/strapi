@@ -10,7 +10,7 @@ function validateKeyPhraseField(event) {
     schema.validateSync(keyphrase_string);
   } catch (ValidationError) {
     throw new ApplicationError(
-      `Header: ${data.Header}\nKeyphrase Parsing Error: ${keyphrase_string}`,
+      `Header: ${data.Header}\nKeyphrase Parsing Error: ${keyphrase_string}`
     );
   }
 }

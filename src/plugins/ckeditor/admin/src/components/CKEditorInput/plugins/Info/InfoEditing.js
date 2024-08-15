@@ -90,7 +90,7 @@ export default class InfoEditing extends Plugin {
       model: "InfoTitle",
       view: (modelElement, { writer: viewWriter }) => {
         const h3 = viewWriter.createEditableElement("h3");
-        
+
         return toWidgetEditable(h3, viewWriter);
       },
     });

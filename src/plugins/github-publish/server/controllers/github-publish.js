@@ -18,7 +18,7 @@ module.exports = ({ strapi }) => ({
       `${url}&status=in_progress`,
       {
         headers,
-      },
+      }
     );
     const { data: queuedData } = await axios.get(`${url}&status=queued`, {
       headers,
@@ -59,7 +59,7 @@ module.exports = ({ strapi }) => ({
       // Log the full error response for debugging
       console.error(
         "Error triggering GitHub workflow:",
-        error.response?.data || error.message,
+        error.response?.data || error.message
       );
       ctx.throw(500, "Failed to trigger GitHub workflow");
     }

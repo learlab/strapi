@@ -14,7 +14,7 @@ export default class InsertCodingSandboxCommand extends Command {
     const selection = model.document.selection;
     const allowedIn = model.schema.findAllowedParent(
       selection.getFirstPosition(),
-      "Info",
+      "Info"
     );
 
     this.isEnabled = allowedIn !== null;
@@ -29,7 +29,7 @@ function createCodingSandbox(writer, language) {
   writer.appendElement(
     "codeBlock",
     { language: `${language.toLowerCase()}` },
-    CodingSandboxContent,
+    CodingSandboxContent
   );
   return CodingSandbox;
 }

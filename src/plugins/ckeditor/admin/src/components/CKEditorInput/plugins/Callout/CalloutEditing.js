@@ -14,7 +14,7 @@ export default class CalloutEditing extends Plugin {
     this._defineConverters();
     this.editor.commands.add(
       "insertCallout",
-      new InsertCalloutCommand(this.editor),
+      new InsertCalloutCommand(this.editor)
     );
   }
   _defineSchema() {

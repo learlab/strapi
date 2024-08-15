@@ -23,7 +23,7 @@ module.exports = ({ strapi }) => {
             start_time: start_num,
             end_time: end_num ? end_num : null,
           }),
-        },
+        }
       );
       const result = await response.json();
       return result.transcript;
