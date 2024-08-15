@@ -21,6 +21,23 @@ function stringifyAttributes(element, separator = " ") {
 const initializeTurndownService = (pageSlug) => {
   var turndownService = new TurndownService({
     codeBlockStyle: "fenced",
+    blankReplacement: function (content, node) {
+      if (
+        node.nodeName === "SECTION" &&
+        node.classList.contains("CodingSandbox")
+      ) {
+        // Preserve REPLs even when they are empty.
+        const language = node.querySelector("pre code").className.split(" ")[1];
+        const blockType = language === "python" ? "Notebook" : "Sandbox";
+        return `<${blockType} pageSlug="${pageSlug}" code=""/>\n`;
+      } else if (node.isBlock) {
+        // Default behavior of blankReplacement is newlines for blank block elements.
+        return "\n\n";
+      } else {
+        // Empty string for blank inline elements.
+        return "";
+      }
+    },
   });
 
   turndownService.use(gfm);
