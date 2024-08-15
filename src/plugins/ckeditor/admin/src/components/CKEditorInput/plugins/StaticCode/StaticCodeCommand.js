@@ -12,7 +12,7 @@ export default class InsertStaticCodeCommand extends Command {
     const selection = model.document.selection;
     const allowedIn = model.schema.findAllowedParent(
       selection.getFirstPosition(),
-      "StaticCode"
+      "StaticCode",
     );
 
     this.isEnabled = allowedIn !== null;
@@ -31,7 +31,7 @@ function createStaticCode(writer, language) {
   writer.appendElement(
     "codeBlock",
     { language: `${language.toLowerCase()}` },
-    StaticCodeContent
+    StaticCodeContent,
   );
 
   return StaticCode;

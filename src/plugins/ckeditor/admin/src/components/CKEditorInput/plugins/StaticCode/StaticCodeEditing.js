@@ -16,7 +16,7 @@ export default class StaticCodeEditing extends Plugin {
 
     this.editor.commands.add(
       "insertStaticCode",
-      new InsertStaticCodeCommand(this.editor)
+      new InsertStaticCodeCommand(this.editor),
     );
   }
 
