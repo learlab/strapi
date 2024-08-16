@@ -33,6 +33,7 @@ import Accordion from "./plugins/Accordion/Accordion";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 import StaticCode from "./plugins/StaticCode/StaticCode";
 import PlainText from "./plugins/PlainText/PlainText";
+import ckeditor5MathDll from "@isaul32/ckeditor5-math/build/math"
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -80,6 +81,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.table.TableCaption,
       window.CKEditor5.wordCount.WordCount,
       window.CKEditor5.highlight.Highlight,
+      window.CKEditor5.math.Math,
       StrapiMediaLib,
       Info,
       Callout,
@@ -121,6 +123,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         "bulletedList",
         "numberedList",
         "Accordion",
+        "Math"
       ],
       shouldNotGroupWhenFull: true,
     },
@@ -162,6 +165,21 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         "|",
         "toggleTableCaption",
       ],
+    },
+    math: {
+      engine: 'equation', // or katex or function. E.g. (equation, element, display) => { ... }
+      lazyLoad: undefined, // async () => { ... }, called once before rendering first equation if engine doesn't exist. After resolving promise, plugin renders equations.
+      outputType: 'script', // or span
+      className: 'math-tex', // class name to use with span output type, change e.g. MathJax processClass (v2) / processHtmlClass (v3) is set
+      forceOutputType: false, // forces output to use outputType
+      enablePreview: true, // Enable preview view
+      previewClassName: [], // Class names to add to previews
+      popupClassName: [], // Class names to add to math popup balloon
+      katexRenderOptions: {
+        macros: {
+          "\\neq": "\\mathrel{\\char`≠}",
+        },
+      },
     },
     htmlSupport: {
       allow: [
