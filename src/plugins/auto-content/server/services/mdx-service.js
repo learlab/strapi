@@ -243,7 +243,7 @@ turndownService.addRule("Image", {
 turndownService.addRule("LineBreaks", {
   filter: "br",
   replacement: function () {
-    return "<br/>";
+    return "\n\n";
   },
 });
 
