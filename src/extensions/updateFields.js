@@ -24,7 +24,7 @@ async function generateSlugAfterCreate(event) {
 
   result.Slug = await slugPipeline(chunkName, databaseID, chunkTypeSuffix);
 
-  const update = await strapi.query(String(model.uid)).update({
+  await strapi.query(String(model.uid)).update({
     where: { id: databaseID },
     data: result,
   });
@@ -49,30 +49,14 @@ async function generateSlugBeforeUpdate(event) {
 async function generateChunkFields(event) {
   const { data } = event.params;
 
-  // Finds the page that contains the current component
-  const page = await strapi.query("api::page.page").findOne({
-    select: ["Slug"],
-    populate: {
-      Content: { on: { [data.__component]: { where: { id: data.id } } } },
-    },
-  });
-
-  if (!page) {
-    console.error(
-      `Attempted to generate chunk fields, but a parent page for chunk ${data.id} could not be found.`
-    );
-    return event;
-  }
-
-  const pageSlug = page.Slug;
-
+  // Update the Fields
   const cleanText = await strapi
     .service("plugin::auto-content.cleanTextService")
     .cleanText(data.Text);
 
   const mdx = await strapi
     .service("plugin::auto-content.mdxService")
-    .mdx(pageSlug, data.Text);
+    .mdx(data.Text);
 
   event.params.data.CleanText = cleanText;
   event.params.data.MDX = mdx;
@@ -82,8 +66,6 @@ async function generateChunkFields(event) {
 
 async function generateVideoFields(event) {
   const { data } = event.params;
-
-  // validateKeyPhraseField(data.KeyPhrase);
 
   const transcript = await strapi
     .service("plugin::auto-content.fetchTranscriptService")

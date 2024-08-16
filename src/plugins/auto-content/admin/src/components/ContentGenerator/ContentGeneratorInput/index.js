@@ -31,7 +31,7 @@ export default function Index({
 
   const debouncedTextFieldValue = useDebounce(
     modifiedData[dynamicZone][index]["Text"],
-    300
+    300,
   );
 
   const debouncedVideoFieldValue = useDebounce(
@@ -40,7 +40,7 @@ export default function Index({
       startTime: modifiedData[dynamicZone][index]["StartTime"],
       endTime: modifiedData[dynamicZone][index]["EndTime"],
     },
-    300
+    300,
   );
 
   // check if content type is text or video

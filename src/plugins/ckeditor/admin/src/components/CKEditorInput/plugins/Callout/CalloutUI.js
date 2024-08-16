@@ -29,7 +29,7 @@ export default class CalloutUI extends Plugin {
 
       // Execute the command when the button is clicked (executed).
       this.listenTo(buttonView, "execute", () =>
-        editor.execute("insertCallout")
+        editor.execute("insertCallout"),
       );
 
       return buttonView;
