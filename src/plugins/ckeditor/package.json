@@ -60,7 +60,8 @@
     "@isaul32/ckeditor5-math": "^41.4.2",
     "@reinmar/ckeditor5-maximum-length": "^0.0.1",
     "ckeditor5": "^41.4.2",
-    "ckeditor5-custom-element": "^9.0.1"
+    "ckeditor5-custom-element": "^9.0.1",
+    "katex": "^0.16.11"
   },
   "peerDependencies": {
     "@strapi/strapi": "^4.4.0"

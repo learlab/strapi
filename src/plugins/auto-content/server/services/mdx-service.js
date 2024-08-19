@@ -254,6 +254,17 @@ const initializeTurndownService = (pageSlug) => {
     },
   });
 
+  turndownService.addRule("LaTex Rendering", {
+    filter: function (node) {
+      return (
+        node.classList.contains("katex")
+      );
+    },
+    replacement: function (content, node, options) {
+      return `${content.replaceAll("/\\\\[\(|\)]/g", "$$")}`;
+    },
+  });
+
   // Interactive Coding Sandboxes (REPLs)
   // Exports <Sandbox> for JavaScript and <Notebook> for Python
   /* DataModel

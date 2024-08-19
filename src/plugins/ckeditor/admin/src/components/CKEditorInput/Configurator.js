@@ -170,10 +170,10 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       engine: (equation, element, display) => {
         katexRender(equation, element, display)
       },
-      // outputType: 'script', // or span
+      outputType: 'span', // or span
       // className: 'math-tex', // class name to use with span output type, change e.g. MathJax processClass (v2) / processHtmlClass (v3) is set
       // forceOutputType: false, // forces output to use outputType
-      enablePreview: false, // Enable preview view
+      // enablePreview: true, // Enable preview view
       // katexRenderOptions: {
       //   macros: {
       //     "\\neq": "\\mathrel{\\char`≠}",

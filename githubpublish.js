@@ -140,6 +140,7 @@ async function entryPages(textData, startingPath) {
               /(<br\s*\/?>\s*)+/g,
               "\n\n"
             )
+              .replaceAll("/\\\\[\(|\)]/g", "$$")
           );
         }
         stream.write("\n\n</section>\n\n");
