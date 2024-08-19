@@ -1,5 +1,4 @@
 import ckeditor5Dll from "ckeditor5/build/ckeditor5-dll.js";
-
 import ckeditor5AlignmentDll from "@ckeditor/ckeditor5-alignment/build/alignment.js";
 import ckeditor5AutoformatDll from "@ckeditor/ckeditor5-autoformat/build/autoformat.js";
 import ckeditor5BasicStylesDll from "@ckeditor/ckeditor5-basic-styles/build/basic-styles.js";
@@ -25,6 +24,7 @@ import ckeditor5SpecialCharactersDll from "@ckeditor/ckeditor5-special-character
 import ckeditor5TableDll from "@ckeditor/ckeditor5-table/build/table.js";
 import ckeditor5WordCountDll from "@ckeditor/ckeditor5-word-count/build/word-count.js";
 import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/maximum-length.js";
+import ckeditor5MathDll from "@isaul32/ckeditor5-math/build/math";
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
 import Info from "./plugins/Info/Info";
 import Callout from "./plugins/Callout/Callout";
@@ -33,7 +33,7 @@ import Accordion from "./plugins/Accordion/Accordion";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 import StaticCode from "./plugins/StaticCode/StaticCode";
 import PlainText from "./plugins/PlainText/PlainText";
-import ckeditor5MathDll from "@isaul32/ckeditor5-math/build/math"
+import { katexRender } from "./plugins/Katex/Katex";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -167,19 +167,18 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       ],
     },
     math: {
-      engine: 'equation', // or katex or function. E.g. (equation, element, display) => { ... }
-      lazyLoad: undefined, // async () => { ... }, called once before rendering first equation if engine doesn't exist. After resolving promise, plugin renders equations.
-      outputType: 'script', // or span
-      className: 'math-tex', // class name to use with span output type, change e.g. MathJax processClass (v2) / processHtmlClass (v3) is set
-      forceOutputType: false, // forces output to use outputType
-      enablePreview: true, // Enable preview view
-      previewClassName: [], // Class names to add to previews
-      popupClassName: [], // Class names to add to math popup balloon
-      katexRenderOptions: {
-        macros: {
-          "\\neq": "\\mathrel{\\char`≠}",
-        },
+      engine: (equation, element, display) => {
+        katexRender(equation, element, display)
       },
+      // outputType: 'script', // or span
+      // className: 'math-tex', // class name to use with span output type, change e.g. MathJax processClass (v2) / processHtmlClass (v3) is set
+      // forceOutputType: false, // forces output to use outputType
+      enablePreview: false, // Enable preview view
+      // katexRenderOptions: {
+      //   macros: {
+      //     "\\neq": "\\mathrel{\\char`≠}",
+      //   },
+      // },
     },
     htmlSupport: {
       allow: [
