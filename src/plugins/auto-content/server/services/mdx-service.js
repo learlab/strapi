@@ -240,9 +240,12 @@ turndownService.addRule("Image", {
 
 // Math
 /* DataModel
-
+  <span class="math-tex">\( mathStr \)</span>
+  <span class="math-tex">\[ mathStr \]</span>
 */
 /* MDX Export
+  $ mathStr $
+  $$ mathStr $$
 */
 turndownService.addRule("Math", {
   filter: function (node) {
