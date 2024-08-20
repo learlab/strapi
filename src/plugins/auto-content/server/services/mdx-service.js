@@ -245,23 +245,24 @@ const initializeTurndownService = (pageSlug) => {
     },
   });
 
-  // Converts linebreaks
-  // Intended to help HTMLEmbeds create jsx compatible linebreaks.
-  turndownService.addRule("LineBreaks", {
-    filter: "br",
-    replacement: function (content) {
-      return "<br/>";
-    },
-  });
-
-  turndownService.addRule("LaTex Rendering", {
+  turndownService.addRule("Math", {
     filter: function (node) {
       return (
-        node.classList.contains("katex")
+        node.nodeName === "SPAN" &&
+        node.classList.contains("math-tex")
       );
     },
     replacement: function (content, node, options) {
-      return `${content.replaceAll("/\\\\[\(|\)]/g", "$$")}`;
+      const mathStr = node.innerHTML
+      if (mathStr.startsWith("\\[")) {
+        // element is block, use `$$`
+        return mathStr.replace(/^\\\[/, "$$$$").replace(/\\\]$/, "$$$$")
+      } else if (mathStr.startsWith("\\(")) {
+        // element is in-line, use `$`
+        return mathStr.replace(/^\\\(/, "$").replace(/\\\)$/, "$")
+      } else {
+        console.log(`Math Parsing failed for "${mathStr}"`)
+      }
     },
   });
 
@@ -293,6 +294,15 @@ const initializeTurndownService = (pageSlug) => {
       } else if (language === "javascript") {
         return `<Sandbox pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
       }
+    },
+  });
+
+  // Converts linebreaks
+  // Intended to help HTMLEmbeds create jsx compatible linebreaks.
+  turndownService.addRule("LineBreaks", {
+    filter: "br",
+    replacement: function (content) {
+      return "<br/>";
     },
   });
 

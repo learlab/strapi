@@ -13,4 +13,5 @@ export function katexRender(
         displayMode: display,
         ...katexRenderOptions
     });
+
 };
