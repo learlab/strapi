@@ -11,8 +11,6 @@ export function modelToViewCodeBlockInsertion(
   languageDefs,
   useLabels = false,
 ) {
-  //clouser
-
   // Language CSS classes:
   //
   //		{
@@ -137,16 +135,9 @@ export function dataViewToModelCodeBlockInsertion(editingView, languageDefs) {
 
     const codeBlock = writer.createElement("hljsCodeBlock");
     const viewChildClasses = [...viewChild.getClassNames()];
-
-    // As we're to associate each class with a model language, a lack of class (empty class) can be
-    // also associated with a language if the language definition was configured so. Pushing an empty
-    // string to make sure the association will work.
     if (!viewChildClasses.length) {
       viewChildClasses.push("");
     }
-
-    // Figure out if any of the <code> element's class names is a valid programming
-    // language class. If so, use it on the model element (becomes the language of the entire block).
     for (const className of viewChildClasses) {
       const language = classesToLanguages[className];
 
@@ -155,8 +146,6 @@ export function dataViewToModelCodeBlockInsertion(editingView, languageDefs) {
         break;
       }
     }
-
-    // If no language value was set, use the default language from the config.
     if (!codeBlock.hasAttribute("language")) {
       writer.setAttribute("language", defaultLanguageName, codeBlock);
     }

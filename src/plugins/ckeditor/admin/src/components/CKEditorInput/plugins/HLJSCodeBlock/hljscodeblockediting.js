@@ -48,9 +48,6 @@ export default class HLJSCodeBlockEditing extends Plugin {
     });
   }
 
-  /**
-   * @inheritDoc
-   */
   init() {
     const editor = this.editor;
     const schema = editor.model.schema;
@@ -174,7 +171,6 @@ export default class HLJSCodeBlockEditing extends Plugin {
       model.change((writer) => {
         const docFragment = evt.return;
 
-        // fo[o<softBreak></softBreak>b]ar  ->   <codeBlock language="...">[o<softBreak></softBreak>b]<codeBlock>
         if (
           docFragment.childCount > 1 ||
           selection.containsEntireContent(anchor.parent)
@@ -189,10 +185,7 @@ export default class HLJSCodeBlockEditing extends Plugin {
           writer.append(codeBlock, newDocumentFragment);
 
           evt.return = newDocumentFragment;
-        }
-
-        // "f[oo]"                          ->   <$text code="true">oo</text>
-        else {
+        } else {
           const textNode = docFragment.getChild(0);
 
           if (schema.checkAttribute(textNode, "code")) {
@@ -272,7 +265,6 @@ export default class HLJSCodeBlockEditing extends Plugin {
         "text/xml",
       );
 
-      //全量更新 重新高亮
       editor.model.change((writer) => {
         const curPath = editor.model.document.selection.getFirstPosition().path;
         writer.remove(writer.createRangeIn(positionParent));
@@ -300,22 +292,6 @@ export default class HLJSCodeBlockEditing extends Plugin {
   }
 }
 
-// Normally, when the Enter (or Shift+Enter) key is pressed, a soft line break is to be added to the
-// code block. Let's try to follow the indentation of the previous line when possible, for instance:
-//
-//		// Before pressing enter (or shift enter)
-//		<codeBlock>
-//		"    foo()"[]                   // Indent of 4 spaces.
-//		</codeBlock>
-//
-//		// After pressing:
-//		<codeBlock>
-//		"    foo()"                 // Indent of 4 spaces.
-//		<softBreak></softBreak>     // A new soft break created by pressing enter.
-//		"    "[]                    // Retain the indent of 4 spaces.
-//		</codeBlock>
-//
-// @param {module:core/editor/editor~Editor} editor
 function breakLineOnEnter(editor) {
   const model = editor.model;
   const modelDoc = model.document;

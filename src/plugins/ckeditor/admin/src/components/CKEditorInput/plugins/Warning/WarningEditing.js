@@ -31,7 +31,7 @@ export default class WarningEditing extends Plugin {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Warning",
-      allowContentOf: "$root",
+      allowChildren: ["paragraph"],
     });
   }
 

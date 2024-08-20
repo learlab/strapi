@@ -1,19 +1,12 @@
 .ck-content pre {
 	padding: 1em;
 	color: hsl(0, 0%, 20.8%);
-
-	/* Code block are language direction–agnostic. */
-	text-align: left;
+  text-align: left;
 	direction: ltr;
-
 	tab-size: 4;
 	white-space: pre-wrap;
-
-	/* Don't inherit the style, e.g. when in a block quote. */
-	font-style: normal;
-
-	/* Don't let the code be squashed e.g. when in a table cell. */
-	min-width: 200px;
+  font-style: normal;
+  min-width: 200px;
 
 	& code {
 		background: unset;

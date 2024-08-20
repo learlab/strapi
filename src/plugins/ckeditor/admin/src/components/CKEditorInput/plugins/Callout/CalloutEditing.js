@@ -31,7 +31,7 @@ export default class CalloutEditing extends Plugin {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "Callout",
-      allowContentOf: "$root",
+      allowChildren: ["paragraph", "listItem"],
     });
   }
 

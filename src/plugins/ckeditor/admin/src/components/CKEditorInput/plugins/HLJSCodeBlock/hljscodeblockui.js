@@ -1,12 +1,3 @@
-/**
- * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-
-/**
- * @module code-block/codeblockui
- */
-
 import { getNormalizedAndLocalizedLanguageDefinitions } from "./utils";
 
 import codeBlockIcon from "./codeblock.svg";
@@ -19,17 +10,7 @@ const Model = window.CKEditor5.ui.Model;
 const SplitButtonView = window.CKEditor5.ui.SplitButtonView;
 const dropdownUtils = window.CKEditor5.ui;
 
-/**
- * The code block UI plugin.
- *
- * Introduces the `'codeBlock'` dropdown.
- *
- * @extends module:core/plugin~Plugin
- */
 export default class HLJSCodeBlockUI extends Plugin {
-  /**
-   * @inheritDoc
-   */
   init() {
     const editor = this.editor;
     const t = editor.t;
@@ -84,14 +65,6 @@ export default class HLJSCodeBlockUI extends Plugin {
     });
   }
 
-  /**
-   * A helper returning a collection of the `codeBlock` dropdown items representing languages
-   * available for the user to choose from.
-   *
-   * @private
-   * @param {Array.<module:code-block/codeblock~CodeBlockLanguageDefinition>} normalizedLanguageDefs
-   * @returns {Iterable.<module:ui/dropdown/utils~ListDropdownItemDefinition>}
-   */
   _getLanguageListItemDefinitions(normalizedLanguageDefs) {
     const editor = this.editor;
     const command = editor.commands.get("hljsCodeBlock");
