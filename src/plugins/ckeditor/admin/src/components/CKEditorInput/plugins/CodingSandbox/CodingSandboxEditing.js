@@ -14,7 +14,7 @@ export default class CodingSandboxEditing extends Plugin {
     this._defineConverters();
     this.editor.commands.add(
       "insertCodingSandbox",
-      new InsertCodingSandboxCommand(this.editor)
+      new InsertCodingSandboxCommand(this.editor),
     );
   }
   _defineSchema() {

@@ -14,7 +14,7 @@ function getTextID() {
 async function getTextData(textID) {
   const res = await fetch(
     `https://itell-strapi-um5h.onrender.com/api/texts/${textID}?populate=*`,
-    { cache: "no-store" }
+    { cache: "no-store" },
   );
 
   let data = await res.json();
@@ -47,7 +47,7 @@ async function entryPages(textData, startingPath) {
       "https://itell-strapi-um5h.onrender.com/api/pages?filters[Slug][$eq]=" +
         textData[i]["attributes"]["Slug"] +
         "&populate=*",
-      { cache: "no-store" }
+      { cache: "no-store" },
     );
     let data = await res.json();
 
@@ -69,7 +69,7 @@ async function entryPages(textData, startingPath) {
             (pageData["Quiz"]["data"] !== null) +
             "\nreference_summary: " +
             pageData["ReferenceSummary"] +
-            "\n---\n"
+            "\n---\n",
         );
       } else {
         path = startingPath + "index.mdx";
@@ -84,7 +84,7 @@ async function entryPages(textData, startingPath) {
             pageData["HasSummary"] +
             "\nquiz: " +
             (pageData["Quiz"]["data"] !== null) +
-            "\n---\n"
+            "\n---\n",
         );
       }
     } else {
@@ -100,7 +100,7 @@ async function entryPages(textData, startingPath) {
           pageData["HasSummary"] +
           "\nquiz: " +
           (pageData["Quiz"]["data"] !== null) +
-          "\n---\n"
+          "\n---\n",
       );
     }
 
@@ -131,16 +131,22 @@ async function entryPages(textData, startingPath) {
         } else {
           stream.write(` data-show-header="false">\n\n`);
           stream.write(
-            `<h2 className="sr-only" id="${chunkSlug}">${curChunk.Header}</h2>\n\n`
+            `<h2 className="sr-only" id="${chunkSlug}">${curChunk.Header}</h2>\n\n`,
           );
         }
         if (curChunk.MDX != null) {
           stream.write(
-            curChunk.MDX.replace(/[\u200B-\u200D\uFEFF\u00A0]/g, "").replace(
-              /(<br\s*\/?>\s*)+/g,
-              "\n\n"
-            )
-              .replaceAll("/\\\\[\(|\)]/g", "$$")
+            /*
+            Replaces:
+            1. 0 width space characters
+            2. <br> in old html embed components (legacy)
+            3. Adds pageSlugs to sandboxes
+            4. Adds pageSlugs to sandboxes (legacy) 
+             */
+            curChunk.MDX.replaceAll(/[\u200B-\u200D\uFEFF\u00A0]/g, "")
+              .replaceAll(/(<br\s*\/?>\s*)+/g, "\n\n")
+              .replaceAll("__temp_slug__", pageData["Slug"])
+              .replaceAll("test-page-no-chunks", pageData["Slug"]),
           );
         }
         stream.write("\n\n</section>\n\n");
@@ -159,7 +165,7 @@ async function makeModules(textData) {
       "https://itell-strapi-um5h.onrender.com/api/modules?filters[Slug][$eq]=" +
         textData["modules"]["data"][i]["attributes"]["Slug"] +
         "&populate=chapters",
-      { cache: "no-store" }
+      { cache: "no-store" },
     );
     let data = await res.json();
 
@@ -184,7 +190,7 @@ async function makeModules(textData) {
         "https://itell-strapi-um5h.onrender.com/api/chapters?filters[Slug][$eq]=" +
           chapterSlug +
           "&populate=pages",
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       data = await res.json();
 
@@ -213,7 +219,7 @@ async function makeChapters(textData) {
       "https://itell-strapi-um5h.onrender.com/api/chapters?filters[Slug][$eq]=" +
         chapterSlug +
         "&populate=*",
-      { cache: "no-store" }
+      { cache: "no-store" },
     );
     let data = await res.json();
 

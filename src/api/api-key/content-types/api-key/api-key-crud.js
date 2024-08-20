@@ -6,7 +6,7 @@ async function createAPIKey(ctx) {
     ctx.id,
     {
       populate: "*",
-    }
+    },
   );
 
   const payload = {

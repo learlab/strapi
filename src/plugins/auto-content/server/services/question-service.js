@@ -30,7 +30,7 @@ module.exports = ({ strapi }) => {
             temperature: 0.7,
             max_tokens: 100,
           }),
-        }
+        },
       );
       const res = await response.json();
       return res;
