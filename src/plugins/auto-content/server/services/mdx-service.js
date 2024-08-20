@@ -238,12 +238,35 @@ turndownService.addRule("Image", {
   },
 });
 
-// Converts linebreaks
-// Intended to help HTMLEmbeds create jsx compatible linebreaks.
-turndownService.addRule("LineBreaks", {
-  filter: "br",
-  replacement: function () {
-    return "\n\n";
+// Math
+/* DataModel
+  <span class="math-tex">\( mathStr \)</span>
+  <span class="math-tex">\[ mathStr \]</span>
+*/
+/* MDX Export
+  $ mathStr $
+  $$ 
+  mathStr
+  $$
+*/
+turndownService.addRule("Math", {
+  filter: function (node) {
+    return (
+      node.nodeName === "SPAN" &&
+      node.classList.contains("math-tex")
+    );
+  },
+  replacement: function (content, node, options) {
+    const mathStr = node.innerHTML
+    if (mathStr.startsWith("\\[")) {
+      // element is block, use `$$`
+      return mathStr.replace(/^\\\[/, "$$$$\n").replace(/\\\]$/, "\n$$$$")
+    } else if (mathStr.startsWith("\\(")) {
+      // element is in-line, use `$`
+      return mathStr.replace(/^\\\(/, "$").replace(/\\\)$/, "$")
+    } else {
+      console.log(`Math Parsing failed for "${mathStr}"`)
+    }
   },
 });
 
@@ -275,6 +298,15 @@ turndownService.addRule("REPL", {
     } else if (language === "javascript") {
       return `<Sandbox pageSlug="${pageSlug}" code={\`${codeContent}\`}/>\n`;
     }
+  },
+});
+
+// Converts linebreaks
+// Intended to help HTMLEmbeds create jsx compatible linebreaks.
+turndownService.addRule("LineBreaks", {
+  filter: "br",
+  replacement: function () {
+    return "\n\n";
   },
 });
 

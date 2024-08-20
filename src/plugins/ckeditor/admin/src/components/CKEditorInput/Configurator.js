@@ -1,5 +1,4 @@
 import ckeditor5Dll from "ckeditor5/build/ckeditor5-dll.js";
-
 import ckeditor5AlignmentDll from "@ckeditor/ckeditor5-alignment/build/alignment.js";
 import ckeditor5AutoformatDll from "@ckeditor/ckeditor5-autoformat/build/autoformat.js";
 import ckeditor5BasicStylesDll from "@ckeditor/ckeditor5-basic-styles/build/basic-styles.js";
@@ -25,6 +24,7 @@ import ckeditor5SpecialCharactersDll from "@ckeditor/ckeditor5-special-character
 import ckeditor5TableDll from "@ckeditor/ckeditor5-table/build/table.js";
 import ckeditor5WordCountDll from "@ckeditor/ckeditor5-word-count/build/word-count.js";
 import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/maximum-length.js";
+import ckeditor5MathDll from "@isaul32/ckeditor5-math/build/math";
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
 import Info from "./plugins/Info/Info";
 import Callout from "./plugins/Callout/Callout";
@@ -33,6 +33,7 @@ import Accordion from "./plugins/Accordion/Accordion";
 import CodingSandbox from "./plugins/CodingSandbox/CodingSandbox";
 import StaticCode from "./plugins/StaticCode/StaticCode";
 import PlainText from "./plugins/PlainText/PlainText";
+import { katexRender } from "./plugins/Katex/Katex";
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
   standard: {
@@ -80,6 +81,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       window.CKEditor5.table.TableCaption,
       window.CKEditor5.wordCount.WordCount,
       window.CKEditor5.highlight.Highlight,
+      window.CKEditor5.math.Math,
       StrapiMediaLib,
       Info,
       Callout,
@@ -121,6 +123,7 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         "bulletedList",
         "numberedList",
         "Accordion",
+        "Math"
       ],
       shouldNotGroupWhenFull: true,
     },
@@ -162,6 +165,18 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
         "|",
         "toggleTableCaption",
       ],
+    },
+    math: {
+      engine: (equation, element, display) => {
+        katexRender(equation, element, display)
+      },
+      outputType: 'span', // 'script' will not render properly b/c unsafe
+      enablePreview: false, // Enable preview view
+      katexRenderOptions: {
+        macros: {
+          "\\neq": "\\mathrel{\\char`≠}",
+        },
+      },
     },
     htmlSupport: {
       allow: [
