@@ -245,7 +245,9 @@ turndownService.addRule("Image", {
 */
 /* MDX Export
   $ mathStr $
-  $$ mathStr $$
+  $$ 
+  mathStr
+  $$
 */
 turndownService.addRule("Math", {
   filter: function (node) {
@@ -258,7 +260,7 @@ turndownService.addRule("Math", {
     const mathStr = node.innerHTML
     if (mathStr.startsWith("\\[")) {
       // element is block, use `$$`
-      return mathStr.replace(/^\\\[/, "$$$$").replace(/\\\]$/, "$$$$")
+      return mathStr.replace(/^\\\[/, "$$$$\n").replace(/\\\]$/, "\n$$$$")
     } else if (mathStr.startsWith("\\(")) {
       // element is in-line, use `$`
       return mathStr.replace(/^\\\(/, "$").replace(/\\\)$/, "$")
