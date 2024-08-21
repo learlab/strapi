@@ -25,7 +25,6 @@
     border-radius: 10px;
 }
 
-.StaticAttributes {
-    margin: 0;
-    padding:10px;
+.StaticCode p::before{
+  padding-left: 10px;
 }

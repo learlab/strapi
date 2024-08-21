@@ -4,6 +4,8 @@ const Plugin = window.CKEditor5.core.Plugin;
 const Widget = window.CKEditor5.widget.Widget;
 const toWidget = window.CKEditor5.widget.toWidget;
 const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
+const enablePlaceholder = window.CKEditor5.engine.enablePlaceholder;
+
 
 export default class StaticCodeEditing extends Plugin {
   static get requires() {
@@ -91,6 +93,11 @@ export default class StaticCodeEditing extends Plugin {
       view: (modelElement, { writer: viewWriter }) => {
         // Note: You use a more specialized createEditableElement() method here.
         const p = viewWriter.createEditableElement("p");
+        enablePlaceholder({
+          view: this.editor.editing.view,
+          element: p,
+          text: "Attributes",
+        });
 
         return toWidgetEditable(p, viewWriter);
       },

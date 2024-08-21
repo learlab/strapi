@@ -24,7 +24,6 @@ function createStaticCode(writer, language) {
   const StaticCodeAttributes = writer.createElement("StaticCodeAttributes");
   const StaticCodeContent = writer.createElement("StaticCodeContent");
 
-  writer.appendText("Attributes:", StaticCode);
   writer.append(StaticCodeAttributes, StaticCode);
   writer.append(StaticCodeContent, StaticCode);
 
