@@ -244,7 +244,7 @@ turndownService.addRule("Image", {
   <span class="math-tex">\[ mathStr \]</span>
 */
 /* MDX Export
-  $ mathStr $
+   $ mathStr $
   $$ 
   mathStr
   $$
@@ -260,10 +260,12 @@ turndownService.addRule("Math", {
     const mathStr = node.innerHTML
     if (mathStr.startsWith("\\[")) {
       // element is block, use `$$`
+      // Replace `\[` with `$$\n` and `\]` with `\n$$`
       return mathStr.replace(/^\\\[/, "$$$$\n").replace(/\\\]$/, "\n$$$$")
     } else if (mathStr.startsWith("\\(")) {
       // element is in-line, use `$`
-      return mathStr.replace(/^\\\(/, "$").replace(/\\\)$/, "$")
+      // Replace `\(` with ` $` (note the additional space) and `\)` with `$`
+      return mathStr.replace(/^\\\(/, " $").replace(/\\\)$/, "$")
     } else {
       console.log(`Math Parsing failed for "${mathStr}"`)
     }
