@@ -31,10 +31,6 @@ export default class HLJSCodeBlockEditing extends Plugin {
     editor.config.define("hljsCodeBlock", {
       languages: [
         {
-          language: "plaintext",
-          label: "Plain text",
-        },
-        {
           language: "javascript",
           label: "JavaScript",
         },
