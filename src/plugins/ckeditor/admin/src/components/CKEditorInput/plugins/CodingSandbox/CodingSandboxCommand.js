@@ -31,11 +31,5 @@ function createCodingSandbox(writer, language) {
 
   writer.append(CodingSandboxContent, CodingSandbox);
   writer.append(HLJSCodeBlock, CodingSandboxContent);
-
-  // writer.appendElement(
-  //   "HLJSCodeBlock",
-  //   { language: `${language.toLowerCase()}` },
-  //   CodingSandboxContent,
-  // );
   return CodingSandbox;
 }
