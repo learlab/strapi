@@ -4,6 +4,7 @@ const Plugin = window.CKEditor5.core.Plugin;
 const Widget = window.CKEditor5.widget.Widget;
 const toWidget = window.CKEditor5.widget.toWidget;
 const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
+const enablePlaceholder = window.CKEditor5.engine.enablePlaceholder;
 
 export default class InfoEditing extends Plugin {
   static get requires() {
@@ -42,7 +43,7 @@ export default class InfoEditing extends Plugin {
   }
 
   _defineConverters() {
-    const conversion = this.editor.conversion;
+    const { conversion, editing, t } = this.editor;
 
     // Info converters
     conversion.for("upcast").elementToElement({
@@ -88,7 +89,6 @@ export default class InfoEditing extends Plugin {
     conversion.for("editingDowncast").elementToElement({
       model: "InfoTitle",
       view: (modelElement, { writer: viewWriter }) => {
-        // Note: You use a more specialized createEditableElement() method here.
         const h3 = viewWriter.createEditableElement("h3");
 
         return toWidgetEditable(h3, viewWriter);
@@ -112,11 +112,9 @@ export default class InfoEditing extends Plugin {
     });
     conversion.for("editingDowncast").elementToElement({
       model: "InfoContent",
-      view: (modelElement, { writer: viewWriter }) => {
-        // Note: You use a more specialized createEditableElement() method here.
-        const p = viewWriter.createEditableElement("p");
-
-        return toWidgetEditable(p, viewWriter);
+      view: (_modelElement, { writer }) => {
+        const p = writer.createEditableElement("p", { class: "InfoContent" });
+        return toWidgetEditable(p, writer);
       },
     });
   }

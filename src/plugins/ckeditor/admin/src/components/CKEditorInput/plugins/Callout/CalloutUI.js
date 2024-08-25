@@ -19,7 +19,7 @@ export default class CalloutUI extends Plugin {
       buttonView.set({
         // The t() function helps localize the editor. All strings enclosed in t() can be
         // translated and change when the language of the editor changes.
-        label: t("Grey Box"),
+        label: t("Callout"),
         withText: true,
         tooltip: true,
       });

@@ -141,7 +141,7 @@ async function entryPages(textData, startingPath) {
             1. 0 width space characters
             2. <br> in old html embed components (legacy)
             3. Adds pageSlugs to sandboxes
-            4. Adds pageSlugs to sandboxes (legacy) 
+            4. Adds pageSlugs to sandboxes (legacy)
              */
             curChunk.MDX.replaceAll(/[\u200B-\u200D\uFEFF\u00A0]/g, "")
               .replaceAll(/(<br\s*\/?>\s*)+/g, "\n\n")

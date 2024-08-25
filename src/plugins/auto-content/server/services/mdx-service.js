@@ -245,7 +245,7 @@ turndownService.addRule("Image", {
 */
 /* MDX Export
    $ mathStr $
-  $$ 
+  $$
   mathStr
   $$
 */

@@ -1,7 +1,7 @@
 import "./CodingSandbox.css";
+import { CodingSandboxIcon } from "./CodingSandboxIcon";
 
 const Plugin = window.CKEditor5.core.Plugin;
-const ButtonView = window.CKEditor5.ui.ButtonView;
 const ui = window.CKEditor5.ui;
 const utils = window.CKEditor5.utils;
 
@@ -27,23 +27,17 @@ export default class CodingSandboxUI extends Plugin {
         class: undefined,
       },
     });
-    const normalizedLanguageDefs = ["python", "javascript"];
 
     // to be displayed in the toolbar.
     editor.ui.componentFactory.add("CodingSandbox", (locale) => {
       const dropdownView = ui.createDropdown(locale);
       const command = editor.commands.get("insertCodingSandbox");
 
-      // dropdownView.set({
-      // tooltip: true,
-      // withText: true,
-      // });
-
       dropdownView.buttonView.set({
-        label: t("REPL Sandbox"),
+        label: t("Coding Sandbox"),
+        icon: CodingSandboxIcon,
         tooltip: true,
-        // isToggleable: true,
-        withText: true,
+        withText: false,
       });
 
       dropdownView.on("execute", (evt) => {

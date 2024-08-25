@@ -9,19 +9,22 @@
 .StaticCode pre{
     font-weight: 400;
     margin:0;
-    border: solid 1px hsl(0, 0%, 0%);
+    border: solid 2px rgb(200, 200, 200);
+    border-radius: 10px;
+    background-color: white;
+    padding: 2.5em;
 }
 
 .StaticCode p{
-    margin-top:1px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    margin: 10px 1px;
+    padding: 10px;
     font-size: 15px;
     font-family: "Courier New", monospace;
     font-weight: 550;
+    background-color: white;
+    border-radius: 10px;
 }
 
-.StaticAttributes {
-    margin: 0;
-    padding:10px;
+.StaticCode p::before{
+  padding-left: 10px;
 }

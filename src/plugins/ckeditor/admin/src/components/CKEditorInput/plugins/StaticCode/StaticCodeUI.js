@@ -1,5 +1,5 @@
 import "./StaticCode.css";
-
+import { StaticCodeIcon } from "./StaticCodeIcon";
 const Plugin = window.CKEditor5.core.Plugin;
 const ui = window.CKEditor5.ui;
 const utils = window.CKEditor5.utils;
@@ -26,6 +26,7 @@ export default class StaticCodeUI extends Plugin {
         class: undefined,
       },
     });
+
     // to be displayed in the toolbar.
     editor.ui.componentFactory.add("StaticCode", (locale) => {
       const dropdownView = ui.createDropdown(locale);
@@ -38,10 +39,11 @@ export default class StaticCodeUI extends Plugin {
       });
 
       dropdownView.buttonView.set({
-        label: t("Static Code"),
+        label: t("CodeBlock"),
         tooltip: true,
+        icon: StaticCodeIcon,
         isToggleable: true,
-        withText: true,
+        withText: false,
       });
 
       dropdownView.on("execute", (evt) => {

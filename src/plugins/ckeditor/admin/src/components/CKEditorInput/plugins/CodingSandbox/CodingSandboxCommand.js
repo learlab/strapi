@@ -24,12 +24,11 @@ export default class InsertCodingSandboxCommand extends Command {
 function createCodingSandbox(writer, language) {
   const CodingSandbox = writer.createElement("CodingSandbox");
   const CodingSandboxContent = writer.createElement("CodingSandboxContent");
+  const HLJSCodeBlock = writer.createElement("hljsCodeBlock", {
+    language: `${language.toLowerCase()}`,
+  });
 
   writer.append(CodingSandboxContent, CodingSandbox);
-  writer.appendElement(
-    "codeBlock",
-    { language: `${language.toLowerCase()}` },
-    CodingSandboxContent,
-  );
+  writer.append(HLJSCodeBlock, CodingSandboxContent);
   return CodingSandbox;
 }
