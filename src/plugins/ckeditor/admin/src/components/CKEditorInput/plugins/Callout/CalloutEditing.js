@@ -24,13 +24,13 @@ export default class CalloutEditing extends Plugin {
       // Behaves like a self-contained block object (e.g. a block image)
       // allowed in places where other blocks are allowed (e.g. directly in the root).
       inheritAllFrom: "$blockObject",
-      allowChildren: "$text",
+      allowChildren: ["CalloutContent"],
     });
 
     schema.register("CalloutContent", {
       // Cannot be split or left by the caret.
       isLimit: true,
-      allowIn: "Callout",
+      allowIn: ["Callout"],
       allowChildren: ["paragraph", "listItem"],
     });
   }

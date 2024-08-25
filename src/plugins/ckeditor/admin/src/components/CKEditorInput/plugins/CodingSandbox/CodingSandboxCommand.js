@@ -27,7 +27,6 @@ function createCodingSandbox(writer, language) {
   const HLJSCodeBlock = writer.createElement("hljsCodeBlock", {
     language: `${language.toLowerCase()}`,
   });
-  console.log(HLJSCodeBlock);
 
   writer.append(CodingSandboxContent, CodingSandbox);
   writer.append(HLJSCodeBlock, CodingSandboxContent);
