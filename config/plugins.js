@@ -47,15 +47,13 @@ module.exports = ({ env }) => ({
           draft: {
             url: 'https://itell-preview.vercel.app/',
             query: {
-              type: 'page',
-              slug: '{Slug}',
+              page: '{id}',
             },
           },
           published: {
             url: 'https://itell-preview.vercel.app/',
             query: {
               page: '{id}',
-              slug: '{Slug}'
             },
           },
         }
