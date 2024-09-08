@@ -1,28 +1,27 @@
 "use strict";
 
 async function createAPIKey(ctx) {
-  const entry = await strapi.entityService.findOne(
-    "api::api-key.api-key",
-    ctx.id,
-    {
-      populate: "*",
-    },
-  );
 
   const payload = {
-    nickname: entry.nickname,
-    role: entry.role,
+    nickname: ctx.Nickname,
+    role: ctx.Role,
   };
+
+  console.log(payload);
 
   const api_key = await strapi
     .service("api::api-key.api-key")
     .generateAPIKey(payload);
+  
+  console.log(api_key, ctx.id);
 
-  await strapi.entityService.update("api::api-key.api-key", entry.id, {
+  const res = await strapi.entityService.update("api::api-key.api-key", ctx.id, {
     data: {
-      api_key: api_key,
+      ApiKey: api_key,
     },
   });
+
+  return res;
 }
 
 async function deleteAPIKey(id) {
