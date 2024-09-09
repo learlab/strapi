@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-08-26T22:23:26.018Z"
+    "x-generation-date": "2024-09-09T23:03:22.290Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -839,6 +839,13 @@
                                           }
                                         ]
                                       }
+                                    },
+                                    "QuizType": {
+                                      "type": "string",
+                                      "enum": [
+                                        "Open Book",
+                                        "Closed Book"
+                                      ]
                                     },
                                     "createdAt": {
                                       "type": "string",
@@ -2390,6 +2397,13 @@
                                                         }
                                                       ]
                                                     }
+                                                  },
+                                                  "QuizType": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Open Book",
+                                                      "Closed Book"
+                                                    ]
                                                   },
                                                   "createdAt": {
                                                     "type": "string",
@@ -4199,6 +4213,13 @@
                           ]
                         }
                       },
+                      "QuizType": {
+                        "type": "string",
+                        "enum": [
+                          "Open Book",
+                          "Closed Book"
+                        ]
+                      },
                       "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -4498,6 +4519,9 @@
         ],
         "properties": {
           "data": {
+            "required": [
+              "QuizType"
+            ],
             "type": "object",
             "properties": {
               "PreviousPage": {
@@ -4520,6 +4544,13 @@
                     }
                   ]
                 }
+              },
+              "QuizType": {
+                "type": "string",
+                "enum": [
+                  "Open Book",
+                  "Closed Book"
+                ]
               }
             }
           }
@@ -4573,6 +4604,9 @@
       },
       "Quiz": {
         "type": "object",
+        "required": [
+          "QuizType"
+        ],
         "properties": {
           "PreviousPage": {
             "type": "object",
@@ -4801,6 +4835,13 @@
                                         }
                                       ]
                                     }
+                                  },
+                                  "QuizType": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Open Book",
+                                      "Closed Book"
+                                    ]
                                   },
                                   "createdAt": {
                                     "type": "string",
@@ -5515,6 +5556,13 @@
               ]
             }
           },
+          "QuizType": {
+            "type": "string",
+            "enum": [
+              "Open Book",
+              "Closed Book"
+            ]
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5996,6 +6044,13 @@
                                                         }
                                                       ]
                                                     }
+                                                  },
+                                                  "QuizType": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Open Book",
+                                                      "Closed Book"
+                                                    ]
                                                   },
                                                   "createdAt": {
                                                     "type": "string",
