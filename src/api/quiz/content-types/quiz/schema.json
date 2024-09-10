@@ -23,6 +23,15 @@
       "components": [
         "quizzes.multiple-choice-question"
       ]
+    },
+    "QuizType": {
+      "type": "enumeration",
+      "enum": [
+        "Open Book",
+        "Closed Book"
+      ],
+      "default": "Open Book",
+      "required": true
     }
   }
 }
