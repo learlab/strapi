@@ -321,9 +321,9 @@ turndownService.addRule("LineBreaks", {
 });
 
 module.exports = ({ strapi }) => {
-  const mdx = async (html) => {
+  const md = async (html) => {
     if (!html) return null;
     return td(html);
   };
-  return { mdx };
+  return { md };
 };

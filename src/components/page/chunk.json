@@ -60,6 +60,9 @@
       ],
       "default": "H2",
       "required": true
+    },
+    "MD": {
+      "type": "text"
     }
   }
 }
