@@ -45,6 +45,9 @@
       ],
       "required": true,
       "default": "H2"
+    },
+    "MD": {
+      "type": "text"
     }
   }
 }
