@@ -58,8 +58,13 @@ async function generateChunkFields(event) {
     .service("plugin::auto-content.mdxService")
     .mdx(data.Text);
 
+  const md = await strapi
+    .service("plugin::auto-content.mdService")
+    .md(data.Text);
+  
   event.params.data.CleanText = cleanText;
   event.params.data.MDX = mdx;
+  event.params.data.MD = md;
 
   return event;
 }

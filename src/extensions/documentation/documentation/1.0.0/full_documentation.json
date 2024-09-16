@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-09-09T23:03:22.290Z"
+    "x-generation-date": "2024-09-11T19:26:13.200Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -724,6 +724,9 @@
                                       "H3",
                                       "H4"
                                     ]
+                                  },
+                                  "MD": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -2282,6 +2285,9 @@
                                                     "H3",
                                                     "H4"
                                                   ]
+                                                },
+                                                "MD": {
+                                                  "type": "string"
                                                 }
                                               }
                                             },
@@ -3458,6 +3464,9 @@
                                                 "H3",
                                                 "H4"
                                               ]
+                                            },
+                                            "MD": {
+                                              "type": "string"
                                             }
                                           }
                                         },
@@ -4472,6 +4481,9 @@
               "H3",
               "H4"
             ]
+          },
+          "MD": {
+            "type": "string"
           }
         }
       },
@@ -4720,6 +4732,9 @@
                                     "H3",
                                     "H4"
                                   ]
+                                },
+                                "MD": {
+                                  "type": "string"
                                 }
                               }
                             },
@@ -5929,6 +5944,9 @@
                                                     "H3",
                                                     "H4"
                                                   ]
+                                                },
+                                                "MD": {
+                                                  "type": "string"
                                                 }
                                               }
                                             },
