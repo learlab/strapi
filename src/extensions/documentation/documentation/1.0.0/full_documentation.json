@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-09-11T19:26:13.200Z"
+    "x-generation-date": "2024-09-22T19:04:06.504Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -640,7 +640,7 @@
                                   "__component": {
                                     "type": "string"
                                   },
-                                  "Title": {
+                                  "Header": {
                                     "type": "string"
                                   },
                                   "URL": {
@@ -764,6 +764,9 @@
                                       "H3",
                                       "H4"
                                     ]
+                                  },
+                                  "MD": {
+                                    "type": "string"
                                   }
                                 }
                               }
@@ -2201,7 +2204,7 @@
                                                 "__component": {
                                                   "type": "string"
                                                 },
-                                                "Title": {
+                                                "Header": {
                                                   "type": "string"
                                                 },
                                                 "URL": {
@@ -2325,6 +2328,9 @@
                                                     "H3",
                                                     "H4"
                                                   ]
+                                                },
+                                                "MD": {
+                                                  "type": "string"
                                                 }
                                               }
                                             }
@@ -3380,7 +3386,7 @@
                                             "__component": {
                                               "type": "string"
                                             },
-                                            "Title": {
+                                            "Header": {
                                               "type": "string"
                                             },
                                             "URL": {
@@ -3504,6 +3510,9 @@
                                                 "H3",
                                                 "H4"
                                               ]
+                                            },
+                                            "MD": {
+                                              "type": "string"
                                             }
                                           }
                                         }
@@ -4397,7 +4406,7 @@
           "__component": {
             "type": "string"
           },
-          "Title": {
+          "Header": {
             "type": "string"
           },
           "URL": {
@@ -4521,6 +4530,9 @@
               "H3",
               "H4"
             ]
+          },
+          "MD": {
+            "type": "string"
           }
         }
       },
@@ -4648,7 +4660,7 @@
                                 "__component": {
                                   "type": "string"
                                 },
-                                "Title": {
+                                "Header": {
                                   "type": "string"
                                 },
                                 "URL": {
@@ -4772,6 +4784,9 @@
                                     "H3",
                                     "H4"
                                   ]
+                                },
+                                "MD": {
+                                  "type": "string"
                                 }
                               }
                             }
@@ -5860,7 +5875,7 @@
                                                 "__component": {
                                                   "type": "string"
                                                 },
-                                                "Title": {
+                                                "Header": {
                                                   "type": "string"
                                                 },
                                                 "URL": {
@@ -5984,6 +5999,9 @@
                                                     "H3",
                                                     "H4"
                                                   ]
+                                                },
+                                                "MD": {
+                                                  "type": "string"
                                                 }
                                               }
                                             }
