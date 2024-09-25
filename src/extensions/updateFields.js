@@ -1,6 +1,5 @@
 "use strict";
 var slugify = require("slugify");
-// const { validateKeyPhraseField } = require('./validations');
 const fieldSuffixes = require("./fieldSuffixes");
 
 async function slugPipeline(chunkName, databaseID, chunkTypeSuffix) {
@@ -78,7 +77,7 @@ async function generateVideoFields(event) {
 
   var mdx = "<YoutubeVideo\n" + `src=${data.URL}\n`;
 
-  if (data.Title) mdx += `title="${data.Title}"`;
+  if (data.Header) mdx += `title="${data.Header}"`;
 
   if (data.Description) mdx += `\n>\n${data.Description}`;
   else mdx += ">";
