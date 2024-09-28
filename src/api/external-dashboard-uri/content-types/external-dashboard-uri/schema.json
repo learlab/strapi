@@ -15,7 +15,10 @@
     "Key": {
       "type": "string"
     },
-    "Value": {
+    "API_key": {
+      "type": "string"
+    },
+    "API_endpoint": {
       "type": "string"
     }
   }
