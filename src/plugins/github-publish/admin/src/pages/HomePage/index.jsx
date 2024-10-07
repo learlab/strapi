@@ -11,9 +11,6 @@ import { PublishButton, PublishPrompt } from "../../components/HomePage";
 import pluginId from "../../pluginId";
 
 const POLL_INTERVAL = 10000;
-
-const { get } = useFetchClient();
-
 const StyledAlert = styled(Alert)`
   button {
     display: none;
@@ -21,6 +18,8 @@ const StyledAlert = styled(Alert)`
 `;
 
 const HomePage = () => {
+  const { get } = useFetchClient();
+
   const { formatMessage } = useIntl();
   const t = (id) => formatMessage({ id: `${pluginId}.home.${id}` });
 
@@ -157,9 +156,9 @@ const HomePage = () => {
       <h2>
         {t("title")}
       </h2>
-      <h4>
-        {t("description")}
-      </h4>
+      {/*<h4>*/}
+      {/*  {t("description")}*/}
+      {/*</h4>*/}
       <div>
         {error ? (
           <StyledAlert variant="danger" title={t("error.title")}>
@@ -195,15 +194,15 @@ const HomePage = () => {
           </div>
         )}
       </div>
-      <PublishPrompt
-        isOpen={isOpen}
-        title={t("prompt.title")}
-        description={t("prompt.description")}
-        cancelLabel={t("buttons.cancel")}
-        publishLabel={t("buttons.publish")}
-        handleCancel={handleClose}
-        handlePublish={triggerPublish}
-      />
+      {/*<PublishPrompt*/}
+      {/*  isOpen={isOpen}*/}
+      {/*  title={t("prompt.title")}*/}
+      {/*  description={t("prompt.description")}*/}
+      {/*  cancelLabel={t("buttons.cancel")}*/}
+      {/*  publishLabel={t("buttons.publish")}*/}
+      {/*  handleCancel={handleClose}*/}
+      {/*  handlePublish={triggerPublish}*/}
+      {/*/>*/}
     </Box>
   );
 };

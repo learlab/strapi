@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Route } from "react-router-dom";
+import {Route, Routes } from "react-router-dom";
 
 import pluginId from "../../pluginId";
 import HomePage from "../HomePage";
@@ -8,7 +8,9 @@ import HomePage from "../HomePage";
 const App = () => {
   return (
     <div>
-      <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+      <Routes>
+        <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+      </Routes>
     </div>
   );
 };

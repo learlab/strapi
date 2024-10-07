@@ -4,15 +4,10 @@ import {
   Dialog,
   Flex,
   Typography,
+  Button
 } from "@strapi/design-system";
 import { Upload } from "@strapi/icons";
 import PropTypes from "prop-types";
-
-const dialogBody = <Flex spacing={2}>
-  <Flex justifyContent="center">
-    <Typography>{description}</Typography>
-  </Flex>
-</Flex>
 
 const PublishPrompt = ({
   isOpen,
@@ -24,18 +19,19 @@ const PublishPrompt = ({
   handlePublish,
 }) => (
   <Dialog body = {dialogBody} onClose={handleCancel} title={title} isOpen={isOpen}>
-    {/*<DialogFooter*/}
-    {/*  startAction={*/}
-    {/*    <Button variant="tertiary" onClick={handleCancel}>*/}
-    {/*      {cancelLabel}*/}
-    {/*    </Button>*/}
-    {/*  }*/}
-    {/*  endAction={*/}
-    {/*    <Button startIcon={<Upload />} onClick={handlePublish}>*/}
-    {/*      {publishLabel}*/}
-    {/*    </Button>*/}
-    {/*  }*/}
-    {/*/>*/}
+    <Dialog.Footer>
+      <Dialog.Cancel>
+        <Button variant="tertiary" onClick={handleCancel}>
+          {cancelLabel}
+        </Button>
+      </Dialog.Cancel>
+      <Dialog.Action>
+        <Button startIcon={<Upload />} onClick={handlePublish}>
+          {publishLabel}
+        </Button>
+      </Dialog.Action>
+    </Dialog.Footer>
+
   </Dialog>
 );
 
