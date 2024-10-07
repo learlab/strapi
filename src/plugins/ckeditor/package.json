@@ -64,7 +64,7 @@
     "katex": "^0.16.11"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^4.4.0"
+    "@strapi/strapi": "^5.0.2"
   },
   "repository": {
     "type": "git",

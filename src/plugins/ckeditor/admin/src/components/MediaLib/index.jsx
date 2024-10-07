@@ -1,5 +1,4 @@
 import React from "react";
-import { prefixFileUrlWithBackendUrl, useLibrary } from "@strapi/helper-plugin";
 import PropTypes from "prop-types";
 
 const MediaLib = ({ isOpen, onChange, onToggle }) => {

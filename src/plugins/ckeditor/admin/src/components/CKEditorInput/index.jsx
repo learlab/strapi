@@ -1,12 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useIntl } from "react-intl";
-import { Stack } from "@strapi/design-system/Stack";
+import { Flex } from "@strapi/design-system";
 import {
   Field,
-  FieldHint,
-  FieldError,
-  FieldLabel,
-} from "@strapi/design-system/Field";
+} from "@strapi/design-system";
 import PropTypes from "prop-types";
 
 import { getGlobalStyling } from "./GlobalStyling";
@@ -14,8 +11,6 @@ import Configurator from "./Configurator";
 import MediaLib from "../MediaLib";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ckeditor5Dll from "ckeditor5/build/ckeditor5-dll.js";
-import ckeditor5EditorClassicDll from "@ckeditor/ckeditor5-editor-classic/build/editor-classic.js";
 
 import sanitize from "./utils/utils";
 
@@ -73,10 +68,10 @@ const CKEditorInput = ({
       error={error}
       hint={description && formatMessage(description)}
     >
-      <Stack spacing={1}>
-        <FieldLabel action={labelAction} required={required}>
+      <Flex spacing={1}>
+        <Field.Label action={labelAction} required={required}>
           {formatMessage(intlLabel)}
-        </FieldLabel>
+        </Field.Label>
         <GlobalStyling />
         <CKEditor
           editor={window.CKEditor5.editorClassic.ClassicEditor}
@@ -106,9 +101,9 @@ const CKEditorInput = ({
           config={editorConfig}
         />
         <div ref={wordCounter}></div>
-        <FieldHint />
-        <FieldError />
-      </Stack>
+        <Field.Hint />
+        <Field.Error />
+      </Flex>
       <MediaLib
         isOpen={mediaLibVisible}
         onChange={handleChangeAssets}

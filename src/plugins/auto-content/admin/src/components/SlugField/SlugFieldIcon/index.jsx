@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Flex, Icon } from "@strapi/design-system";
+import { Flex } from "@strapi/design-system";
 import { Lightbulb } from "@strapi/icons";
 import styled from "styled-components";
 
@@ -15,7 +15,7 @@ const IconBox = styled(Flex)`
   }
 `;
 
-const ContentGeneratorIcon = () => {
+const SlugFieldIcon = () => {
   return (
     <IconBox
       justifyContent="center"
@@ -25,9 +25,9 @@ const ContentGeneratorIcon = () => {
       hasRadius
       aria-hidden
     >
-      <Icon as={Lightbulb} />
+      <Lightbulb />
     </IconBox>
   );
 };
 
-export default ContentGeneratorIcon;
+export default SlugFieldIcon;

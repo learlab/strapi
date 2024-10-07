@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Stack } from "@strapi/design-system/Stack";
-import { Flex } from "@strapi/design-system";
-import { Button } from "@strapi/design-system/Button";
-import { Textarea, Grid, GridItem } from "@strapi/design-system";
-import { auth } from "@strapi/helper-plugin";
-import { useCMEditViewDataManager } from "@strapi/helper-plugin";
+import { Button } from '@strapi/design-system';
+import { Textarea, Grid } from "@strapi/design-system";
+import { unstable_useContentManagerContext as useContentManagerContext } from "@strapi/strapi/admin";
 import useDebounce from "./useDebounce";
-import { cleanText } from "../../../../../server/routes";
 
 // Component for raw QA field
 export default function Index({
   name,
-  error,
   description,
   onChange,
   value,
@@ -19,7 +14,9 @@ export default function Index({
   options,
   attribute,
 }) {
-  const { modifiedData, initialData } = useCMEditViewDataManager();
+  const { form } = useContentManagerContext();
+  const { initialValues, values } = form;
+
   const [dynamicZone, index, fieldName] = name.split(".");
   const [currentText, setCurrentText] = useState("");
   const [currentVideo, setCurrentVideo] = useState({
@@ -30,32 +27,69 @@ export default function Index({
   const [targetText, setTargetText] = useState("");
 
   const debouncedTextFieldValue = useDebounce(
-    modifiedData[dynamicZone][index]["Text"],
+    values[dynamicZone][index]["Text"],
     300,
   );
 
   const debouncedVideoFieldValue = useDebounce(
     {
-      url: modifiedData[dynamicZone][index]["URL"],
-      startTime: modifiedData[dynamicZone][index]["StartTime"],
-      endTime: modifiedData[dynamicZone][index]["EndTime"],
+      url: values[dynamicZone][index]["URL"],
+      startTime: values[dynamicZone][index]["StartTime"],
+      endTime: values[dynamicZone][index]["EndTime"],
     },
     300,
   );
 
   // check if content type is text or video
   function checkContentType() {
-    return "Text" in modifiedData[dynamicZone][index];
+    return "Text" in values[dynamicZone][index];
   }
 
   // change text to show API is being called
+  // needs to be a dict since other custom fields (question and answer) expect it
   function showLoading() {
-    const loadingString = "Currently being generated...";
-
+    const loadingJSON = JSON.stringify({
+      question: "Currently being generated...",
+      answer: "Currently being generated...",
+    });
     onChange({
-      target: { name, value: loadingString, type: attribute.type },
+      target: { name, value: loadingJSON, type: attribute.type },
     });
   }
+
+  useEffect(() => {
+    let curJSON;
+    try {
+      curJSON = JSON.parse(value);
+    } catch (error) {
+      curJSON = JSON.stringify({ question: "", answer: "" });
+    }
+    let newJSON = curJSON;
+
+    if (values[dynamicZone][index]["Question"]) {
+      const newQuestion = values[dynamicZone][index]["Question"];
+      if (newQuestion !== curJSON["question"]) {
+        newJSON = { ...newJSON, question: newQuestion };
+      }
+    }
+
+    if (values[dynamicZone][index]["ConstructedResponse"]) {
+      const newConstructedResponse =
+        values[dynamicZone][index]["ConstructedResponse"];
+      if (newConstructedResponse !== curJSON["answer"]) {
+        newJSON = { ...newJSON, answer: newConstructedResponse };
+      }
+    }
+
+    if (JSON.stringify(newJSON) !== JSON.stringify(curJSON)) {
+      onChange({
+        target: { name, value: JSON.stringify(newJSON), type: attribute.type },
+      });
+    }
+  }, [
+    values[dynamicZone][index]["Question"],
+    values[dynamicZone][index]["ConstructedResponse"],
+  ]);
 
   async function getTargetText() {
     let cleanTextFeed;
@@ -94,20 +128,20 @@ export default function Index({
     }
   }
 
-  // could use modifiedData.publishedAt === null to only allow content generation for unpublished content
+  // could use values.publishedAt === null to only allow content generation for unpublished content
   // authors would have to unpublish their content to re-generate the content
 
-  const generateKeyPhrase = async () => {
+  const generateQA = async () => {
     try {
       showLoading();
       // create clean text to feed into QA generation
       const cleanTextFeed = await getTargetText();
 
-      const response = await fetch(`/auto-content/extract-keyphrase`, {
+      const response = await fetch(`/auto-content/generate-question`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.getToken()}`,
+          Authorization: `Bearer ${JSON.parse(window.sessionStorage.jwtToken)}`,
         },
         body: JSON.stringify({
           text: cleanTextFeed,
@@ -117,21 +151,29 @@ export default function Index({
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
-
-      const parsedResponse = await response.json().then((res) => {
-        // Probably will need to add a new column in Strapi db if we want to use the JSON feature
-        if ("error" in res) {
-          return `Error generating kephrases!: ${res.error.message}`;
-        } else {
-          return res.choices[0].message.content.trim();
-        }
+      let parsedResponse = await response.json().then((res) => {
+        return res.choices[0].message.content.trim();
       });
+
+      let jsonResponse;
+
+      // Check if output can be converted to JSON
+      // Could use a JSON field instead of text field.
+      try {
+        jsonResponse = JSON.parse(parsedResponse);
+      } catch (err) {
+        parsedResponse = JSON.stringify({
+          question:
+            "Automatic question-generation has failed. Please try again.",
+          answer: "Automatic answer-generation has failed. Please try again.",
+        });
+      }
 
       onChange({
         target: { name, value: parsedResponse, type: attribute.type },
       });
     } catch (err) {
-      throw new Error(`Error generating kephrases! status: ${err}`);
+      console.log(err);
     }
   };
 
@@ -142,7 +184,7 @@ export default function Index({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.getToken()}`,
+          Authorization: `Bearer ${JSON.parse(window.sessionStorage.jwtToken)}`,
         },
         body: JSON.stringify({
           text: `${debouncedTextFieldValue}`,
@@ -158,7 +200,7 @@ export default function Index({
 
       return generatedCleanText;
     } catch (err) {
-      throw new Error(`Error generating clean text! status: ${err}`);
+      console.log(err);
     }
   };
 
@@ -174,7 +216,7 @@ export default function Index({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.getToken()}`,
+          Authorization: `Bearer ${JSON.parse(window.sessionStorage.jwtToken)}`,
         },
         body: payload,
       });
@@ -190,7 +232,6 @@ export default function Index({
       } catch (error) {
         console.error("Error fetching transcript:", error);
         fetchedTranscript = "Error fetching transcript";
-        throw new Error(`Error fetching transcript! status: ${error}`);
       }
 
       return fetchedTranscript;
@@ -199,12 +240,21 @@ export default function Index({
     }
   };
 
+  // for testing. Might be nice to do something like
+  // if process.env.NODE_ENV === "development"
+  // but I don't really know if that would work.
+  // useEffect(() => {
+  //   console.log(modifiedData[dynamicZone][index]["Text"],);
+  // }, [modifiedData[dynamicZone][index]["Text"],]);
+  // end testing
+
   return (
     <Grid gap={2}>
-      <GridItem col={12}>
+      <Grid.Item col={12}>
         <Textarea
+          disabled
           fullWidth
-          placeholder="This area will show the generated key phrases."
+          placeholder="This area will show the generated question and answer in JSON format."
           label={fieldName}
           name="content"
           onChange={(e) =>
@@ -212,15 +262,16 @@ export default function Index({
               target: { name, value: e.target.value, type: attribute.type },
             })
           }
+          style={{ display: "none" }}
         >
           {value}
         </Textarea>
-      </GridItem>
-      <GridItem col={12}>
-        <Button fullWidth onClick={() => generateKeyPhrase()}>
-          Extract key phrases from text
+      </Grid.Item>
+      <Grid.Item col={12}>
+        <Button fullWidth onClick={() => generateQA()}>
+          Generate question and answer pair
         </Button>
-      </GridItem>
+      </Grid.Item>
     </Grid>
   );
 }

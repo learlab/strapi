@@ -1,14 +1,9 @@
 import React, { memo, useEffect, useState } from "react";
-
-import { auth } from "@strapi/helper-plugin";
-
 import {
   Alert,
-  BaseHeaderLayout,
-  Box,
-  ContentLayout,
+  Box
 } from "@strapi/design-system";
-import { request } from "@strapi/helper-plugin";
+import { useFetchClient } from '@strapi/admin/strapi-admin';
 import { useIntl } from "react-intl";
 import styled from "styled-components";
 
@@ -16,6 +11,8 @@ import { PublishButton, PublishPrompt } from "../../components/HomePage";
 import pluginId from "../../pluginId";
 
 const POLL_INTERVAL = 10000;
+
+const { get } = useFetchClient();
 
 const StyledAlert = styled(Alert)`
   button {
@@ -48,7 +45,7 @@ const HomePage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.getToken()}`,
+          Authorization: `Bearer ${JSON.parse(window.sessionStorage.jwtToken)}`,
         },
         body: JSON.stringify({
           text: text,
@@ -76,7 +73,7 @@ const HomePage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.getToken()}`,
+            Authorization: `Bearer ${JSON.parse(window.sessionStorage.jwtToken)}`,
           },
           body: JSON.stringify({
             text: text,
@@ -107,7 +104,7 @@ const HomePage = () => {
 
     const checkBusy = async () => {
       try {
-        const res = await request(`/${pluginId}/check`, { method: "GET" });
+        const res = await get(`/${pluginId}/check`);
         if (!!res?.busy === res?.busy) {
           setBusy(res.busy);
         } else {
@@ -157,12 +154,13 @@ const HomePage = () => {
 
   return (
     <Box>
-      <BaseHeaderLayout
-        title={t("title")}
-        subtitle={t("description")}
-        as="h2"
-      />
-      <ContentLayout>
+      <h2>
+        {t("title")}
+      </h2>
+      <h4>
+        {t("description")}
+      </h4>
+      <div>
         {error ? (
           <StyledAlert variant="danger" title={t("error.title")}>
             {t("error.description")}
@@ -196,7 +194,7 @@ const HomePage = () => {
             />
           </div>
         )}
-      </ContentLayout>
+      </div>
       <PublishPrompt
         isOpen={isOpen}
         title={t("prompt.title")}

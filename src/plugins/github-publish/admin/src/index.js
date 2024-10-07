@@ -1,5 +1,3 @@
-import { prefixPluginTranslations } from "@strapi/helper-plugin";
-
 import pluginPkg from "../../package.json";
 import PluginIcon from "./components/PluginIcon";
 import pluginId from "./pluginId";
@@ -21,6 +19,7 @@ export default {
     app.registerPlugin({ id: pluginId, name });
   },
   async registerTrads({ locales }) {
+
     const importedTrads = await Promise.all(
       locales.map((locale) => {
         return import(
@@ -28,7 +27,7 @@ export default {
         )
           .then(({ default: data }) => {
             return {
-              data: prefixPluginTranslations(data, pluginId),
+              data: `${pluginId}.${id}`,
               locale,
             };
           })
@@ -44,3 +43,5 @@ export default {
     return Promise.resolve(importedTrads);
   },
 };
+
+

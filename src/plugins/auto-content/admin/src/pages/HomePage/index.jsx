@@ -1,20 +1,15 @@
 import React from "react";
 
 import {
-  Typography,
-  BaseHeaderLayout,
-  ContentLayout,
+  Typography
 } from "@strapi/design-system";
 
 const HomePage = () => {
   return (
-    <>
-      <BaseHeaderLayout
-        title="Content Generator Plugin"
-        subtitle="Generate content for your iTELL app."
-        as="h2"
-      />
-      <ContentLayout>
+    <div>
+      <h2>Content Generator Plugin</h2>
+      <h4>Generate content for your iTELL app.</h4>
+      <div>
         <Typography variant="epsilon">
           Content generator adds a new auto-content field type. This field is
           intended to be used within a component that contains another field
@@ -32,8 +27,8 @@ const HomePage = () => {
           your standards. Automatically generated content can be edited and
           saved like any other field.
         </Typography>
-      </ContentLayout>
-    </>
+      </div>
+    </div>
   );
 };
 

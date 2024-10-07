@@ -1,10 +1,8 @@
-import { prefixPluginTranslations } from "@strapi/helper-plugin";
 import * as yup from "yup";
 
 import React from "react";
 import styled from "styled-components";
-import { Icon } from "@strapi/design-system/Icon";
-import { Flex } from "@strapi/design-system/Flex";
+import { Flex } from "@strapi/design-system";
 import CKEditorIcon from "./CKEditorIcon";
 
 const IconBox = styled(Flex)`
@@ -31,7 +29,7 @@ export default {
             hasRadius
             aria-hidden
           >
-            <Icon as={CKEditorIcon} />
+            <CKEditorIcon />
           </IconBox>
         );
       },

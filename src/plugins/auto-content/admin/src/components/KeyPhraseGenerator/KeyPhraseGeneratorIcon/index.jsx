@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Flex, Icon } from "@strapi/design-system";
-import { Write } from "@strapi/icons";
+import { Flex } from "@strapi/design-system";
+import { Key } from "@strapi/icons";
 import styled from "styled-components";
 
 const IconBox = styled(Flex)`
@@ -15,7 +15,7 @@ const IconBox = styled(Flex)`
   }
 `;
 
-const SlugFieldIcon = () => {
+const KeyPhraseGeneratorIcon = () => {
   return (
     <IconBox
       justifyContent="center"
@@ -25,9 +25,9 @@ const SlugFieldIcon = () => {
       hasRadius
       aria-hidden
     >
-      <Icon as={Write} />
+      <Key/>
     </IconBox>
   );
 };
 
-export default SlugFieldIcon;
+export default KeyPhraseGeneratorIcon;

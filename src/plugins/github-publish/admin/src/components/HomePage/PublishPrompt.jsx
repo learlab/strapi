@@ -1,16 +1,18 @@
 import React from "react";
 
 import {
-  Button,
   Dialog,
-  DialogBody,
-  DialogFooter,
   Flex,
-  Stack,
   Typography,
 } from "@strapi/design-system";
 import { Upload } from "@strapi/icons";
 import PropTypes from "prop-types";
+
+const dialogBody = <Flex spacing={2}>
+  <Flex justifyContent="center">
+    <Typography>{description}</Typography>
+  </Flex>
+</Flex>
 
 const PublishPrompt = ({
   isOpen,
@@ -21,26 +23,19 @@ const PublishPrompt = ({
   handleCancel,
   handlePublish,
 }) => (
-  <Dialog onClose={handleCancel} title={title} isOpen={isOpen}>
-    <DialogBody>
-      <Stack spacing={2}>
-        <Flex justifyContent="center">
-          <Typography>{description}</Typography>
-        </Flex>
-      </Stack>
-    </DialogBody>
-    <DialogFooter
-      startAction={
-        <Button variant="tertiary" onClick={handleCancel}>
-          {cancelLabel}
-        </Button>
-      }
-      endAction={
-        <Button startIcon={<Upload />} onClick={handlePublish}>
-          {publishLabel}
-        </Button>
-      }
-    />
+  <Dialog body = {dialogBody} onClose={handleCancel} title={title} isOpen={isOpen}>
+    {/*<DialogFooter*/}
+    {/*  startAction={*/}
+    {/*    <Button variant="tertiary" onClick={handleCancel}>*/}
+    {/*      {cancelLabel}*/}
+    {/*    </Button>*/}
+    {/*  }*/}
+    {/*  endAction={*/}
+    {/*    <Button startIcon={<Upload />} onClick={handlePublish}>*/}
+    {/*      {publishLabel}*/}
+    {/*    </Button>*/}
+    {/*  }*/}
+    {/*/>*/}
   </Dialog>
 );
 

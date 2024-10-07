@@ -1,1 +1,2 @@
-module.exports = require("./admin/src").default;
+import src from "./admin/src";
+export default src;

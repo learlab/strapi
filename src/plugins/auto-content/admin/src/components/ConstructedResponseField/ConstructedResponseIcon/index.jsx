@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Flex, Icon } from "@strapi/design-system";
+import { Flex } from "@strapi/design-system";
 import { Message } from "@strapi/icons";
 import styled from "styled-components";
 
@@ -25,7 +25,7 @@ const ConstructedResponseIcon = () => {
       hasRadius
       aria-hidden
     >
-      <Icon as={Message} />
+      <Message />
     </IconBox>
   );
 };
