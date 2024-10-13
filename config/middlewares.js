@@ -23,6 +23,7 @@ module.exports = ({ env }) => [
             "market-assets.strapi.io",
             env("SUPABASE_URL"),
           ],
+          'script-src': ['https://cdn.ckeditor.com']
         },
       },
     },

@@ -5,7 +5,7 @@ import { unstable_useContentManagerContext as useContentManagerContext } from "@
 import useDebounce from "./useDebounce";
 
 // Component for raw QA field
-export default function Index({
+const Index = ({
   name,
   description,
   onChange,
@@ -13,7 +13,7 @@ export default function Index({
   intlLabel,
   options,
   attribute,
-}) {
+}) => {
   const { form } = useContentManagerContext();
   const { initialValues, values } = form;
 
@@ -275,3 +275,20 @@ export default function Index({
     </Grid>
   );
 }
+
+Index.propTypes = {
+  name: PropTypes.string.isRequired,
+  attribute: PropTypes.object.isRequired,
+  value: PropTypes.string,
+  labelAction: PropTypes.object,
+  label: PropTypes.string,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  required: PropTypes.bool,
+  hint: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+
+const MemoizedInput = React.memo(Index);
+
+export default MemoizedInput;

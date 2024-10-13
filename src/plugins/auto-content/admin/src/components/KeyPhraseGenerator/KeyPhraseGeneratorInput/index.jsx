@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@strapi/design-system";
+import {Button, Field, Flex} from "@strapi/design-system";
 import { Textarea, Grid } from "@strapi/design-system";
 import useDebounce from "./useDebounce";
 import { unstable_useContentManagerContext as useContentManagerContext } from "@strapi/strapi/admin";
 
 // Component for raw QA field
-export default function Index({
+const Index = ({
   name,
-  error,
+  error = null,
   description,
   onChange,
   value,
   intlLabel,
   options,
   attribute,
-}) {
+  hint = '',
+  required = true,
+
+  labelAction = null,
+  label,
+  disabled = false,
+  placeholder,
+})=> {
   const { form } = useContentManagerContext();
   const { initialValues, values } = form;
 
@@ -198,27 +205,48 @@ export default function Index({
   };
 
   return (
-    <Grid gap={2}>
-      <Grid.Item col={12}>
+
+    <Field.Root
+      name={name}
+      id={name}
+      error={error}
+      hint={hint}
+      required={required}
+    >
+      <Flex direction="column" alignItems="stretch" gap={1}>
+        <Field.Label action={labelAction}>{fieldName}</Field.Label>
         <Textarea
-          fullWidth
           placeholder="This area will show the generated key phrases."
-          label={fieldName}
           name="content"
+          value={value}
           onChange={(e) =>
             onChange({
               target: { name, value: e.target.value, type: attribute.type },
-            })
-          }
+            })}
+          disabled
         >
           {value}
         </Textarea>
-      </Grid.Item>
-      <Grid.Item col={12}>
-        <Button fullWidth onClick={() => generateKeyPhrase()}>
-          Extract key phrases from text
-        </Button>
-      </Grid.Item>
-    </Grid>
+        <Field.Hint />
+        <Field.Error />
+      </Flex>
+    </Field.Root>
   );
 }
+
+Index.propTypes = {
+  name: PropTypes.string.isRequired,
+  attribute: PropTypes.object.isRequired,
+  value: PropTypes.string,
+  labelAction: PropTypes.object,
+  label: PropTypes.string,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  required: PropTypes.bool,
+  hint: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+
+const MemoizedInput = React.memo(Index);
+
+export default MemoizedInput;
