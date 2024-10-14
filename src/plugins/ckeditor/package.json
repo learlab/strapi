@@ -1,8 +1,13 @@
 {
-  "name": "@_sh/strapi-plugin-ckeditor",
-  "version": "4.0.6",
-  "description": "Integrates CKEditor 5 into your Strapi project as a fully customizable custom field. (Unofficial integration)",
-  "private": false,
+  "name": "@ckeditor/strapi-plugin-ckeditor",
+  "version": "1.0.2",
+  "description": "CKEditor 5 - Official Integration for Strapi",
+  "strapi": {
+    "name": "ckeditor",
+    "description": "The rich text editor for every use case",
+    "kind": "plugin",
+    "displayName": "CKEditor"
+  },
   "keywords": [
     "strapi",
     "ckeditor",
@@ -12,61 +17,26 @@
     "rich text",
     "editor"
   ],
-  "author": {
-    "name": "nshenderov"
+  "files": [
+    "admin",
+    "server",
+    "strapi-admin.js",
+    "strapi-server.js"
+  ],
+  "peerDependencies": {
+    "@strapi/strapi": "^5.0.0 || ^5.0.0-beta || ^5.0.0-alpha || ^5.0.0-rc"
   },
-  "homepage": "https://market.strapi.io/plugins/@_sh-strapi-plugin-ckeditor",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nshenderov/strapi-plugin-ckeditor.git"
+    "url": "https://github.com/ckeditor/strapi-plugin-ckeditor.git"
   },
-  "strapi": {
-    "name": "ckeditor5",
-    "displayName": "CKEditor 5",
-    "description": "Integrates CKEditor 5 into your Strapi project as a fully customizable custom field. (Unofficial integration)",
-    "kind": "plugin"
-  },
-  "files": [
-    "dist",
-    "./strapi-server.js"
-  ],
-  "scripts": {
-    "build": "strapi-plugin build",
-    "watch": "strapi-plugin watch",
-    "watch:link": "strapi-plugin watch:link",
-    "verify": "strapi-plugin verify",
-    "release": "release-it",
-    "release:info": "release-it --changelog"
-  },
-  "dependencies": {
-    "ckeditor5": "^43.1.0",
-    "@ckeditor/ckeditor5-react": "^9.1.0",
-    "@strapi/design-system": "^2.0.0-rc.11",
-    "prop-types": "^15.8.1",
-    "sanitize-html": "^2.13.0"
-  },
-  "devDependencies": {
-    "@strapi/strapi": "^5.0.0",
-    "@strapi/sdk-plugin": "^5.2.6",
-    "prettier": "^3.3.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2",
-    "styled-components": "^6.1.13",
-    "release-it": "^17.6.0",
-    "@release-it/conventional-changelog": "^8.0.1"
-  },
-  "peerDependencies": {
-    "@strapi/strapi": "^5.0.0",
-    "@strapi/sdk-plugin": "^5.2.6",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2",
-    "styled-components": "^6.1.13"
-  },
+  "author": "CKSource (http://cksource.com/)",
+  "homepage": "https://market.strapi.io/plugins/@ckeditor-strapi-plugin-ckeditor",
   "engines": {
-    "node": ">=18.0.0 <=20.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devdependencies": {
+    "@ckeditor/ckeditor5-react": "^9.1.0"
+  }
 }

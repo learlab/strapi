@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Button } from '@strapi/design-system';
+import {Button, Field, Flex} from '@strapi/design-system';
 import { Textarea, Grid } from "@strapi/design-system";
 import { unstable_useContentManagerContext as useContentManagerContext } from "@strapi/strapi/admin";
 import useDebounce from "./useDebounce";
+import PropTypes from 'prop-types';
 
 // Component for raw QA field
 const Index = ({
-  name,
-  description,
-  onChange,
-  value,
-  intlLabel,
-  options,
-  attribute,
-}) => {
+   name,
+   attribute,
+   value = '',
+   labelAction = null,
+   label,
+   disabled = false,
+   error = null,
+   required = true,
+   hint = '',
+   placeholder,
+ }) =>{
   const { form } = useContentManagerContext();
   const { initialValues, values } = form;
 
@@ -249,30 +253,22 @@ const Index = ({
   // end testing
 
   return (
-    <Grid gap={2}>
-      <Grid.Item col={12}>
-        <Textarea
-          disabled
-          fullWidth
-          placeholder="This area will show the generated question and answer in JSON format."
-          label={fieldName}
-          name="content"
-          onChange={(e) =>
-            onChange({
-              target: { name, value: e.target.value, type: attribute.type },
-            })
-          }
-          style={{ display: "none" }}
-        >
-          {value}
-        </Textarea>
-      </Grid.Item>
-      <Grid.Item col={12}>
+    <Field.Root
+      name={name}
+      id={name}
+      error={error}
+      hint={hint}
+      required={required}
+    >
+      <Flex direction="column" alignItems="stretch" gap={1}>
+        <Field.Label action={labelAction}>{fieldName}</Field.Label>
         <Button fullWidth onClick={() => generateQA()}>
-          Generate question and answer pair
+        Generate question and answer pair
         </Button>
-      </Grid.Item>
-    </Grid>
+        <Field.Hint />
+        <Field.Error />
+      </Flex>
+    </Field.Root>
   );
 }
 

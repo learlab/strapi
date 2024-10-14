@@ -3,25 +3,22 @@ import {Button, Field, Flex} from "@strapi/design-system";
 import { Textarea, Grid } from "@strapi/design-system";
 import useDebounce from "./useDebounce";
 import { unstable_useContentManagerContext as useContentManagerContext } from "@strapi/strapi/admin";
+import PropTypes from 'prop-types';
+
 
 // Component for raw QA field
 const Index = ({
-  name,
-  error = null,
-  description,
-  onChange,
-  value,
-  intlLabel,
-  options,
-  attribute,
-  hint = '',
-  required = true,
-
-  labelAction = null,
-  label,
-  disabled = false,
-  placeholder,
-})=> {
+   name,
+   attribute,
+   value = '',
+   labelAction = null,
+   label,
+   disabled = false,
+   error = null,
+   required = true,
+   hint = '',
+   placeholder,
+ }) => {
   const { form } = useContentManagerContext();
   const { initialValues, values } = form;
 
@@ -205,7 +202,6 @@ const Index = ({
   };
 
   return (
-
     <Field.Root
       name={name}
       id={name}

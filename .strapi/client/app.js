@@ -7,6 +7,7 @@ import documentation from "@strapi/plugin-documentation/strapi-admin";
 import usersPermissions from "@strapi/plugin-users-permissions/strapi-admin";
 import githubPublish from "../../src/plugins/github-publish/strapi-admin";
 import autoContent from "../../src/plugins/auto-content/strapi-admin";
+import ckeditor from "../../src/plugins/ckeditor/strapi-admin";
 import { renderAdmin } from "@strapi/strapi/admin";
 
 import customisations from "../../src/admin/app.js";
@@ -20,5 +21,6 @@ renderAdmin(document.getElementById("strapi"), {
     "users-permissions": usersPermissions,
     "github-publish": githubPublish,
     "auto-content": autoContent,
+    ckeditor: ckeditor,
   },
 });
