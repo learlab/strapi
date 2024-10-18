@@ -1,7 +1,14 @@
 import { StrapiMediaLib } from "./plugins/StrapiMediaLib";
-
 import MaximumLength from "../../vendor/ckeditor5-maximum-length/index";
 import "../../vendor/ckeditor5-maximum-length/index-editor.css";
+import {Info} from "./plugins/Info/Info";
+import {Callout} from "./plugins/Callout/Callout";
+import {Warning} from "./plugins/Warning/Warning";
+import {Accordion} from "./plugins/Accordion/Accordion";
+import {CodingSandbox} from "./plugins/CodingSandbox/CodingSandbox";
+import {StaticCode} from "./plugins/StaticCode/StaticCode";
+import { katexRender } from "./plugins/Katex/Katex";
+// import {Math} from './plugins/Math/math';
 
 const {
   Alignment,
@@ -52,86 +59,10 @@ const {
   TableCaption,
   WordCount,
   Highlight,
+  SourceEditing
 } = window.CKEDITOR;
 
 const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
-  light: {
-    plugins: [
-      Autoformat,
-      Bold,
-      Italic,
-      Essentials,
-      Heading,
-      Image,
-      ImageCaption,
-      ImageStyle,
-      ImageToolbar,
-      ImageUpload,
-      Indent,
-      Link,
-      List,
-      Paragraph,
-      PasteFromOffice,
-      Table,
-      TableToolbar,
-      TableColumnResize,
-      TableCaption,
-      WordCount,
-      StrapiMediaLib
-    ],
-    toolbar: [
-      'undo', 'redo',
-      '|',
-      'heading',
-      '|',
-      'bold', 'italic',
-      '|',
-      'link', 'strapiMediaLib', 'insertTable',
-      '|',
-      'bulletedList', 'numberedList'
-    ],
-    heading: {
-      options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-      ]
-    },
-    image: {
-      toolbar: [
-        'imageStyle:inline',
-        'imageStyle:block',
-        'imageStyle:side',
-        '|',
-        'toggleImageCaption',
-        'imageTextAlternative'
-      ]
-    },
-    table: {
-      contentToolbar: [
-        'tableColumn',
-        'tableRow',
-        'mergeTableCells',
-        '|',
-        'toggleTableCaption'
-      ]
-    },
-    link: {
-      decorators: {
-        openInNewTab: {
-          mode: 'manual',
-          label: 'Open in a new tab',
-          attributes: {
-            target: '_blank',
-            rel: 'noopener noreferrer'
-          }
-        }
-      }
-    }
-  },
-
   standard: {
     plugins: [
       Autoformat,
@@ -158,19 +89,39 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
       TableColumnResize,
       TableCaption,
       WordCount,
-      StrapiMediaLib
+      StrapiMediaLib,
+      SourceEditing,
+      HtmlEmbed,
+      Underline,
+      Strikethrough,
+      SpecialCharacters,
+      Info,
+      Callout,
+      Warning,
+      Accordion,
+      // Math,
+      CodingSandbox,
+      StaticCode
     ],
-    toolbar: [
+
+    toolbar: {
+      items: [
         'undo', 'redo',
         '|',
         'heading',
         '|',
-        'bold', 'italic',
+        'bold', 'italic', 'underline', 'strikethrough',
         '|',
-        'link', 'strapiMediaLib', 'mediaEmbed', 'blockQuote', 'insertTable', 'codeBlock',
+        'link', 'strapiMediaLib', 'mediaEmbed', 'blockQuote', 'insertTable',
         '|',
-        'bulletedList', 'numberedList', 'outdent', 'indent'
-    ],
+        'bulletedList', 'numberedList', 'outdent', 'indent',
+        '-',
+        'Info', 'Callout', 'Warning', 'Accordion', 'Math', 'CodingSandbox', 'StaticCode',
+        '|',
+        'sourceEditing', 'htmlEmbed',
+      ],
+      shouldNotGroupWhenFull: true
+    },
     heading: {
       options: [
         { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -212,190 +163,20 @@ const CKEDITOR_BASE_CONFIG_FOR_PRESETS = {
           }
         }
       }
-    }
+    },
+    math: {
+      engine: (equation, element, display) => {
+        katexRender(equation, element, display)
+      },
+      outputType: 'span', // 'script' will not render properly b/c unsafe
+      enablePreview: false, // Enable preview view
+      katexRenderOptions: {
+        macros: {
+          "\\neq": "\\mathrel{\\char`≠}",
+        },
+      },
+    },
   },
-
-  rich: {
-    plugins: [
-      Alignment,
-      Autoformat,
-      Bold,
-      Italic,
-      Underline,
-      Strikethrough,
-      Code,
-      Subscript,
-      Superscript,
-      BlockQuote,
-      CodeBlock,
-      Essentials,
-      FontSize,
-      FontFamily,
-      FontColor,
-      FontBackgroundColor,
-      FindAndReplace,
-      Heading,
-      HorizontalLine,
-      HtmlEmbed,
-      Image,
-      ImageCaption,
-      ImageStyle,
-      ImageToolbar,
-      ImageUpload,
-      ImageResize,
-      Indent,
-      IndentBlock,
-      Link,
-      LinkImage,
-      List,
-      ListProperties,
-      TodoList,
-      MediaEmbed,
-      Paragraph,
-      PasteFromOffice,
-      RemoveFormat,
-      SpecialCharacters,
-      SpecialCharactersEssentials,
-      Table,
-      TableToolbar,
-      TableProperties,
-      TableCellProperties,
-      TableColumnResize,
-      TableCaption,
-      WordCount,
-      Highlight,
-      StrapiMediaLib
-    ],
-    toolbar: {
-      items: [
-        'undo', 'redo',
-        '|',
-        'findAndReplace', 'selectAll',
-        '|',
-        'heading',
-        '|',
-        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor',
-        '|',
-        'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'code', 'removeFormat',
-        '-',
-        'link', 'strapiMediaLib', 'mediaEmbed', 'insertTable', 'horizontalLine', 'blockQuote', 'codeBlock', 'htmlEmbed', 'specialCharacters', 'highlight',
-        '|',
-        'alignment',
-        '|',
-        'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
-      ],
-      shouldNotGroupWhenFull: true
-    },
-    heading: {
-      options: [
-        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-      ]
-    },
-    list: {
-      properties: {
-          styles: true,
-          startIndex: true,
-          reversed: true
-      }
-    },
-    image: {
-      resizeUnit: "%",
-      resizeOptions: [ {
-        name: 'resizeImage:original',
-        value: null,
-        icon: 'original'
-      },
-      {
-        name: 'resizeImage:25',
-        value: '25',
-        icon: 'small'
-      },
-      {
-        name: 'resizeImage:50',
-        value: '50',
-        icon: 'medium'
-      },
-      {
-        name: 'resizeImage:75',
-        value: '75',
-        icon: 'large'
-      } ],
-      toolbar: [
-        'imageStyle:inline', 'imageStyle:block', 'imageStyle:side',
-        '|',
-        'toggleImageCaption', 'imageTextAlternative',
-        '|',
-        'linkImage',
-        '|',
-        'resizeImage:25', 'resizeImage:50', 'resizeImage:75', 'resizeImage:original'
-      ]
-    },
-    table: {
-      contentToolbar: [
-        'tableColumn',
-        'tableRow',
-        'mergeTableCells',
-        '|',
-        'tableCellProperties',
-        'tableProperties',
-        '|',
-        'toggleTableCaption'
-      ]
-    },
-    fontSize: {
-      options: [
-          9,
-          11,
-          13,
-          'default',
-          17,
-          19,
-          21,
-          27,
-          35,
-      ],
-      supportAllValues: false
-    },
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica Neue, Helvetica, Source Sans Pro, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Lucida Sans Unicode, Lucida Grande, sans-serif',
-        'Tahoma, Geneva, sans-serif',
-        'Times New Roman, Times, serif',
-        'Trebuchet MS, Helvetica, sans-serif',
-        'Verdana, Geneva, sans-serif',
-        'Roboto, Roboto Black, Roboto Medium, Roboto Light, sans-serif',
-      ],
-      supportAllValues: true
-    },
-    fontColor: {
-      columns: 5,
-      documentColors: 10,
-    },
-    fontBackgroundColor: {
-      columns: 5,
-      documentColors: 10,
-    },
-    link: {
-      decorators: {
-        openInNewTab: {
-          mode: 'manual',
-          label: 'Open in a new tab',
-          attributes: {
-            target: '_blank',
-            rel: 'noopener noreferrer'
-          }
-        }
-      }
-    }
-  }
 };
 
 export default class Configurator {

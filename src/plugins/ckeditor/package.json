@@ -36,7 +36,9 @@
     "npm": ">=6.0.0"
   },
   "license": "MIT",
-  "devdependencies": {
-    "@ckeditor/ckeditor5-react": "^9.1.0"
+  "dependencies": {
+    "@ckeditor/ckeditor5-react": "^9.1.0",
+    "@isaul32/ckeditor5-math": "^43.2.0",
+    "katex": "^0.16.11"
   }
 }

@@ -1,0 +1,15 @@
+.Callout {
+    padding: 20px 40px;
+    margin: 1em 0;
+
+    background: white;
+    border: solid 2px #ececec;
+    border-radius: 10px;
+
+    font-weight: 550;
+    font-family: "Times", serif;
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 3px;
+    color:black;
+}

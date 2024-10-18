@@ -1,0 +1,71 @@
+.ckeditor5-accordion-collapse.show {
+  max-height: 500px;
+  opacity: 1;
+  transition: max-height 0.3s ease-out, opacity 0.5s ease-out;
+}
+
+/* CSS for hiding the div without class 'show' */
+.ckeditor5-accordion-collapse {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in, opacity 0.5s ease-in;
+}
+
+.ck .ckeditor5-accordion__widget {
+  --ckeditor5-accordion-collapsed-icon: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAgMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTS45NDEgNC41MjNhLjc1Ljc1IDAgMSAxIDEuMDYtMS4wNmwzLjAwNiAzLjAwNSAzLjAwNS0zLjAwNWEuNzUuNzUgMCAxIDEgMS4wNiAxLjA2bC0zLjU0OSAzLjU1YS43NS43NSAwIDAgMS0xLjE2OC0uMTM2TC45NDEgNC41MjN6Ij48L3BhdGg+PC9zdmc+");
+
+  border: 1px solid #b3b3b3;
+}
+
+.ck .ckeditor5-accordion-header {
+  padding: 0.5em;
+}
+
+.ck .ckeditor5-accordion-button {
+  display: block;
+  padding: 0;
+  font-weight: bold;
+}
+
+.ck .ckeditor5-accordion-button:not(.ck-placeholder)::before {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 0.3em;
+  content: "";
+  transition: rotate 0.5s;
+  background-color: currentColor;
+  -webkit-mask-image: var(--ckeditor5-accordion-collapsed-icon);
+  -moz-mask-image: var(--ckeditor5-accordion-collapsed-icon);
+  mask-image: var(--ckeditor5-accordion-collapsed-icon);
+}
+
+.ck .ckeditor5-accordion-button:not(.ck-placeholder,
+  .collapsed)::before {
+  rotate: 180deg;
+}
+
+.ck .ckeditor5-accordion-body {
+  overflow: auto;
+  padding: 0.5em;
+}
+
+.ck .ck-editor__nested-editable.ckeditor5-accordion-button:focus,
+.ck .ck-editor__nested-editable.ckeditor5-accordion-button.ck-editor__nested-editable_focused,
+.ck .ck-editor__nested-editable.ckeditor5-accordion-body:focus,
+.ck .ck-editor__nested-editable.ckeditor5-accordion-body.ck-editor__nested-editable_focused {
+  background-color: transparent;
+}
+
+.ck .ckeditor5-accordion-item:not(:first-child) {
+  border-top: 1px solid #b3b3b3;
+}
+
+.ck .ckeditor5-accordion-item:hover {
+  background-color: rgb(108, 181, 249, 0.1);
+}
+
+.ck .ckeditor5-accordion-item:focus-within {
+  background-color: rgb(13, 101, 255, 0.1);
+}

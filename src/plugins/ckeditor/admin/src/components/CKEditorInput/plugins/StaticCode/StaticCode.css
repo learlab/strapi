@@ -1,0 +1,30 @@
+.StaticCode {
+    padding: 10px;
+    margin: 1em 0;
+
+    background: rgba(234, 224, 224, 0.5);
+    border: dashed 2px hsl(0, 0%, 40%);
+}
+
+.StaticCode pre{
+    font-weight: 400;
+    margin:0;
+    border: solid 2px rgb(200, 200, 200);
+    border-radius: 10px;
+    background-color: white;
+    padding: 2.5em;
+}
+
+.StaticCode p{
+    margin: 10px 1px;
+    padding: 10px;
+    font-size: 15px;
+    font-family: "Courier New", monospace;
+    font-weight: 550;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.StaticCode p::before{
+  padding-left: 10px;
+}
